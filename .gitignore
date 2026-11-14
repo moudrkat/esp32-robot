@@ -1,0 +1,6 @@
+data/
+runs/
+build/
+__pycache__/
+*.pt
+firmware/robot/generated/wifi.h
