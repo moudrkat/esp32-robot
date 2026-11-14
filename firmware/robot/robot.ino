@@ -26,7 +26,7 @@
 #define LLM_PROFILE 1
 #define LLM_PROFILE_NOW() esp_timer_get_time()
 // The robot car (tools/gen_headers.py writes generated/car.h for it): CAR_ROBOT, and LLM_STEER with the pot on PIN_GAMMA,
-// so the knob on the car turns the steering dose while the model writes. Must come before llm.h.
+// so the potentiometer on the car turns the steering dose while the model writes. Must come before llm.h.
 #if __has_include("generated/car.h")
 #include "generated/car.h"
 #endif
@@ -482,11 +482,11 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
   int decoded = 0;
 
 #if defined(CAR_COND)
-  car_cond_apply();                     // the knob and the "@" inputs, set once for this request
+  car_cond_apply();                     // the potentiometer and the "@" inputs, set once for this request
 #elif defined(LLM_STEER)
   steer_read_pot();
 #if defined(CAR_ROBOT)
-  car_show_dose();                      // the eyes show where the knob is while the model writes
+  car_show_dose();                      // the eyes show where the potentiometer is while the model writes
 #endif
 #endif
   for (int i = 0; i < n_prompt; i++) {  // prime with the prompt

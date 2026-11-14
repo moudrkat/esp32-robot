@@ -1,7 +1,7 @@
 #!/bin/sh
-# Build the firmware and put the robot's brain on the board: the model into its flash partition, then the program.
+# Build the firmware and put the robot's model on the board: the model into its flash partition, then the program.
 #   ./flash.sh [port]                          (default /dev/ttyACM0)
-#   ROBOT_WIFI_PASS='at least 8 chars' ./flash.sh   also gives it its own Wi-Fi "robot-brain" and a page for your phone
+#   ROBOT_WIFI_PASS='at least 8 chars' ./flash.sh   also gives it its own Wi-Fi "esp32-robot" and a page for your phone
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
 #   arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library" "Adafruit NeoPixel"
@@ -13,7 +13,7 @@ WIFI=firmware/robot/generated/wifi.h
 if [ -n "${ROBOT_WIFI_PASS:-}" ]; then
   [ ${#ROBOT_WIFI_PASS} -ge 8 ] || { echo "ROBOT_WIFI_PASS needs at least 8 characters"; exit 1; }
   printf '#define CAR_WEB 1\n#define CAR_WIFI_PASS "%s"\n' "$ROBOT_WIFI_PASS" > "$WIFI"
-  echo "Wi-Fi on: network robot-brain, your password, page at http://192.168.4.1"
+  echo "Wi-Fi on: network esp32-robot, your password, page at http://192.168.4.1"
 else
   rm -f "$WIFI"
   echo "Wi-Fi off (set ROBOT_WIFI_PASS to turn the phone page on)"

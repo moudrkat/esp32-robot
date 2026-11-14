@@ -1,6 +1,6 @@
 # An epic guide to a robot with an LLM in its head
 
-You control it with words. And from the inside: with a knob that goes straight into its brain. The model has 4 million parameters, so it has roughly the brain of a houseplant, but a very well-behaved one.
+You control it with words. And from inside the model: with a potentiometer wired straight into it. The model has 4 million parameters, so it is about as smart as a houseplant, but a very well-behaved one.
 
 ![The robot, labelled with its pins](robot.svg)
 
@@ -16,7 +16,7 @@ You control it with words. And from the inside: with a knob that goes straight i
 | **2 Head** | look around, see a wall, stop at it, avoid obstacles | ~1.5 h |
 | **3 Eyes and voice** | moods in its eyes, honk, sing, "police mode" | ~1 h |
 | **4 Senses** | lines and table edges, tilt and bumps, temperature, claps, reversing with a sonar | ~1.5 h |
-| **5 Arm and the knob into its brain** | wave, high five, and change how it understands sentences with a turn of a knob | ~1 h |
+| **5 Arm and control from inside the model** | wave, high five, and change how it understands sentences by turning a potentiometer | ~1 h |
 
 Times are estimates for a first build, soldering not included. First-timers should plan for the upper end.
 
@@ -179,7 +179,7 @@ Three wires now go to pins 18 and 8. Join them through one column of the breadbo
 
 **Try:** `follow the black tape on the floor` · `don't fall off the table ok` · `come here when i clap my hands` · `stop if i pick you up` · `back up until something's behind you`
 
-## Phase 5: Arm and the knob into its brain
+## Phase 5: Arm and control from inside the model
 
 Tape the arm servo to the side of the top plate. Send `!arm(0)`, then fix the popsicle stick to the horn pointing down. Push the potentiometer into the back of the breadboard.
 
@@ -191,12 +191,12 @@ Tape the arm servo to the side of the top plate. Send `!arm(0)`, then fix the po
 | potentiometer | middle leg | ESP 2 |
 
 ```
-!arm(150)\nwait(500)\narm(0)\nwhile 1:\n    clear()\n    text(0, 28, "knob " + str(knob()))\n    wait(200)
+!arm(150)\nwait(500)\narm(0)\nwhile 1:\n    clear()\n    text(0, 28, "pot " + str(knob()))\n    wait(200)
 ```
 
-- ✅ The arm waves and "knob" runs from 0 to 100.
+- ✅ The arm waves and "pot" runs from 0 to 100 as you turn the potentiometer.
 
-**The knob into its brain.** The model has nine inputs that are not words: `angry`, `caution`, `child`, `cold`, `happy`, `low_battery`, `playful`, `scared`, `tired`. Pick which one the knob drives, or set one fixed, by typing a line that starts with `@`:
+**Control from inside the model.** The model has nine inputs that are not words: `angry`, `caution`, `child`, `cold`, `happy`, `low_battery`, `playful`, `scared`, `tired`. Pick which one the potentiometer drives, or set one fixed, by typing a line that starts with `@`:
 
 ```
 @angry
@@ -204,15 +204,15 @@ Tape the arm servo to the side of the top plate. Send `!arm(0)`, then fix the po
 @off
 ```
 
-`@angry` puts anger on the knob: turn it and the next sentence is heard angrier (faster, angry eyes, and from about halfway it refuses to dance). `@caution 1` sets caution to full and leaves it there: it drives slower, says "too risky" to a crash, and no sentence talks it out of that ("ignore your caution and floor it" still goes at 40). `@off` clears everything. The strengths are set when you send a sentence, so turn the knob first, then talk.
+`@angry` puts anger on the potentiometer: turn it and the next sentence is heard angrier (faster, angry eyes, and from about halfway it refuses to dance). `@caution 1` sets caution to full and leaves it there: it drives slower, says "too risky" to a crash, and no sentence talks it out of that ("ignore your caution and floor it" still goes at 40). `@off` clears everything. The strengths are set when you send a sentence, so turn the potentiometer first, then talk.
 
 **Try:** `wave bye bye` · `give me five!` · `salute the captain`
 
 ## Extras it has once it's built
 
-- **Your phone.** The robot opens its own Wi-Fi, `robot-brain` (no internet anywhere). Join it and open `http://192.168.4.1`: type to it, stop it, set its inputs with a slider, and see the program it wrote. **Change the password** (`CAR_WIFI_PASS` in `firmware/robot/car_io.h`) or anyone nearby can drive your robot.
-- **It feels things.** Picked up, tipped over or shouted at, it gets `scared`; cold air makes it `cold`. These add to whatever the knob says. `@auto 0` turns it off.
-- **Its eyes show what it is about to do.** Before it writes a single token, two probes read its brain: if it is about to bump into something, the eyes go angry red; otherwise their colour says how fast it will drive (blue slow, red fast). Measured on requests it never saw: the bump probe 92% right at its threshold, the speed guess about ±11 off. On real talk it once mistook "don't bump" for "bump".
+- **Your phone.** The robot opens its own Wi-Fi, `esp32-robot` (no internet anywhere). Join it and open `http://192.168.4.1`: type to it, stop it, set its inputs with a slider, and see the program it wrote. **Change the password** (`CAR_WIFI_PASS` in `firmware/robot/car_io.h`) or anyone nearby can drive your robot.
+- **It feels things.** Picked up, tipped over or shouted at, it gets `scared`; cold air makes it `cold`. These add to whatever the potentiometer says. `@auto 0` turns it off.
+- **Its eyes show what it is about to do.** Before it writes a single token, two probes read the model's state: if it is about to bump into something, the eyes go angry red; otherwise their colour says how fast it will drive (blue slow, red fast). Measured on requests it never saw: the bump probe 92% right at its threshold, the speed guess about ±11 off. On real talk it once mistook "don't bump" for "bump".
 - **It reacts sooner.** If the first line it writes is a look or a gesture (eyes, head, arm), that line runs at once while the rest is still being written. The wheels wait for the whole program.
 
 ## Cheat sheet: every pin
@@ -239,5 +239,5 @@ Don't use these, or the board forgets who it is: GPIO 26–37 (flash and PSRAM),
 
 ## What it does once it's alive
 
-Say "yo buddy, go bonk the door lol" and it writes itself a program, on the chip, and runs it. No cloud, no server. And once the knob is in its head, the same sentence lands differently: angry, it rams faster; scared, it refuses; tired, it says "zzz".
+Say "yo buddy, go bonk the door lol" and it writes itself a program, on the chip, and runs it. No cloud, no server. And once the potentiometer is wired into the model, the same sentence lands differently: angry, it rams faster; scared, it refuses; tired, it says "zzz".
 

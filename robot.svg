@@ -23,9 +23,9 @@
   <!-- deck: batteries, board, breadboard -->
   <rect x="235" y="262" width="95" height="32" rx="6" fill="#3b3b40"/><text x="248" y="283" style="fill:#fff">18650 A</text>
   <rect x="590" y="262" width="95" height="32" rx="6" fill="#3b3b40"/><text x="603" y="283" style="fill:#fff">18650 B</text>
-  <rect x="345" y="270" width="150" height="24" rx="4" fill="#1d6b45"/><text x="355" y="287" style="fill:#fff">ESP32-S3 · brain</text>
+  <rect x="345" y="270" width="150" height="24" rx="4" fill="#1d6b45"/><text x="355" y="287" style="fill:#fff">ESP32-S3 · model</text>
   <rect x="505" y="272" width="75" height="22" rx="3" fill="#f2f2f2" stroke="#999"/>
-  <!-- knob on the back -->
+  <!-- potentiometer on the back -->
   <rect x="246" y="244" width="22" height="18" fill="#7d3c98"/><circle cx="257" cy="236" r="13" fill="#9b59b6" stroke="#5b2c6f" stroke-width="2"/>
   <line x1="257" y1="236" x2="265" y2="227" stroke="#fff" stroke-width="3"/>
   <!-- mic + buzzers -->
@@ -73,7 +73,7 @@
     <text x="46" y="106">eyes, NeoPixel 8×8 · 21</text>
     <text x="46" y="166">mouth, OLED · I²C 18/8</text>
     <text x="46" y="208">neck: servo ↔ 15 · ↕ 16</text>
-    <text x="40" y="258">knob into the brain · 2</text>
+    <text x="40" y="258">potentiometer, into the model · 2</text>
     <text x="40" y="296">rear sonar · 11/12</text>
     <text x="806" y="206">arm, SG90 · 17</text>
     <text x="826" y="256">ears + voice</text><text x="826" y="272">mic 1 · buzzers 38/39</text>

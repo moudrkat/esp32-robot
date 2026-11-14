@@ -1,5 +1,5 @@
 #!/bin/sh
-# From nothing to the brain on the board's flash: make the data by rules, train, export, regenerate the headers.
+# From nothing to the model on the board's flash: make the data by rules, train, export, regenerate the headers.
 # Needs a GPU for the training (about ten minutes); torch, numpy, tokenizers.
 set -e
 cd "$(dirname "$0")"

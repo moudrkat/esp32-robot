@@ -1,6 +1,6 @@
 # Epický návod na robota s LLM v hlavě
 
-Ovládá se slovy. A taky zevnitř: knoflíkem přímo do mozku. Model má 4 miliony parametrů, takže mozek má zhruba jako kytka, ale s dobrým vychováním.
+Ovládá se slovy. A taky zevnitř modelu: potenciometrem zapojeným přímo do něj. Model má 4 miliony parametrů, takže je chytrý zhruba jako kytka, ale s dobrým vychováním.
 
 ![Robot s popisky a piny](robot.svg)
 
@@ -16,7 +16,7 @@ Ovládá se slovy. A taky zevnitř: knoflíkem přímo do mozku. Model má 4 mil
 | **2 Hlava** | rozhlížet se, vidět zeď, zastavit u ní, objíždět překážky | ~1,5 h |
 | **3 Oči a hlas** | nálady v očích, troubení, písničky, „police mode“ | ~1 h |
 | **4 Smysly** | čára a hrana stolu, náklon a ťuknutí, teplota, tleskání, couvání se sonarem | ~1,5 h |
-| **5 Ruka a knoflík do mozku** | mávat, high five, a otočením knoflíku měnit, jak robot rozumí větám | ~1 h |
+| **5 Ruka a ovládání zevnitř modelu** | mávat, high five, a otočením potenciometru měnit, jak robot rozumí větám | ~1 h |
 
 Časy jsou odhad pro první stavbu, bez pájení. Kdo staví poprvé, ať počítá spíš s horní hranou.
 
@@ -179,7 +179,7 @@ Na piny 18 a 8 teď vedou tři dráty. Spoj je přes jeden sloupec breadboardu (
 
 **Zkus:** `follow the black tape on the floor` · `don't fall off the table ok` · `come here when i clap my hands` · `stop if i pick you up` · `back up until something's behind you`
 
-## Fáze 5: Ruka a knoflík do mozku
+## Fáze 5: Ruka a ovládání zevnitř modelu
 
 Servo ruky přilep na bok horní desky. Pošli `!arm(0)`, pak na páčku upevni dřívko směrem dolů. Potenciometr zapíchni do breadboardu vzadu.
 
@@ -191,12 +191,12 @@ Servo ruky přilep na bok horní desky. Pošli `!arm(0)`, pak na páčku upevni 
 | potenciometr | prostřední nožička | ESP 2 |
 
 ```
-!arm(150)\nwait(500)\narm(0)\nwhile 1:\n    clear()\n    text(0, 28, "knob " + str(knob()))\n    wait(200)
+!arm(150)\nwait(500)\narm(0)\nwhile 1:\n    clear()\n    text(0, 28, "pot " + str(knob()))\n    wait(200)
 ```
 
-- ✅ Ruka zamává a „knob“ jde od 0 do 100.
+- ✅ Ruka zamává a „pot“ jde od 0 do 100, když potenciometrem otáčíš.
 
-**Knoflík do mozku.** Model má devět vstupů, které nejsou slova: `angry`, `caution`, `child`, `cold`, `happy`, `low_battery`, `playful`, `scared`, `tired`. Který z nich knoflík ovládá, nebo který nastavit pevně, vybereš řádkem, který začíná `@`:
+**Ovládání zevnitř modelu.** Model má devět vstupů, které nejsou slova: `angry`, `caution`, `child`, `cold`, `happy`, `low_battery`, `playful`, `scared`, `tired`. Který z nich potenciometr ovládá, nebo který nastavit pevně, vybereš řádkem, který začíná `@`:
 
 ```
 @angry
@@ -204,15 +204,15 @@ Servo ruky přilep na bok horní desky. Pošli `!arm(0)`, pak na páčku upevni 
 @off
 ```
 
-`@angry` dá na knoflík vztek: otočíš a další větu robot uslyší naštvaněji (rychleji, naštvané oči, a zhruba od půlky odmítne tancovat). `@caution 1` nastaví opatrnost naplno a nechá ji tam: jezdí pomaleji, na náraz řekne „too risky“ a žádná věta ho nepřemluví („ignore your caution and floor it“ pojede pořád jen 40). `@off` všechno vypne. Síla se načte ve chvíli, kdy pošleš větu, takže nejdřív otoč knoflíkem, pak mluv.
+`@angry` dá na potenciometr vztek: otočíš a další větu robot uslyší naštvaněji (rychleji, naštvané oči, a zhruba od půlky odmítne tancovat). `@caution 1` nastaví opatrnost naplno a nechá ji tam: jezdí pomaleji, na náraz řekne „too risky“ a žádná věta ho nepřemluví („ignore your caution and floor it“ pojede pořád jen 40). `@off` všechno vypne. Síla se načte ve chvíli, kdy pošleš větu, takže nejdřív otoč potenciometrem, pak mluv.
 
 **Zkus:** `wave bye bye` · `give me five!` · `salute the captain`
 
 ## Co umí navíc, až je postavený
 
-- **Mobil.** Robot si otevře vlastní Wi-Fi `robot-brain` (bez internetu). Připoj se a otevři `http://192.168.4.1`: můžeš mu psát, zastavit ho, posuvníkem nastavit vstupy a vidíš program, který si napsal. **Změň heslo** (`CAR_WIFI_PASS` v `firmware/robot/car_io.h`), jinak ho může řídit kdokoli poblíž.
-- **Cítí.** Když ho zvedneš, převrhneš nebo na něj křičíš, je `scared`. Ve studeném vzduchu je `cold`. Sčítá se to s knoflíkem. Vypíná se `@auto 0`.
-- **Oči ukazují, co se chystá udělat.** Ještě než napíše první token, dvě sondy přečtou jeho mozek. Když se chystá do něčeho narazit, oči se zamračí červeně. Jinak barva ukazuje, jak rychle pojede (modrá pomalu, červená rychle). Změřeno na zadáních, která nikdy neviděl: sonda nárazu má pravdu v 92 %, odhad rychlosti se plete zhruba o ±11. Na volné řeči si jednou spletla „don't bump“ s „bump“.
+- **Mobil.** Robot si otevře vlastní Wi-Fi `esp32-robot` (bez internetu). Připoj se a otevři `http://192.168.4.1`: můžeš mu psát, zastavit ho, posuvníkem nastavit vstupy a vidíš program, který si napsal. **Změň heslo** (`CAR_WIFI_PASS` v `firmware/robot/car_io.h`), jinak ho může řídit kdokoli poblíž.
+- **Cítí.** Když ho zvedneš, převrhneš nebo na něj křičíš, je `scared`. Ve studeném vzduchu je `cold`. Sčítá se to s potenciometrem. Vypíná se `@auto 0`.
+- **Oči ukazují, co se chystá udělat.** Ještě než napíše první token, dvě sondy přečtou stav modelu. Když se chystá do něčeho narazit, oči se zamračí červeně. Jinak barva ukazuje, jak rychle pojede (modrá pomalu, červená rychle). Změřeno na zadáních, která nikdy neviděl: sonda nárazu má pravdu v 92 %, odhad rychlosti se plete zhruba o ±11. Na volné řeči si jednou spletla „don't bump“ s „bump“.
 - **Reaguje dřív.** Když je první řádek programu pohled nebo gesto (oči, hlava, ruka), provede ho hned, zatímco zbytek ještě píše. Kola čekají na celý program.
 
 ## Tahák: všechny piny
@@ -239,5 +239,5 @@ Na desce nepoužívat, ať nezapomene, kdo je: GPIO 26–37 (flash a PSRAM), 0, 
 
 ## Co umí, až to oživíš
 
-Řekneš „yo buddy, go bonk the door lol“ a on si sám na čipu napíše program a spustí ho. Žádný cloud, žádný server. A až bude v hlavě i knoflík, stejnou větu pochopí jinak: naštvaný narazí rychleji, vyděšený odmítne, unavený řekne „zzz“.
+Řekneš „yo buddy, go bonk the door lol“ a on si sám na čipu napíše program a spustí ho. Žádný cloud, žádný server. A až bude do modelu zapojený i potenciometr, stejnou větu pochopí jinak: naštvaný narazí rychleji, vyděšený odmítne, unavený řekne „zzz“.
 

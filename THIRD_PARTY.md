@@ -3,7 +3,7 @@
 `runtime/llm.h`, `runtime/bpe_tokenizer.h`, `runtime/steer.h`, `runtime/host_verify/verify.c`, `firmware/robot/display.h`, the base of `firmware/robot/robot.ino`, `src/`, `research/tinystories/`
 and `tools/` come from [esp32-ai](https://github.com/moudrkat/esp32-ai), which builds on Viacheslav Sierbov's
 [slvDev/esp32-ai](https://github.com/slvDev/esp32-ai): the runtime that runs a language model on this chip in the first
-place. Without it, the robot would have no brain to put anywhere. MIT licence:
+place. Without it, the robot would have nothing in its head. MIT licence:
 
 ```
 MIT License

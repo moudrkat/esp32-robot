@@ -226,7 +226,7 @@ static void c_rgb(void *, int r, int g, int b) { eye_r = r; eye_g = g; eye_b = b
 static void c_buzz(void *, int on) { digitalWrite(PIN_HORN, on ? HIGH : LOW); }
 static void c_tone(void *, int hz) { ledcWriteTone(PIN_VOICE, hz); }
 static void c_led(void *, int on) { rgbLedWrite(PIN_LED, on ? 40 : 0, on ? 40 : 0, on ? 40 : 0); }
-static int c_knob(void *) { return analogRead(2) * 100 / 4095; }   // the steering pot doubles as knob()
+static int c_knob(void *) { return analogRead(2) * 100 / 4095; }   // the potentiometer; the language calls it knob()
 
 // ---------------------------------------------------------------- the interpreter's wait: sample the bump sensor
 // while waiting, so a knock between two shaken() calls is not missed
@@ -293,8 +293,8 @@ static void car_on_request() {
   eye_mood = 10; eyes_show();                           // "up"
   early_done = false;
 }
-// while the model writes, the thinking eyes show the steering dose: blue calm (knob left), the usual colour at
-// zero, red wild (knob right)
+// while the model writes, the thinking eyes show the steering dose: blue calm (potentiometer left), the usual colour at
+// zero, red wild (right)
 static uint8_t keep_r, keep_g, keep_b;
 static bool dose_shown = false;
 static void car_show_dose() {
@@ -310,12 +310,12 @@ static void car_show_dose() {
 // ---------------------------------------------------------------- inputs that are not words (CAR_COND)
 // The model learned, beside the words, a few strengths (angry, caution, child, …): sum_k s_k * c_k is added to the
 // residual after layer COND_LAYER at every position. Here that is steer.h with the raw vector. "@angry" puts a mood
-// on the knob, "@angry 0.7" sets it fixed, "@off" clears all. Strengths hold until changed.
+// on the potentiometer, "@angry 0.7" sets it fixed, "@off" clears all. Strengths hold until changed.
 #if defined(CAR_COND)
 #include "generated/cond_vec.h"   // COND_N, COND_D, COND_LAYER, COND_NAMES[], COND_VEC[COND_N][COND_D]
 static float cond_fixed[COND_N];  // -1: not set
-static int cond_knob = -1;        // the channel the knob drives, or -1
-static void cond_reset() { for (int k = 0; k < COND_N; k++) cond_fixed[k] = -1.f; cond_knob = -1; }
+static int cond_pot = -1;        // the channel the potentiometer drives, or -1
+static void cond_reset() { for (int k = 0; k < COND_N; k++) cond_fixed[k] = -1.f; cond_pot = -1; }
 static bool cond_auto = true;     // the sensors set some inputs by themselves ("@auto off" to stop)
 static int cond_index(const char *name) { for (int k = 0; k < COND_N; k++) if (!strcmp(COND_NAMES[k], name)) return k; return -1; }
 // what the robot feels on its own: lifted or tipped -> scared, loud around it -> scared, cold air -> cold
@@ -337,11 +337,11 @@ static float cond_from_sensors(int k) {
 static float cond_now[COND_N];    // what was applied for the last request, for the phone page
 static void car_cond_apply() {
   static float v[COND_D];
-  float knob_s = analogRead(2) / 4095.f;
+  float pot_s = analogRead(2) / 4095.f;
   memset(v, 0, sizeof v);
   int any = 0;
   for (int k = 0; k < COND_N; k++) {
-    float s = k == cond_knob ? knob_s : cond_fixed[k];
+    float s = k == cond_pot ? pot_s : cond_fixed[k];
     float a = cond_from_sensors(k);
     if (a > s) s = a;
     cond_now[k] = s > 0.f ? s : 0.f;
@@ -361,9 +361,9 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
     cond_auto = got < 2 || s > 0.f; Serial.printf("sensor inputs %s\n", cond_auto ? "on" : "off"); return;
   }
   for (int k = 0; k < COND_N; k++) if (!strcmp(name, COND_NAMES[k])) {
-    if (got == 2) { cond_fixed[k] = s < 0 ? 0 : s > 1 ? 1 : s; if (cond_knob == k) cond_knob = -1; }
-    else cond_knob = k;
-    Serial.printf("%s: %s\n", COND_NAMES[k], got == 2 ? "fixed" : "on the knob");
+    if (got == 2) { cond_fixed[k] = s < 0 ? 0 : s > 1 ? 1 : s; if (cond_pot == k) cond_pot = -1; }
+    else cond_pot = k;
+    Serial.printf("%s: %s\n", COND_NAMES[k], got == 2 ? "fixed" : "on the potentiometer");
     return;
   }
   Serial.print("inputs:"); for (int k = 0; k < COND_N; k++) Serial.printf(" %s", COND_NAMES[k]); Serial.println();
@@ -396,7 +396,7 @@ static void car_early_check(const char *prog, int len) {
 #include <WiFi.h>
 #include <WebServer.h>
 #ifndef CAR_WIFI_NAME
-#define CAR_WIFI_NAME "robot-brain"
+#define CAR_WIFI_NAME "esp32-robot"
 #endif
 #ifndef CAR_WIFI_PASS
 #error "CAR_WEB needs CAR_WIFI_PASS (8+ characters): the Wi-Fi password is yours: ROBOT_WIFI_PASS=... ./flash.sh"
@@ -406,9 +406,9 @@ static char web_line[200];
 static bool web_ready = false;
 static char last_program[OL_MAX_SRC];
 static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>robot brain</title><style>body{font:16px system-ui;margin:16px;max-width:520px}input,button,select{font:inherit;padding:8px;margin:4px 0}
+<title>robot</title><style>body{font:16px system-ui;margin:16px;max-width:520px}input,button,select{font:inherit;padding:8px;margin:4px 0}
 #t{width:100%;box-sizing:border-box}pre{background:#f2f2f4;padding:8px;white-space:pre-wrap}button{margin-right:6px}</style>
-<h2>robot brain</h2><input id=t placeholder="yo buddy, let's go" autofocus><button onclick="say(t.value)">send</button>
+<h2>robot</h2><input id=t placeholder="yo buddy, let's go" autofocus><button onclick="say(t.value)">send</button>
 <button onclick="say('stop')">stop</button><p>
 <select id=m></select> <input id=s type=range min=0 max=100 value=0 oninput="v.textContent=s.value/100"> <span id=v>0</span>
 <button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button></p>

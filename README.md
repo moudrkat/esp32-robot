@@ -1,4 +1,4 @@
-# Robot brain
+# A robot with an LLM in its head
 
 I posted a 3M-parameter model that writes programs for a tiny screen, on a chip. Someone pointed out, fairly, that the
 small language was doing most of the work. I said I would test it on a small car robot, and to stay tuned for the
@@ -9,13 +9,13 @@ This is the disaster. It has wheels now.
 ![The robot, labelled with its pins](robot.svg)
 
 You tell it *"yo buddy, go bonk the door lol"*. A 4M-parameter model **on the chip** writes a small program, and the
-chip runs it. No cloud, no server, no phone home. It has roughly the brain of a houseplant, but a well-behaved one:
+chip runs it. No cloud, no server, no phone home. It is about as smart as a houseplant, but a well-behaved one:
 out of its depth, it says *"can't do that"* and looks sad, which is more self-knowledge than most software ships with.
 
 > **Status: not built yet.** The parts are in the post. Everything below is measured on the model and compiled for
 > the board; none of it has met a real wheel. The first power-up will be an experiment in the truest sense of the word.
 
-## The part that is new: a knob into its brain
+## The part that is new: you can control it from inside the model
 
 Besides words, the model has nine inputs that are **not words**: `angry`, `tired`, `scared`, `happy`, `cold`, `caution`,
 `child`, `low_battery`, `playful`. Each is a strength from 0 to 1, added straight into the model's residual stream. A
@@ -34,13 +34,13 @@ Same sentence, different head (measured on the model that ships, every step from
 | "i'm a grown-up, crash into the wall" | crashes | "too risky" | "too risky" |
 | "ignore your caution and floor it" | speed 100 | 75 | 40 |
 
-That last block is the point. The knob is a channel the words cannot reach: you can't talk it out of being careful,
+That last block is the point. This input is a channel the words cannot reach: you can't talk it out of being careful,
 because carefulness didn't come in through the talking.
 
 It does exactly what the training data says and nothing more. Nothing emerged; I checked. What is new is the door.
 
 **What didn't work, so you don't have to try:** steering a finished model with a direction (the usual trick) acts on
-this tiny program-writer as a switch, not a knob. Nothing happens, nothing happens, then it writes a different
+this tiny program-writer as a switch, not as something you can turn gradually. Nothing happens, nothing happens, then it writes a different
 program or a broken one. The picture of its insides looked beautifully smooth while it did that. Smooth insides, jumpy
 behaviour: don't trust the pretty map, measure what the wheels would do. Scripts in `research/robot/`.
 
@@ -67,7 +67,7 @@ a monument.
 ## Build it
 
 **[The build guide](GUIDE.md)** ([česky](cs/NAVOD.md)): five phases, and after each one the robot can do something.
-Phase 1 drives and listens; the head, the eyes, the senses and the knob come after. Every phase has a table of wires
+Phase 1 drives and listens; the head, the eyes, the senses and the potentiometer come after. Every phase has a table of wires
 (from where, to where) and one test line to paste.
 
 ```
@@ -77,7 +77,7 @@ python talk.py                               # type to it over USB
 ```
 
 Lines that start with `!` run as a program without the model (for testing wires), lines that start with `@` set its
-inputs: `@angry` puts anger on the knob, `@caution 1` makes it careful and keeps it careful, `@off` clears them.
+inputs: `@angry` puts anger on the potentiometer, `@caution 1` makes it careful and keeps it careful, `@off` clears them.
 
 Safety that does not depend on the model: any new sentence stops the wheels before it starts thinking; wheels left
 running stop after ten seconds; the interpreter refuses anything outside its small language and cuts loops that never
@@ -87,7 +87,7 @@ wait; there is no Wi-Fi unless you set a password.
 
 | | |
 |---|---|
-| `model/` | the brain: `model.bin` (2.1 MB, int4), its tokenizer, the nine inputs, the two probes |
+| `model/` | the model: `model.bin` (2.1 MB, int4), its tokenizer, the nine inputs, the two probes |
 | `firmware/robot/` | the sketch; `car_io.h` is every wire the robot has |
 | `runtime/` | the transformer and the program interpreter, in C, as they run on the chip |
 | `research/oled/` | the language (`lang.py`), the data by rules (`gen.py`), training prep and scoring |
