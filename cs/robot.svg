@@ -73,7 +73,7 @@
     <text x="46" y="106">oči NeoPixel 8×8 · 21</text>
     <text x="46" y="166">pusa OLED · I²C 18/8</text>
     <text x="46" y="208">krk: servo ↔ 15 · ↕ 16</text>
-    <text x="40" y="258">potenciometr, do modelu · 2</text>
+    <text x="40" y="258">potenciometr · 2</text>
     <text x="40" y="296">sonar vzadu · 11/12</text>
     <text x="806" y="206">ruka SG90 · 17</text>
     <text x="826" y="256">uši + hlas</text><text x="826" y="272">mic 1 · bzuč. 38/39</text>
