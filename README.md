@@ -64,6 +64,23 @@ Rewording the training data with a bigger model, to sound less like my templates
 (60% against 70%, so within the noise of 30 sentences, but certainly not better). The file is still in the repo, as
 a monument.
 
+## On the table: no car needed
+
+The model does not know whether it has wheels. With only the board and its screen (the OLED on pins 18 and 8):
+
+```
+DESK=1 ./flash.sh
+```
+
+Press BOOT. It asks itself *"drive forward 2 seconds"* three times, with `caution` at 0, 0.5 and 1, and the screen
+shows the sentence, the program it wrote, the speed the wheels would have, and the input. Same sentence, a different
+number, a different program. Type your own sentence over USB and BOOT repeats that one; `@angry 0` picks another input.
+
+With an SHT40 thermometer on two free pins (`DESK=1 SHT=4,5 ./flash.sh`), `@angry` puts that input on the
+thermometer: as warm as the chip woke up is 0, a hand around the sensor is 1.
+
+Not yet tried on a board: it compiles, and the numbers it should show were measured on a computer.
+
 ## Build it
 
 **[The build guide](GUIDE.md)** ([česky](cs/NAVOD.md)): five phases, and after each one the robot can do something.

@@ -2,6 +2,8 @@
 # Build the firmware and put the robot's model on the board: the model into its flash partition, then the program.
 #   ./flash.sh [port]                          (default /dev/ttyACM0)
 #   ROBOT_WIFI_PASS='at least 8 chars' ./flash.sh   also gives it its own Wi-Fi "esp32-robot" and a page for your phone
+#   DESK=1 ./flash.sh                          no car: just the board and its screen (see "On the table" in the README)
+#   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
 #   arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library" "Adafruit NeoPixel"
@@ -17,6 +19,14 @@ if [ -n "${ROBOT_WIFI_PASS:-}" ]; then
 else
   rm -f "$WIFI"
   echo "Wi-Fi off (set ROBOT_WIFI_PASS to turn the phone page on)"
+fi
+DESKH=firmware/robot/generated/desk.h
+if [ "${DESK:-0}" = 1 ]; then
+  echo '#define CAR_DESK 1' > "$DESKH"
+  [ -n "${SHT:-}" ] && printf '#define SHT_SDA %s\n#define SHT_SCL %s\n' "${SHT%,*}" "${SHT#*,}" >> "$DESKH"
+  echo "On the table: no motors, the screen shows the program and the speed; BOOT steps the input"
+else
+  rm -f "$DESKH"
 fi
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
 [ -n "$ESPTOOL" ] || { echo "esptool not found: pip install esptool"; exit 1; }

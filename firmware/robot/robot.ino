@@ -48,6 +48,10 @@
 #ifndef PROMPT_SUFFIX
 #define PROMPT_SUFFIX ""
 #endif
+#if defined(CAR_DESK)
+#undef IDLE_TEXT
+#define IDLE_TEXT "robot, on the table\n\npress BOOT\nor type to it"
+#endif
 #ifndef IDLE_TEXT
 #define IDLE_TEXT "ESP32-S3 PLE TinyLM\n28.9M params\n\nwaiting for a\nstory prompt..."
 #endif
@@ -97,6 +101,14 @@ static bool car_web_poll();             // car_io.h: a line typed on the phone p
 #endif
 static bool poll_serial_line() {
   if (pending_ready) return true;
+#if defined(CAR_DESK)
+  {                                     // BOOT pressed counts as a typed "+", so it interrupts like any other line
+    static bool was = false; static unsigned long at = 0;
+    bool down = digitalRead(0) == LOW;
+    if (down && !was && millis() - at > 300) { at = millis(); was = true; strcpy(pending_line, "+"); pending_ready = true; return true; }
+    if (!down) was = false;
+  }
+#endif
 #if defined(CAR_WEB)
   if (car_web_poll()) return true;
 #endif
@@ -483,6 +495,9 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
 
 #if defined(CAR_COND)
   car_cond_apply();                     // the potentiometer and the "@" inputs, set once for this request
+#if defined(CAR_DESK)
+  desk_writing();
+#endif
 #elif defined(LLM_STEER)
   steer_read_pot();
 #if defined(CAR_ROBOT)
@@ -616,9 +631,27 @@ static void run_typed_program(const char *line) {
 }
 #endif
 
+#if defined(CAR_DESK)
+// BOOT, or a typed "+": the same sentence again. If its input is not on the thermometer, with the next strength.
+static char desk_sentence[64] = "drive forward 2 seconds";
+static void desk_step() {
+  if (desk_ch < 0) desk_ch = cond_index("caution");
+  if (desk_ch >= 0 && cond_pot != desk_ch) {
+    static const float LEVEL[] = {0.f, 0.5f, 1.f};
+    desk_level = (desk_level + 1) % 3;
+    cond_fixed[desk_ch] = LEVEL[desk_level];
+  }
+  prompt_story(desk_sentence);
+}
+#endif
+
 void loop() {
   if (poll_serial_line()) {
     pending_ready = false;
+#if defined(CAR_DESK)
+    if (pending_line[0] == '+') { desk_step(); return; }
+    if (pending_line[0] != '!' && pending_line[0] != '@') snprintf(desk_sentence, sizeof desk_sentence, "%s", pending_line);
+#endif
 #if defined(OLED_PROGRAM)
     if (pending_line[0] == '!') run_typed_program(pending_line + 1);
 #if defined(CAR_COND)

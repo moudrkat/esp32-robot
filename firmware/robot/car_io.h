@@ -79,8 +79,14 @@ static void motor(int pa, int pb, int v) {            // v -100..100
   if (v >= 0) { digitalWrite(pb, LOW); ledcWrite(pa, duty); }
   else { digitalWrite(pb, HIGH); ledcWrite(pa, 255 - duty); }
 }
+#if defined(CAR_DESK)
+static void desk_draw();
+#endif
 static void car_wheels(int fwd, int turn) {
   car_fwd = fwd; car_turn = turn; car_moved_at = millis();
+#if defined(CAR_DESK)
+  desk_draw(); return;                                // no motors on the table: the screen shows the speed
+#endif
   int l = fwd + turn, r = fwd - turn;                 // turn right (+): left side faster
   l = l > 100 ? 100 : l < -100 ? -100 : l;
   r = r > 100 ? 100 : r < -100 ? -100 : r;
@@ -128,18 +134,27 @@ static int tilt_deg() {
 }
 
 // ---------------------------------------------------------------- SHT40, read at most once a second
+#if defined(SHT_SDA)
+#define SHT_BUS Wire1                                 // the thermometer on two pins of its own (flash.sh SHT=4,5)
+#else
+#define SHT_BUS Wire
+#endif
 static int sht_t = 22, sht_h = 45;
+static float sht_c = 22.f, sht_c0 = 22.f;             // the reading, and the first one after power-up
+static bool sht_seen = false;
 static unsigned long sht_at = 0;
 static void sht_read() {
   if (sht_at && millis() - sht_at < 1000) return;
   sht_at = millis();
   static uint8_t addr = 0x44;                         // SHT40-AD1B is 0x44, SHT40-BD1B 0x45
-  Wire.beginTransmission(addr); Wire.write(0xFD);
-  if (Wire.endTransmission() != 0) { addr = addr == 0x44 ? 0x45 : 0x44; return; }
+  SHT_BUS.beginTransmission(addr); SHT_BUS.write(0xFD);
+  if (SHT_BUS.endTransmission() != 0) { addr = addr == 0x44 ? 0x45 : 0x44; return; }
   delay(10);
-  if (Wire.requestFrom(addr, (uint8_t)6) != 6) return;
-  uint16_t t = (Wire.read() << 8) | Wire.read(); Wire.read();
-  uint16_t h = (Wire.read() << 8) | Wire.read(); Wire.read();
+  if (SHT_BUS.requestFrom(addr, (uint8_t)6) != 6) return;
+  uint16_t t = (SHT_BUS.read() << 8) | SHT_BUS.read(); SHT_BUS.read();
+  uint16_t h = (SHT_BUS.read() << 8) | SHT_BUS.read(); SHT_BUS.read();
+  sht_c = -45.f + 175.f * t / 65535.f;
+  if (!sht_seen) { sht_seen = true; sht_c0 = sht_c; }
   sht_t = (int)lroundf(-45.f + 175.f * t / 65535.f);
   int rh = (int)lroundf(-6.f + 125.f * h / 65535.f);
   sht_h = rh < 0 ? 0 : rh > 100 ? 100 : rh;
@@ -156,6 +171,12 @@ static int mic_level() {
 }
 
 static int c_sense(void *, int which) {
+#if defined(CAR_DESK)
+  switch (which) {                                    // on the table: open road, level, quiet
+  case OL_S_DISTANCE: case OL_S_BEHIND: return 100;
+  case OL_S_TRACK: case OL_S_TILT: case OL_S_SHAKEN: case OL_S_SOUND: return 0;
+  }
+#endif
   switch (which) {
   case OL_S_DISTANCE: return sonar_cm(PIN_TRIG_F, PIN_ECHO_F);
   case OL_S_BEHIND: return sonar_cm(PIN_TRIG_B, PIN_ECHO_B);
@@ -219,7 +240,12 @@ static void eyes_show() {
   }
   eyes_px.show();
 }
-static void c_eyes(void *, int mood) { eye_mood = mood; eyes_show(); }
+static void c_eyes(void *, int mood) {
+  eye_mood = mood; eyes_show();
+#if defined(CAR_DESK)
+  desk_draw();
+#endif
+}
 static void c_rgb(void *, int r, int g, int b) { eye_r = r; eye_g = g; eye_b = b; eyes_show(); }
 
 // ---------------------------------------------------------------- sound, led
@@ -231,6 +257,9 @@ static int c_knob(void *) { return analogRead(2) * 100 / 4095; }   // the potent
 // ---------------------------------------------------------------- the interpreter's wait: sample the bump sensor
 // while waiting, so a knock between two shaken() calls is not missed
 static void car_wait(void *, int ms) {
+#if defined(CAR_DESK)
+  desk_draw();
+#endif
   oled.display();                                     // once: a frame takes ~25 ms on I2C, and wait(700) must be 700
   unsigned long t0 = millis();
   while ((long)(millis() - t0) < ms) {
@@ -241,8 +270,15 @@ static void car_wait(void *, int ms) {
   }
 }
 
+#if defined(CAR_DESK)
+static bool desk_cleared = false;
+static void d_clear(void *c) { desk_cleared = true; g_clear(c); }
+#define CAR_CLEAR d_clear
+#else
+#define CAR_CLEAR g_clear
+#endif
 static ol_io car_io() {
-  ol_io io = {nullptr, g_clear, g_text, g_pixel, g_line, g_rect, g_fill, g_circle, car_wait, g_done,
+  ol_io io = {nullptr, CAR_CLEAR, g_text, g_pixel, g_line, g_rect, g_fill, g_circle, car_wait, g_done,
               c_led, c_rgb, c_buzz, nullptr, c_knob, c_move, c_look, c_sense, c_eyes, c_tone, c_nod, c_arm};
   return io;
 }
@@ -261,9 +297,19 @@ static ol_machine *olm_early;             // runs a plain first line while the r
 static bool early_done = false;
 static void car_setup() {
   // channels 0,1 -> timer 0 (motors, 20 kHz); 2,3 -> timer 1 and 4 -> timer 2 (servos, 50 Hz); 6 -> timer 3 (voice)
+#if defined(SHT_SDA)
+  Wire1.begin(SHT_SDA, SHT_SCL);
+#endif
+#if defined(CAR_DESK)
+  pinMode(0, INPUT_PULLUP);                             // BOOT: the same sentence again, with the next input strength
+  display_bottom = 54;                                  // the last text row is the input's
+  sht_read(); sht_at = 0; sht_read();                   // twice: the first try may be at the other address
+  Serial.printf("on the table: %s\n", sht_seen ? "thermometer found, \"@angry\" puts an input on it" : "no thermometer");
+#else
   pinMode(PIN_ML_B, OUTPUT); pinMode(PIN_MR_B, OUTPUT);
   ledcAttachChannel(PIN_ML_A, 20000, 8, 0); ledcAttachChannel(PIN_MR_A, 20000, 8, 1);
   car_wheels(0, 0);
+#endif
   ledcAttachChannel(PIN_PAN, 50, 14, 2); ledcAttachChannel(PIN_TILT, 50, 14, 3); ledcAttachChannel(PIN_ARM, 50, 14, 4);
   servo_deg(PIN_PAN, 90); servo_deg(PIN_TILT, 90); servo_deg(PIN_ARM, 0);
   pinMode(PIN_TRIG_F, OUTPUT); pinMode(PIN_ECHO_F, INPUT);
@@ -316,11 +362,17 @@ static void car_show_dose() {
 static float cond_fixed[COND_N];  // -1: not set
 static int cond_pot = -1;        // the channel the potentiometer drives, or -1
 static void cond_reset() { for (int k = 0; k < COND_N; k++) cond_fixed[k] = -1.f; cond_pot = -1; }
+#if defined(CAR_DESK)
+static bool cond_auto = false;    // on the table the tilt sensor and the microphone are not there
+static int desk_ch = -1, desk_level = -1;   // the input BOOT steps through 0, 0.5, 1 (the last one named; caution)
+#else
 static bool cond_auto = true;     // the sensors set some inputs by themselves ("@auto off" to stop)
+#endif
 static int cond_index(const char *name) { for (int k = 0; k < COND_N; k++) if (!strcmp(COND_NAMES[k], name)) return k; return -1; }
 // what the robot feels on its own: lifted or tipped -> scared, loud around it -> scared, cold air -> cold
 static float cond_from_sensors(int k) {
   if (!cond_auto) return 0.f;
+#if !defined(CAR_DESK)
   if (k == cond_index("scared")) {
     mpu_read();
     float s = tilt_deg() > 30 ? 1.f : 0.f;
@@ -328,6 +380,7 @@ static float cond_from_sensors(int k) {
     if (loud > 70) s = s > 0.8f ? s : 0.8f;
     return s;
   }
+#endif
   if (k == cond_index("cold")) {
     sht_read();
     return sht_t >= 20 ? 0.f : (20 - sht_t) / 8.f > 1.f ? 1.f : (20 - sht_t) / 8.f;
@@ -337,7 +390,14 @@ static float cond_from_sensors(int k) {
 static float cond_now[COND_N];    // what was applied for the last request, for the phone page
 static void car_cond_apply() {
   static float v[COND_D];
+#if defined(CAR_DESK)
+  // no potentiometer on the table: the thermometer is one. As warm as it woke up is 0, six degrees warmer (a hand) is 1.
+  sht_read();
+  float pot_s = !sht_seen ? 0.f : (sht_c - sht_c0) / 6.f;
+  pot_s = pot_s < 0.f ? 0.f : pot_s > 1.f ? 1.f : pot_s;
+#else
   float pot_s = analogRead(2) / 4095.f;
+#endif
   memset(v, 0, sizeof v);
   int any = 0;
   for (int k = 0; k < COND_N; k++) {
@@ -356,14 +416,25 @@ static void car_cond_apply() {
 static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0.7"
   char name[24] = {0}; float s = -1.f;
   int got = sscanf(line, "%23s %f", name, &s);
-  if (got >= 1 && !strcmp(name, "off")) { cond_reset(); Serial.println("inputs off"); return; }
+  if (got >= 1 && !strcmp(name, "off")) {
+    cond_reset(); Serial.println("inputs off");
+#if defined(CAR_DESK)
+    desk_level = -1;
+#endif
+    return;
+  }
   if (got >= 1 && !strcmp(name, "auto")) {          // "@auto" on, "@auto 0" off
     cond_auto = got < 2 || s > 0.f; Serial.printf("sensor inputs %s\n", cond_auto ? "on" : "off"); return;
   }
   for (int k = 0; k < COND_N; k++) if (!strcmp(name, COND_NAMES[k])) {
     if (got == 2) { cond_fixed[k] = s < 0 ? 0 : s > 1 ? 1 : s; if (cond_pot == k) cond_pot = -1; }
     else cond_pot = k;
+#if defined(CAR_DESK)
+    desk_ch = k; desk_level = -1;
+    Serial.printf("%s: %s\n", COND_NAMES[k], got == 2 ? "fixed" : sht_seen ? "on the thermometer" : "on the thermometer, but there is none");
+#else
     Serial.printf("%s: %s\n", COND_NAMES[k], got == 2 ? "fixed" : "on the potentiometer");
+#endif
     return;
   }
   Serial.print("inputs:"); for (int k = 0; k < COND_N; k++) Serial.printf(" %s", COND_NAMES[k]); Serial.println();
@@ -371,6 +442,59 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
 #endif
 
 // ---------------------------------------------------------------- reacting before the program is finished
+// ---------------------------------------------------------------- on the table (CAR_DESK): the screen is the car
+// No motors, no eyes: while a program runs, the screen shows the request, the program, what the wheels would be
+// doing, the input that was applied and the eyes it chose. BOOT (or a typed "+") asks the same sentence again with
+// the next strength of one input: 0, 0.5, 1.
+#if defined(CAR_DESK)
+static void desk_inputs(char *out, int n) {             // the strongest input applied to this request
+  int best = -1;
+  for (int k = 0; k < COND_N; k++) if (cond_now[k] > 0 && (best < 0 || cond_now[k] > cond_now[best])) best = k;
+  if (best < 0) snprintf(out, n, "no input"); else snprintf(out, n, "%s %.2f", COND_NAMES[best], cond_now[best]);
+}
+static void desk_writing() {                            // while the model writes: the input, under the text
+  char row[22]; desk_inputs(row, sizeof row);
+  oled.fillRect(0, 54, SCR_W, 10, OLED_BLACK);
+  oled.drawFastHLine(0, 54, SCR_W, OLED_WHITE);
+  oled.setCursor(0, 56); oled.print(row);
+  oled.display();
+}
+static void desk_draw() {
+  if (!car_program_running) return;                     // not over the text while the model is still writing
+  char row[24];
+  oled.setTextSize(1);
+  oled.fillRect(0, 0, SCR_W, CH + 2, OLED_WHITE);       // the request
+  oled.setTextColor(OLED_BLACK);
+  snprintf(row, sizeof row, "%.21s", oled_request);
+  oled.setCursor(1, 1); oled.print(row);
+  oled.setTextColor(OLED_WHITE);
+  if (!desk_cleared) {                                  // the program, unless it is drawing something itself
+    oled.fillRect(0, CH + 2, SCR_W, 33, OLED_BLACK);
+    const char *p = program;
+    for (int i = 0; i < 4 && *p; i++) {
+      int n = 0; while (p[n] && p[n] != '\n') n++;
+      snprintf(row, sizeof row, "%.*s", n > 21 ? 21 : n, p);
+      oled.setCursor(0, CH + 4 + i * CH); oled.print(row);
+      p += n; if (*p == '\n') p++;
+    }
+  }
+  oled.fillRect(0, 44, SCR_W, 20, OLED_BLACK);          // the wheels and the input
+  oled.drawFastHLine(0, 44, SCR_W, OLED_WHITE);
+  int v = car_fwd ? car_fwd : car_turn;
+  snprintf(row, sizeof row, "%s %d", car_fwd || !car_turn ? "speed" : "turn", v);
+  oled.setCursor(0, 47); oled.print(row);
+  oled.drawRect(66, 47, 62, 7, OLED_WHITE);
+  int w = (v < 0 ? -v : v) * 60 / 100;
+  oled.fillRect(67, 48, w > 60 ? 60 : w, 5, OLED_WHITE);
+  desk_inputs(row, sizeof row);
+  oled.setCursor(0, 56); oled.print(row);
+  if (eye_mood) {                                       // the eyes it chose, by name
+    const char *e = OL_EYES[eye_mood];
+    oled.setCursor(SCR_W - (int)strlen(e) * CW, 56); oled.print(e);
+  }
+}
+#endif
+
 // When the model has written its first line and it is a look or a gesture (eyes, head, arm, lights, stop), run that
 // line at once, while the rest is still being written. Never the wheels: "move(60, 0, 0) / wait(2000) / stop()" started
 // early would drive for the writing time on top of its two seconds. The whole program runs afterwards as usual.
@@ -488,8 +612,16 @@ static void car_before_program() {
 #endif
   if (dose_shown) { eye_r = keep_r; eye_g = keep_g; eye_b = keep_b; dose_shown = false; }
   eye_mood = 0; eyes_show(); car_program_running = true;
+#if defined(CAR_DESK)
+  desk_cleared = false; desk_draw(); oled.display();
+#endif
 }
-static void car_after_program() { car_program_running = false; car_moved_at = millis(); }
+static void car_after_program() {
+#if defined(CAR_DESK)
+  desk_draw(); oled.display();                          // what it ended on stays on the screen
+#endif
+  car_program_running = false; car_moved_at = millis();
+}
 
 // from loop(): wheels left running by a finished program coast to a stop
 static void car_loop() {

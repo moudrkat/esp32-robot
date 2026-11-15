@@ -9,3 +9,7 @@
 #if __has_include("wifi.h")
 #include "wifi.h"
 #endif
+// flash.sh writes desk.h for DESK=1: no car, the screen shows what the wheels would do
+#if __has_include("desk.h")
+#include "desk.h"
+#endif

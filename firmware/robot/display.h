@@ -51,6 +51,7 @@ static Adafruit_SSD1306 oled = Adafruit_SSD1306(SCR_W, SCR_H, &Wire, -1);
 #endif
 
 static int ox = 0, oy = 0;
+static int display_bottom = SCR_H;   // text wraps to the top when it reaches this row
 
 static void display_home() {
   oled.clearDisplay();
@@ -77,18 +78,18 @@ static void display_begin() {
 // flush the framebuffer once per token so text visibly appears.
 static void display_puts(const unsigned char *s, int len) {
   if (ox + len * CW > SCR_W) { oy += CH; ox = 0; }
-  if (oy + CH > SCR_H) display_home();
+  if (oy + CH > display_bottom) display_home();
   for (int i = 0; i < len; i++) {
     char c = (char)s[i];
     if (c == '\n') { oy += CH; ox = 0; }
     else if (c >= 32 && c < 127) {
       if (ox + CW > SCR_W) { oy += CH; ox = 0; }
-      if (oy + CH > SCR_H) display_home();
+      if (oy + CH > display_bottom) display_home();
       oled.setCursor(ox, oy);
       oled.write(c);
       ox += CW;
     }
-    if (oy + CH > SCR_H) display_home();
+    if (oy + CH > display_bottom) display_home();
   }
   oled.display();
 }
