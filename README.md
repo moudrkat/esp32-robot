@@ -74,7 +74,7 @@ DESK=1 ./flash.sh
 
 Press BOOT three times. Each time it asks itself *"drive forward 2 seconds"*, with `angry` at 0, then 0.5, then 1, and
 the screen shows the sentence, the program it wrote, the speed the wheels would have, the input and the eyes it
-chose. Same sentence, a different number, a different program: on a computer the speeds were 60, 75 and 90. Type your
+chose. The board's own light stands in for the wheels: brighter is faster, red when the eyes are angry. Same sentence, a different number, a different program: on a computer the speeds were 60, 75 and 90. Type your
 own sentence over USB and BOOT repeats that one; `@caution 0` picks another input (then try *"crash into the wall"*).
 
 With an SHT40 thermometer on two free pins (`DESK=1 SHT=4,5 ./flash.sh`), `@angry` puts that input on the

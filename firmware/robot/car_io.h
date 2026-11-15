@@ -81,11 +81,12 @@ static void motor(int pa, int pb, int v) {            // v -100..100
 }
 #if defined(CAR_DESK)
 static void desk_draw();
+static void desk_led();
 #endif
 static void car_wheels(int fwd, int turn) {
   car_fwd = fwd; car_turn = turn; car_moved_at = millis();
 #if defined(CAR_DESK)
-  desk_draw(); return;                                // no motors on the table: the screen shows the speed
+  desk_led(); desk_draw(); return;                    // no motors on the table: the board's light and the screen
 #endif
   int l = fwd + turn, r = fwd - turn;                 // turn right (+): left side faster
   l = l > 100 ? 100 : l < -100 ? -100 : l;
@@ -243,15 +244,34 @@ static void eyes_show() {
 static void c_eyes(void *, int mood) {
   eye_mood = mood; eyes_show();
 #if defined(CAR_DESK)
-  desk_draw();
+  desk_led(); desk_draw();
 #endif
 }
-static void c_rgb(void *, int r, int g, int b) { eye_r = r; eye_g = g; eye_b = b; eyes_show(); }
+static void c_rgb(void *, int r, int g, int b) {
+  eye_r = r; eye_g = g; eye_b = b; eyes_show();
+#if defined(CAR_DESK)
+  desk_led();
+#endif
+}
 
 // ---------------------------------------------------------------- sound, led
+#if defined(CAR_DESK)
+// The board's own RGB LED is on pin 48 (Espressif DevKitC-1 v1.0) or 38 (v1.1, Waveshare): both are written.
+static bool desk_light = false;
+static void desk_led() {                              // the wheels as light: brighter is faster, red when the eyes are angry
+  int v = car_fwd ? car_fwd : car_turn; v = v < 0 ? -v : v; v = v > 100 ? 100 : v;
+  int r = eye_mood == 3 ? 255 : eye_r, g = eye_mood == 3 ? 0 : eye_g, b = eye_mood == 3 ? 0 : eye_b;
+  if (desk_light) { r = g = b = 160; if (v < 25) v = 25; }
+  r = r * v / 400; g = g * v / 400; b = b * v / 400;  // a quarter of full at speed 100: it is bright enough to film
+  rgbLedWrite(48, r, g, b); rgbLedWrite(38, r, g, b);
+}
+static void c_buzz(void *, int) {}                    // no horn on the table
+static void c_led(void *, int on) { desk_light = on; desk_led(); }
+#else
 static void c_buzz(void *, int on) { digitalWrite(PIN_HORN, on ? HIGH : LOW); }
-static void c_tone(void *, int hz) { ledcWriteTone(PIN_VOICE, hz); }
 static void c_led(void *, int on) { rgbLedWrite(PIN_LED, on ? 40 : 0, on ? 40 : 0, on ? 40 : 0); }
+#endif
+static void c_tone(void *, int hz) { ledcWriteTone(PIN_VOICE, hz); }
 static int c_knob(void *) { return analogRead(2) * 100 / 4095; }   // the potentiometer; the language calls it knob()
 
 // ---------------------------------------------------------------- the interpreter's wait: sample the bump sensor
@@ -315,7 +335,9 @@ static void car_setup() {
   pinMode(PIN_TRIG_F, OUTPUT); pinMode(PIN_ECHO_F, INPUT);
   pinMode(PIN_TRIG_B, OUTPUT); pinMode(PIN_ECHO_B, INPUT);
   pinMode(PIN_LINE_L, INPUT); pinMode(PIN_LINE_R, INPUT);
+#if !defined(CAR_DESK)
   pinMode(PIN_HORN, OUTPUT); digitalWrite(PIN_HORN, LOW);
+#endif
   ledcAttachChannel(PIN_VOICE, 2000, 10, 6); ledcWriteTone(PIN_VOICE, 0);
   mpu_begin();                                          // Wire is already up: display.h began it on 18/8
 #if defined(CAR_COND)
@@ -335,7 +357,12 @@ static void car_setup() {
 // a new request: stop first, then look up while thinking (the model writes for a few seconds)
 static void car_on_request() {
   car_wheels(0, 0);
-  ledcWriteTone(PIN_VOICE, 0); digitalWrite(PIN_HORN, LOW);
+  ledcWriteTone(PIN_VOICE, 0);
+#if defined(CAR_DESK)
+  desk_light = false; desk_led();
+#else
+  digitalWrite(PIN_HORN, LOW);
+#endif
   eye_mood = 10; eyes_show();                           // "up"
   early_done = false;
 }
