@@ -210,7 +210,7 @@ Servo ruky přilep na bok horní desky. Pošli `!arm(0)`, pak na páčku upevni 
 
 ## Co umí navíc, až je postavený
 
-- **Mobil.** Robot si otevře vlastní Wi-Fi `esp32-robot` (bez internetu). Připoj se a otevři `http://192.168.4.1`: můžeš mu psát, zastavit ho, posuvníkem nastavit vstupy a vidíš program, který si napsal. **Změň heslo** (`CAR_WIFI_PASS` v `firmware/robot/car_io.h`), jinak ho může řídit kdokoli poblíž.
+- **Mobil.** Robot si otevře vlastní Wi-Fi `esp32-robot` (bez internetu). Připoj se a otevři `http://192.168.4.1`: můžeš mu psát, zastavit ho, posuvníkem nastavit vstupy a vidíš program, který si napsal. Wi-Fi je vypnutá, dokud nenahraješ firmware s vlastním heslem: `ROBOT_WIFI_PASS='aspoň 8 znaků' ./flash.sh`.
 - **Cítí.** Když ho zvedneš, převrhneš nebo na něj křičíš, je `scared`. Ve studeném vzduchu je `cold`. Sčítá se to s potenciometrem. Vypíná se `@auto 0`.
 - **Oči ukazují, co se chystá udělat.** Ještě než napíše první token, dvě sondy přečtou stav modelu. Když se chystá do něčeho narazit, oči se zamračí červeně. Jinak barva ukazuje, jak rychle pojede (modrá pomalu, červená rychle). Změřeno na zadáních, která nikdy neviděl: sonda nárazu má pravdu v 92 %, odhad rychlosti se plete zhruba o ±11. Na volné řeči si jednou spletla „don't bump“ s „bump“.
 - **Reaguje dřív.** Když je první řádek programu pohled nebo gesto (oči, hlava, ruka), provede ho hned, zatímco zbytek ještě píše. Kola čekají na celý program.

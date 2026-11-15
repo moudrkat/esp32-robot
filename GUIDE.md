@@ -210,7 +210,7 @@ Tape the arm servo to the side of the top plate. Send `!arm(0)`, then fix the po
 
 ## Extras it has once it's built
 
-- **Your phone.** The robot opens its own Wi-Fi, `esp32-robot` (no internet anywhere). Join it and open `http://192.168.4.1`: type to it, stop it, set its inputs with a slider, and see the program it wrote. **Change the password** (`CAR_WIFI_PASS` in `firmware/robot/car_io.h`) or anyone nearby can drive your robot.
+- **Your phone.** The robot opens its own Wi-Fi, `esp32-robot` (no internet anywhere). Join it and open `http://192.168.4.1`: type to it, stop it, set its inputs with a slider, and see the program it wrote. The Wi-Fi is off unless you flash with a password of your own: `ROBOT_WIFI_PASS='at least 8 characters' ./flash.sh`.
 - **It feels things.** Picked up, tipped over or shouted at, it gets `scared`; cold air makes it `cold`. These add to whatever the potentiometer says. `@auto 0` turns it off.
 - **Its eyes show what it is about to do.** Before it writes a single token, two probes read the model's state: if it is about to bump into something, the eyes go angry red; otherwise their colour says how fast it will drive (blue slow, red fast). Measured on requests it never saw: the bump probe 92% right at its threshold, the speed guess about ±11 off. On real talk it once mistook "don't bump" for "bump".
 - **It reacts sooner.** If the first line it writes is a look or a gesture (eyes, head, arm), that line runs at once while the rest is still being written. The wheels wait for the whole program.
