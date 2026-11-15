@@ -224,6 +224,17 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
 }
 static void eyes_show() {
   eyes_px.clear();
+#if defined(CAR_DESK)
+  // on the table a ring of 24 LEDs on the eyes' pin is a speedometer: more of the circle is faster, red is angry
+  {
+    int v = car_fwd ? car_fwd : car_turn; v = v < 0 ? -v : v; v = v > 100 ? 100 : v;
+    int n = (v * 24 + 50) / 100;
+    for (int i = 0; i < n; i++)
+      eyes_px.setPixelColor(i, eye_mood == 3 ? 255 : eye_r, eye_mood == 3 ? 0 : eye_g, eye_mood == 3 ? 0 : eye_b);
+    eyes_px.show();
+    return;
+  }
+#endif
   for (int y = 0; y < 8; y++)
     for (int x = 0; x < 8; x++)
       if (EYE_ROWS[eye_mood][y] & (0x80 >> x)) eyes_px.setPixelColor(eye_px(x, y), eye_r, eye_g, eye_b);
@@ -264,6 +275,7 @@ static void desk_led() {                              // the wheels as light: br
   if (desk_light) { r = g = b = 160; if (v < 25) v = 25; }
   r = r * v / 400; g = g * v / 400; b = b * v / 400;  // a quarter of full at speed 100: it is bright enough to film
   rgbLedWrite(48, r, g, b); rgbLedWrite(38, r, g, b);
+  eyes_show();                                        // and the ring, if there is one
 }
 static void c_buzz(void *, int) {}                    // no horn on the table
 static void c_led(void *, int on) { desk_light = on; desk_led(); }
