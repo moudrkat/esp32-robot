@@ -635,7 +635,7 @@ static void run_typed_program(const char *line) {
 // BOOT, or a typed "+": the same sentence again. If its input is not on the thermometer, with the next strength.
 static char desk_sentence[64] = "drive forward 2 seconds";
 static void desk_step() {
-  if (desk_ch < 0) desk_ch = cond_index("caution");
+  if (desk_ch < 0) desk_ch = cond_index("angry");
   if (desk_ch >= 0 && cond_pot != desk_ch) {
     static const float LEVEL[] = {0.f, 0.5f, 1.f};
     desk_level = (desk_level + 1) % 3;

@@ -364,7 +364,7 @@ static int cond_pot = -1;        // the channel the potentiometer drives, or -1
 static void cond_reset() { for (int k = 0; k < COND_N; k++) cond_fixed[k] = -1.f; cond_pot = -1; }
 #if defined(CAR_DESK)
 static bool cond_auto = false;    // on the table the tilt sensor and the microphone are not there
-static int desk_ch = -1, desk_level = -1;   // the input BOOT steps through 0, 0.5, 1 (the last one named; caution)
+static int desk_ch = -1, desk_level = -1;   // the input BOOT steps through 0, 0.5, 1 (the last one named; angry)
 #else
 static bool cond_auto = true;     // the sensors set some inputs by themselves ("@auto off" to stop)
 #endif

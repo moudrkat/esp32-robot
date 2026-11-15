@@ -72,9 +72,10 @@ The model does not know whether it has wheels. With only the board and its scree
 DESK=1 ./flash.sh
 ```
 
-Press BOOT. It asks itself *"drive forward 2 seconds"* three times, with `caution` at 0, 0.5 and 1, and the screen
-shows the sentence, the program it wrote, the speed the wheels would have, and the input. Same sentence, a different
-number, a different program. Type your own sentence over USB and BOOT repeats that one; `@angry 0` picks another input.
+Press BOOT three times. Each time it asks itself *"drive forward 2 seconds"*, with `angry` at 0, then 0.5, then 1, and
+the screen shows the sentence, the program it wrote, the speed the wheels would have, the input and the eyes it
+chose. Same sentence, a different number, a different program: on a computer the speeds were 60, 75 and 90. Type your
+own sentence over USB and BOOT repeats that one; `@caution 0` picks another input (then try *"crash into the wall"*).
 
 With an SHT40 thermometer on two free pins (`DESK=1 SHT=4,5 ./flash.sh`), `@angry` puts that input on the
 thermometer: as warm as the chip woke up is 0, a hand around the sensor is 1.
