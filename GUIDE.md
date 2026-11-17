@@ -8,6 +8,113 @@ You control it with words. And from inside the model: with a potentiometer wired
 
 > Not yet tested on hardware. The first power-up is an experiment in the truest sense of the word. Pins, polarities and directions are switches in the firmware, so whatever turns out backwards gets fixed without rewriting code. [Česká verze](cs/NAVOD.md)
 
+## Start here: the smallest robot, as a recipe
+
+For one afternoon, when you want something to move. First three things with no soldering (after each one the robot
+can do something new), then the motors. You can stop at any point and have a finished thing.
+
+### What to bring
+
+**Electronics**
+
+- [ ] the ESP32-S3 board with the screen attached (unplug the thermometer; the motors need its pins)
+- [ ] a USB cable for the board, a data one
+- [ ] a laptop and its charger (it flashes the board and shows what the robot writes)
+- [ ] a breadboard
+- [ ] dupont wires: female–female, male–female, male–male, ten of each at least
+- [ ] the passive buzzer (three legs, marked S)
+- [ ] one SG90 servo with its horn and screw
+- [ ] a 10k potentiometer
+- [ ] the chassis: 4 motors, 4 wheels, both plates, standoffs, screws
+- [ ] 2× L9110S motor driver
+- [ ] a battery holder with two charged 18650 cells
+
+**For soldering**
+
+- [ ] an iron, a stand, solder
+- [ ] thin stranded wire for the motors, about 8 pieces of 15 cm (if the motors come without wires)
+- [ ] cutters, something to strip wire with
+- [ ] tape or a third hand
+
+**The rest**
+
+- [ ] a small Phillips screwdriver
+- [ ] double-sided tape, a few zip ties
+- [ ] a box to stand the car on, wheels in the air
+- [ ] this guide
+
+### Before you start
+
+1. Unplug the thermometer from the board. The screen stays on pins 18 and 8.
+2. Flash the robot: `./flash.sh` in the repo folder.
+3. Run `python talk.py` and type `@auto 0`. The robot then does not wait for senses it does not have yet.
+
+Wire everything **with USB unplugged**. Never 5 V on a board pin.
+
+### Course 1: a voice (10 minutes, no soldering)
+
+| buzzer | board |
+|---|---|
+| + | 3V3 |
+| − | GND |
+| S | pin 39 |
+
+```
+!tone(523, 200)\ntone(784, 300)
+sing me something nice
+```
+
+- ✅ Two notes, then a tune the robot wrote itself.
+- ❌ Silence: the buzzer is the wrong way round, or it is the active one with two legs.
+
+### Course 2: an arm (15 minutes, no soldering)
+
+| servo | board |
+|---|---|
+| brown | GND |
+| red | 5V |
+| orange | pin 17 |
+
+USB can feed one servo with nothing on it. More of them belong on the batteries.
+
+```
+!arm(0)\nwait(500)\narm(150)\nwait(500)\narm(0)
+wave bye bye
+```
+
+- ✅ The horn goes up and back, then it waves.
+- ❌ The servo twitches or the board restarts: not enough current from USB. Try another port or cable.
+
+### Course 3: control from inside the model (15 minutes, no soldering)
+
+| potentiometer | board |
+|---|---|
+| outer legs | 3V3 and GND |
+| middle leg | pin 2 |
+
+```
+@angry
+drive forward 2 seconds
+```
+
+Turn the potentiometer and type the same sentence again.
+
+- ✅ The same sentence, a different program: the speed in it grows as you turn (60 to 90 on a computer).
+- ❌ Always the same speed: the middle leg is not on pin 2.
+
+This is the part others do not have. It needs no wheels, only reading what the robot wrote.
+
+### Course 4: soldering (about 10 joints)
+
+1. Two wires on each motor, **before you assemble the chassis**. The tabs are hard to reach afterwards.
+2. Two ends that plug into the breadboard on the battery holder's output (if it has none).
+
+Little solder, briefly. The motor tabs are thin and the plastic around them melts.
+
+### Course 5: wheels (1 to 2 hours)
+
+This is phase 1 below, with the board left on USB from the laptop instead of a second battery holder.
+
 ## How to build it: five phases, something works after each
 
 | phase | after it the robot can | time |

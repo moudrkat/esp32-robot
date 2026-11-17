@@ -8,6 +8,145 @@ Ovládá se slovy. A taky zevnitř modelu: potenciometrem zapojeným přímo do 
 
 > Na hardwaru zatím nevyzkoušeno. První zapnutí je experiment v pravém smyslu slova. Piny, polarity a směry jsou ve firmwaru přepínače, takže co se ukáže obráceně, se opraví bez přepisování kódu. [English version](../GUIDE.md)
 
+## Začni tady: nejmenší robot, jako recept
+
+Když máš jedno odpoledne a chceš, aby se něco hýbalo. Nejdřív tři věci bez pájení (po každé robot umí něco nového),
+potom motory. Kdykoli můžeš skončit a máš hotovou věc.
+
+### Co si vzít s sebou
+
+**Elektronika**
+
+- [ ] deska ESP32-S3 s připojeným displejem (tak, jak je; teploměr odpoj, jeho piny budou potřebovat motory)
+- [ ] USB kabel k desce, datový
+- [ ] notebook s nabíječkou (nahrává se z něj a je na něm vidět, co robot píše)
+- [ ] nepájivé pole
+- [ ] dupont drátky: samice–samice, samec–samice, samec–samec, od každých aspoň deset
+- [ ] pasivní bzučák (ten se třemi nožičkami a písmenem S)
+- [ ] jedno servo SG90 s páčkou a šroubkem
+- [ ] potenciometr 10k
+- [ ] podvozek: 4 motory, 4 kola, obě desky, sloupky, šroubky
+- [ ] 2× ovladač motorů L9110S
+- [ ] držák baterií se dvěma nabitými články 18650
+
+**Na pájení**
+
+- [ ] páječka, stojánek, cín
+- [ ] tenký lankový drát na motory, asi 8 kousků po 15 cm (pokud motory nemají drátky z výroby)
+- [ ] štípací kleště, něco na odizolování
+- [ ] izolepa nebo „třetí ruka“ na přidržení
+
+**Ostatní**
+
+- [ ] malý křížový šroubovák
+- [ ] oboustranná lepicí páska, pár stahovacích pásek
+- [ ] krabička, na kterou auto postavíš, aby mělo kola ve vzduchu
+- [ ] tenhle návod
+
+### Než začneš
+
+1. Odpoj teploměr od desky. Displej nech na pinech 18 a 8.
+2. Nahraj robota: `./flash.sh` ve složce repa.
+3. Pusť `python talk.py` a napiš `@auto 0`. Robot pak nečeká na čidla, která ještě nemá.
+
+Všechno se zapojuje **s odpojeným USB**. Na piny desky nikdy 5 V.
+
+### Chod 1: hlas (10 minut, bez pájení)
+
+| bzučák | deska |
+|---|---|
+| + | 3V3 |
+| − | GND |
+| S | pin 39 |
+
+Zkouška bez modelu, potom s ním:
+
+```
+!tone(523, 200)\ntone(784, 300)
+sing me something nice
+```
+
+- ✅ Dva tóny, potom melodie, kterou si robot napsal sám.
+- ❌ Ticho: bzučák je obráceně (+ a −), nebo je to ten aktivní se dvěma nožičkami.
+
+### Chod 2: ruka (15 minut, bez pájení)
+
+| servo | deska |
+|---|---|
+| hnědý | GND |
+| červený | 5V |
+| oranžový | pin 17 |
+
+Jedno servo bez zátěže utáhne USB. Až jich bude víc, patří na baterie.
+
+```
+!arm(0)\nwait(500)\narm(150)\nwait(500)\narm(0)
+wave bye bye
+```
+
+- ✅ Páčka se zvedne a vrátí, potom zamává.
+- ❌ Servo jen cuká nebo se deska restartuje: málo proudu z USB. Zkus jiný port nebo kabel.
+
+### Chod 3: ovládání zevnitř modelu (15 minut, bez pájení)
+
+| potenciometr | deska |
+|---|---|
+| krajní nožičky | 3V3 a GND |
+| prostřední nožička | pin 2 |
+
+```
+@angry
+drive forward 2 seconds
+```
+
+Otoč potenciometrem a napiš tu samou větu znovu.
+
+- ✅ Stejná věta, jiný program: rychlost v něm roste s otočením (na počítači vycházelo 60 až 90).
+- ❌ Pořád stejná rychlost: prostřední nožička není na pinu 2.
+
+Tohle je ta část, kterou jiní nemají. Kola k ní nejsou potřeba, stačí číst, co robot napsal.
+
+### Chod 4: pájení (asi 10 spojů)
+
+1. Na každý motor dva drátky, **dřív, než podvozek smontuješ**. Potom se k plíškům špatně dostává.
+2. Na výstup držáku baterií dva konce, které jdou zapíchnout do pole (pokud je nemá).
+
+Málo cínu, krátce. Plíšky motorů jsou tenké a plast kolem nich se taví.
+
+### Chod 5: kola (1 až 2 hodiny)
+
+Smontuj podvozek podle stavebnice. Ovladače přilep na spodní desku, levý k levým motorům, pravý k pravým.
+
+| drát | odkud | kam |
+|---|---|---|
+| motory | držák baterií: + / − | spodní lišta pole + / − |
+| zem | GND desky | spodní lišta − |
+| levý L9110S | VCC / GND | spodní lišta + / − |
+| levý L9110S | A-IA / A-IB | piny 4 / 5 |
+| pravý L9110S | VCC / GND | spodní lišta + / − |
+| pravý L9110S | A-IA / A-IB | piny 6 / 7 |
+| levé motory | oba: červený / černý | levý L9110S, svorka MOTOR A |
+| pravé motory | oba: červený / černý | pravý L9110S, svorka MOTOR A |
+
+Deska zůstává na USB od notebooku. **Auto na krabičku, kola ve vzduchu:**
+
+```
+!move(50, 0, 0)\nwait(1000)\nstop()\nwait(500)\nmove(0, 0, 50)\nwait(700)\nstop()
+```
+
+- ✅ Vteřinu se všechna kola točí dopředu, potom levá dopředu a pravá dozadu.
+- ❌ Jedno kolo obráceně: prohoď jeho dva drátky ve svorce. Celá strana obráceně: `MOTOR_L_SIGN` nebo `MOTOR_R_SIGN` na `-1` v `firmware/robot/car_io.h`. Zatáčí na druhou stranu: prohoď kabely z pinů 4/5 a 6/7.
+
+A potom na podlaze:
+
+```
+okay buddy let's go
+stop
+do a little dance
+```
+
+Nemá ještě oči ani dálkoměr. Jakákoli nová věta ho zastaví dřív, než začne přemýšlet.
+
 ## Jak to postavit: pět fází, po každé něco funguje
 
 | fáze | po ní robot umí | čas |
