@@ -53,6 +53,8 @@ Všechno se zapojuje **s odpojeným USB**. Na piny desky nikdy 5 V.
 
 ### Chod 1: hlas (10 minut, bez pájení)
 
+![Bzučák: plus na 3V3, mínus na GND, S na pin 39](../recipe/1-voice.svg)
+
 | bzučák | deska |
 |---|---|
 | + | 3V3 |
@@ -71,6 +73,8 @@ sing me something nice
 
 ### Chod 2: ruka (15 minut, bez pájení)
 
+![Servo: červený na 5V, hnědý na GND, oranžový na pin 17](../recipe/2-arm.svg)
+
 | servo | deska |
 |---|---|
 | hnědý | GND |
@@ -88,6 +92,8 @@ wave bye bye
 - ❌ Servo jen cuká nebo se deska restartuje: málo proudu z USB. Zkus jiný port nebo kabel.
 
 ### Chod 3: ovládání zevnitř modelu (15 minut, bez pájení)
+
+![Potenciometr: krajní nožičky na 3V3 a GND, prostřední na pin 2](../recipe/3-inside.svg)
 
 | potenciometr | deska |
 |---|---|
@@ -114,6 +120,8 @@ Tohle je ta část, kterou jiní nemají. Kola k ní nejsou potřeba, stačí č
 Málo cínu, krátce. Plíšky motorů jsou tenké a plast kolem nich se taví.
 
 ### Chod 5: kola (1 až 2 hodiny)
+
+![Motory, dva ovladače, baterie a deska](../recipe/5-wheels.svg)
 
 Smontuj podvozek podle stavebnice. Ovladače přilep na spodní desku, levý k levým motorům, pravý k pravým.
 

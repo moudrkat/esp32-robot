@@ -53,6 +53,8 @@ Wire everything **with USB unplugged**. Never 5 V on a board pin.
 
 ### Course 1: a voice (10 minutes, no soldering)
 
+![Buzzer: plus to 3V3, minus to GND, S to pin 39](recipe/1-voice.svg)
+
 | buzzer | board |
 |---|---|
 | + | 3V3 |
@@ -68,6 +70,8 @@ sing me something nice
 - ❌ Silence: the buzzer is the wrong way round, or it is the active one with two legs.
 
 ### Course 2: an arm (15 minutes, no soldering)
+
+![Servo: red to 5V, brown to GND, orange to pin 17](recipe/2-arm.svg)
 
 | servo | board |
 |---|---|
@@ -86,6 +90,8 @@ wave bye bye
 - ❌ The servo twitches or the board restarts: not enough current from USB. Try another port or cable.
 
 ### Course 3: control from inside the model (15 minutes, no soldering)
+
+![Potentiometer: outer legs to 3V3 and GND, the middle one to pin 2](recipe/3-inside.svg)
 
 | potentiometer | board |
 |---|---|
@@ -112,6 +118,8 @@ This is the part others do not have. It needs no wheels, only reading what the r
 Little solder, briefly. The motor tabs are thin and the plastic around them melts.
 
 ### Course 5: wheels (1 to 2 hours)
+
+![Motors, two drivers, batteries and the board](recipe/5-wheels.svg)
 
 This is phase 1 below, with the board left on USB from the laptop instead of a second battery holder.
 
