@@ -66,7 +66,7 @@ Zkouška bez modelu, potom s ním:
 
 ```
 !tone(523, 200)\ntone(784, 300)
-sing me something nice
+sing a song
 ```
 
 - ✅ Dva tóny, potom melodie, kterou si robot napsal sám.
@@ -315,7 +315,7 @@ Oči 8×8 nalep do hlavy mezi sonar a displej, bzučáky na horní desku.
 - ✅ Veselé oči, pípnutí, dva tóny, mrknutí, oči doleva.
 - ❌ Oči vzhůru nohama nebo zrcadlově: `EYES_FLIP_Y` nebo `EYES_FLIP_X` na 1 v `firmware/robot/car_io.h`. Každý druhý řádek rozházený: `EYES_SERPENTINE 1`.
 
-**Zkus:** `give me a wink buddy` · `be a cop car` · `sing me something nice` · `bad! bad car!`
+**Zkus:** `give me a wink buddy` · `be a cop car` · `sing a song` · `bad! bad car!`
 
 ## Fáze 4: Smysly
 

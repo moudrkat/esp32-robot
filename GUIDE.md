@@ -64,7 +64,7 @@ Wire everything **with USB unplugged**. Never 5 V on a board pin.
 
 ```
 !tone(523, 200)\ntone(784, 300)
-sing me something nice
+sing a song
 ```
 
 - ✅ Two notes, then a tune the robot wrote itself.
@@ -283,7 +283,7 @@ Tape the 8×8 eyes into the head between the sonar and the screen, and the buzze
 - ✅ Happy eyes, a beep, two notes, a wink, eyes to the left.
 - ❌ Eyes upside down or mirrored: `EYES_FLIP_Y` or `EYES_FLIP_X` to 1 in `firmware/robot/car_io.h`. Every other row scrambled: `EYES_SERPENTINE 1`.
 
-**Try:** `give me a wink buddy` · `be a cop car` · `sing me something nice` · `bad! bad car!`
+**Try:** `give me a wink buddy` · `be a cop car` · `sing a song` · `bad! bad car!`
 
 ## Phase 4: Senses
 
