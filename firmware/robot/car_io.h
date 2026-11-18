@@ -612,6 +612,9 @@ static void desk_inputs(char *out, int n) {             // the strongest input a
 }
 static void desk_writing() {                            // while the model writes: the input, under the text
   char row[22]; desk_inputs(row, sizeof row);
+#if defined(CAR_ATTN)
+  snprintf(row, sizeof row, "layer %d  head %d", g_attn.layer, g_attn.head);   // which head the 8x8 is showing
+#endif
   oled.fillRect(0, 54, SCR_W, 10, OLED_BLACK);
   oled.drawFastHLine(0, 54, SCR_W, OLED_WHITE);
   oled.setCursor(0, 56); oled.print(row);
