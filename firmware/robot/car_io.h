@@ -17,7 +17,7 @@
 #define CAR_IO_H
 
 #include <Wire.h>
-#include <Adafruit_NeoPixel.h>
+// (the 8x8 LEDs are driven by Leds64 below; no NeoPixel library)
 #include <math.h>
 
 // ---------------------------------------------------------------- pins (ESP32-S3 N16R8; 26-37 are flash/PSRAM)
@@ -196,7 +196,36 @@ static int c_sense(void *, int which) {
 }
 
 // ---------------------------------------------------------------- eyes: two eyes on the 8x8, one byte per row
-static Adafruit_NeoPixel eyes_px(64, PIN_EYES, NEO_GRB + NEO_KHZ800);
+// The 64 LEDs are driven here, through the chip's RMT peripheral, with the bit timing written out. The NeoPixel
+// library on this core sent bits the matrix read as ones: the first rows full white, then noise (18. 11. 2026).
+struct Leds64 {
+  uint8_t px[64][3]; uint8_t bright = 255; bool up = false;
+  void begin() { up = rmtInit(PIN_EYES, RMT_TX_MODE, RMT_MEM_NUM_BLOCKS_1, 10000000); clear(); }   // one tick = 0.1 us
+  void setBrightness(uint8_t b) { bright = b; }
+  void clear() { memset(px, 0, sizeof px); }
+  void setPixelColor(int i, int r, int g, int b) {
+    if (i < 0 || i >= 64) return;
+    px[i][0] = g < 0 ? 0 : g > 255 ? 255 : g; px[i][1] = r < 0 ? 0 : r > 255 ? 255 : r; px[i][2] = b < 0 ? 0 : b > 255 ? 255 : b;   // the wire order is G R B
+  }
+  void show() {
+    static rmt_data_t sym[64 * 24 + 1];
+    if (!up) return;
+    int n = 0;
+    for (int i = 0; i < 64; i++)
+      for (int c = 0; c < 3; c++) {
+        uint8_t v = (uint16_t)px[i][c] * bright / 255;
+        for (int bit = 7; bit >= 0; bit--) {
+          bool one = v & (1 << bit);
+          sym[n].level0 = 1; sym[n].duration0 = one ? 8 : 3;    // 0.8 us is a one, 0.3 us a zero
+          sym[n].level1 = 0; sym[n].duration1 = one ? 4 : 9;
+          n++;
+        }
+      }
+    sym[n].level0 = 0; sym[n].duration0 = 3000; sym[n].level1 = 0; sym[n].duration1 = 3000; n++;   // 0.6 ms low: latch
+    rmtWrite(PIN_EYES, sym, n, RMT_WAIT_FOR_EVER);
+  }
+};
+static Leds64 eyes_px;
 static uint8_t eye_r = 0, eye_g = 160, eye_b = 255; // rgb() recolours them; rgb(0, 0, 0) turns them off
 static int eye_mood = 0;
 // order as OL_EYES: open happy sad angry sleepy closed wink heart left right up down surprised dizzy
@@ -229,7 +258,9 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
 // either). The half above the diagonal stays dark: the causal mask.
 // The newest row is the chain's first eight LEDs, so the chain's last LED is a corner that is never lit
 // (on her matrix that one LED is dead).
+static bool attn_test = false;                          // a test picture stays until the next sentence or head
 static void attn_show() {
+  if (attn_test) return;
   static const uint8_t col[3] = {255, 110, 0};          // one colour: brightness is the only thing that speaks
   eyes_px.clear();
   for (int r = 0; r < ATTN_WIN; r++)
@@ -245,9 +276,10 @@ static void attn_head(int layer, int head) {            // out of range wraps; a
   int L = model.c.n_layers, H = model.c.n_heads;
   if (head >= H) { head = 0; layer++; }
   g_attn.layer = ((layer % L) + L) % L; g_attn.head = ((head % H) + H) % H;
-  attn_rows_clear(); attn_show();
+  attn_test = false; attn_rows_clear(); attn_show();
   Serial.printf("attention: layer %d head %d\n", g_attn.layer, g_attn.head);
 }
+static void attn_live() { attn_test = false; }
 static void attn_next() { attn_head(g_attn.layer, g_attn.head + 1); }
 #endif
 
@@ -505,6 +537,9 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
   }
   if (got >= 1 && !strcmp(name, "leds")) {          // "@leds": every LED of the 8x8 on, to check the wiring
     for (int i = 0; i < 64; i++) eyes_px.setPixelColor(i, 60, 60, 60);
+#if defined(CAR_ATTN)
+    attn_test = true;
+#endif
     eyes_px.show(); Serial.println("all 64 LEDs on, dim white"); return;
   }
 #if defined(CAR_ATTN)
@@ -514,6 +549,7 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
       for (int c = 0; c <= r; c++)
         eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), c == r ? 200 : 120, c == r ? 200 : 0, c == r ? 200 : 0);
     eyes_px.setPixelColor(eye_px(ATTN_WIN - 1, 0), 0, 255, 0);
+    attn_test = true;
     eyes_px.show(); Serial.println("triangle: red, white diagonal, green corner = newest token on itself"); return;
   }
   if (got >= 1 && !strcmp(name, "stat")) {          // "@stat": start counting; "@stat" again prints every head and resets

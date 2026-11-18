@@ -102,6 +102,7 @@ static bool car_web_poll();             // car_io.h: a line typed on the phone p
 #if defined(CAR_ATTN)
 static void attn_next();                // car_io.h
 static void attn_show();
+static void attn_live();
 #endif
 static bool poll_serial_line() {
   if (pending_ready) return true;
@@ -517,6 +518,9 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
 #if defined(CAR_ROBOT)
   car_show_dose();                      // the eyes show where the potentiometer is while the model writes
 #endif
+#endif
+#if defined(CAR_ATTN)
+  attn_live();                          // a new sentence takes the square back from a test picture
 #endif
   for (int i = 0; i < n_prompt; i++) {  // prime with the prompt
     tok = prompt_ids[i];
