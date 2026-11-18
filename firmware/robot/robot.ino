@@ -99,9 +99,20 @@ static bool pending_ready = false;
 #if defined(CAR_WEB)
 static bool car_web_poll();             // car_io.h: a line typed on the phone page
 #endif
+#if defined(CAR_ATTN)
+static void attn_next();                // car_io.h
+static void attn_show();
+#endif
 static bool poll_serial_line() {
   if (pending_ready) return true;
-#if defined(CAR_DESK)
+#if defined(CAR_ATTN)
+  {                                     // BOOT: the next attention head, without interrupting what is being written
+    static bool was = false; static unsigned long at = 0;
+    bool down = digitalRead(0) == LOW;
+    if (down && !was && millis() - at > 300) { at = millis(); was = true; attn_next(); }
+    if (!down) was = false;
+  }
+#elif defined(CAR_DESK)
   {                                     // BOOT pressed counts as a typed "+", so it interrupts like any other line
     static bool was = false; static unsigned long at = 0;
     bool down = digitalRead(0) == LOW;
@@ -508,6 +519,9 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
     tok = prompt_ids[i];
     emit(tok);
     llm_forward(&model, tok, pos++, &s);
+#if defined(CAR_ATTN)
+    attn_show();
+#endif
   }
 
 #if defined(CAR_PROBE)
@@ -550,6 +564,9 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
     steer_read_pot();                   // once per token, never inside llm_forward (an ADC read is ~100 us)
 #endif
     llm_forward(&model, tok, pos++, &s);
+#if defined(CAR_ATTN)
+    attn_show();
+#endif
     decode_us += esp_timer_get_time() - d0;
     decoded++;
     if ((step & 7) == 0) delay(0);  // feed the task WDT ~every 8 tokens

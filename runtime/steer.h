@@ -47,6 +47,16 @@ typedef struct {
 
 static AttnViz g_attn = {{0}, 0, 0, 0};
 
+// The same head as a square: the last ATTN_WIN tokens looking at the last ATTN_WIN tokens. Row r is one token's
+// look back (r = ATTN_WIN-1 is the newest), kept as its weights on the ATTN_WIN positions ending at itself, so
+// g_attn_rows[r][ATTN_WIN-1] is a token looking at itself. What it gave to older tokens is not kept.
+#define ATTN_WIN 8
+static float g_attn_rows[ATTN_WIN][ATTN_WIN];
+static inline void attn_rows_clear(void) { memset(g_attn_rows, 0, sizeof g_attn_rows); }
+// weight of the token in row r on the token in column c, both counted from the oldest of the last ATTN_WIN;
+// above the diagonal there is nothing: a token cannot look at what has not been written yet
+static inline float attn_cell(int r, int c) { return c > r ? 0.f : g_attn_rows[r][c - r + ATTN_WIN - 1]; }
+
 // ------------------------------------------------------------ injection ---
 
 // x += gamma * v, optionally scaled so gamma means the same thing at every
@@ -101,6 +111,12 @@ static inline void attn_capture(const float *scores, float maxs, float denom,
   if (n > STEER_MAX_POS) n = STEER_MAX_POS;
   for (int t = 0; t < n; t++) g_attn.w[t] = expf(scores[t] - maxs) / denom;
   g_attn.len = n;
+  if (pos == 0) attn_rows_clear();                       // a new text
+  memmove(g_attn_rows[0], g_attn_rows[1], sizeof(float) * ATTN_WIN * (ATTN_WIN - 1));
+  for (int j = 0; j < ATTN_WIN; j++) {
+    int k = pos - (ATTN_WIN - 1) + j;
+    g_attn_rows[ATTN_WIN - 1][j] = (k >= 0 && k < n) ? g_attn.w[k] : 0.f;
+  }
 }
 
 // ------------------------------------------------------- Arduino plumbing ---

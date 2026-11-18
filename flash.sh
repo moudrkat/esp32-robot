@@ -3,6 +3,7 @@
 #   ./flash.sh [port]                          (default /dev/ttyACM0)
 #   ROBOT_WIFI_PASS='at least 8 chars' ./flash.sh   also gives it its own Wi-Fi "esp32-robot" and a page for your phone
 #   DESK=1 ./flash.sh                          no car: just the board and its screen (see "On the table" in the README)
+#   ATTN=1 DESK=1 ./flash.sh                   the 8x8 LEDs show one attention head while the model writes
 #   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
@@ -27,6 +28,13 @@ if [ "${DESK:-0}" = 1 ]; then
   echo "On the table: no motors, the screen shows the program and the speed; BOOT steps the input"
 else
   rm -f "$DESKH"
+fi
+ATTNH=firmware/robot/generated/attn.h
+if [ "${ATTN:-0}" = 1 ]; then
+  printf '#define CAR_ATTN 1\n#define LLM_ATTN_VIZ 1\n' > "$ATTNH"
+  echo "Attention on the 8x8 LEDs (pin 21): BOOT or @head for the next head, @head 2 3 for layer 2 head 3"
+else
+  rm -f "$ATTNH"
 fi
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
 [ -n "$ESPTOOL" ] || { echo "esptool not found: pip install esptool"; exit 1; }

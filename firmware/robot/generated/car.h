@@ -13,3 +13,7 @@
 #if __has_include("desk.h")
 #include "desk.h"
 #endif
+// flash.sh writes attn.h for ATTN=1: the 8x8 LEDs show one attention head instead of eyes
+#if __has_include("attn.h")
+#include "attn.h"
+#endif

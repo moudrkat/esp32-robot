@@ -222,7 +222,38 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
   if (EYES_SERPENTINE && (y & 1)) x = 7 - x;
   return y * 8 + x;
 }
+#if defined(CAR_ATTN)
+// ---------------------------------------------------------------- attention on the 8x8
+// One head of the model, as it writes: row = the token that looks, column = the token it looks at, the last 8
+// tokens both ways, newest at the bottom right. Brightness is the square root of the weight (the eye is not linear
+// either), colour is the layer. The half above the diagonal stays dark: the causal mask.
+static const uint8_t ATTN_RGB[6][3] = {{255, 40, 20}, {255, 150, 0}, {160, 255, 0}, {0, 255, 140}, {0, 120, 255}, {190, 60, 255}};
+static void attn_show() {
+  const uint8_t *col = ATTN_RGB[g_attn.layer % 6];
+  eyes_px.clear();
+  for (int r = 0; r < ATTN_WIN; r++)
+    for (int c = 0; c <= r; c++) {
+      float b = sqrtf(attn_cell(r, c));
+      if (b < 0.04f) continue;
+      eyes_px.setPixelColor(eye_px(c, r), (int)(col[0] * b), (int)(col[1] * b), (int)(col[2] * b));
+    }
+  eyes_px.show();
+}
+static void attn_head(int layer, int head) {            // out of range wraps; a new head starts with a dark square
+  extern Model model;
+  int L = model.c.n_layers, H = model.c.n_heads;
+  if (head >= H) { head = 0; layer++; }
+  g_attn.layer = ((layer % L) + L) % L; g_attn.head = ((head % H) + H) % H;
+  attn_rows_clear(); attn_show();
+  Serial.printf("attention: layer %d head %d\n", g_attn.layer, g_attn.head);
+}
+static void attn_next() { attn_head(g_attn.layer, g_attn.head + 1); }
+#endif
+
 static void eyes_show() {
+#if defined(CAR_ATTN)
+  attn_show(); return;                                  // the square belongs to the attention; eyes() and rgb() wait
+#endif
   eyes_px.clear();
 #if defined(CAR_DESK)
   // on the table a ring of 24 LEDs on the eyes' pin is a speedometer: more of the circle is faster, red is angry
@@ -331,6 +362,9 @@ static void car_setup() {
   // channels 0,1 -> timer 0 (motors, 20 kHz); 2,3 -> timer 1 and 4 -> timer 2 (servos, 50 Hz); 6 -> timer 3 (voice)
 #if defined(SHT_SDA)
   Wire1.begin(SHT_SDA, SHT_SCL);
+#endif
+#if defined(CAR_ATTN)
+  pinMode(0, INPUT_PULLUP);                             // BOOT: the next attention head
 #endif
 #if defined(CAR_DESK)
   pinMode(0, INPUT_PULLUP);                             // BOOT: the same sentence again, with the next input strength
@@ -462,6 +496,13 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
 #endif
     return;
   }
+#if defined(CAR_ATTN)
+  if (got >= 1 && !strcmp(name, "head")) {          // "@head" next, "@head 2 3" layer 2 head 3
+    int l = 0, h = 0;
+    if (sscanf(line, "%*s %d %d", &l, &h) == 2) attn_head(l, h); else attn_next();
+    return;
+  }
+#endif
   if (got >= 1 && !strcmp(name, "auto")) {          // "@auto" on, "@auto 0" off
     cond_auto = got < 2 || s > 0.f; Serial.printf("sensor inputs %s\n", cond_auto ? "on" : "off"); return;
   }

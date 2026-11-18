@@ -43,7 +43,9 @@ def main():
         '// flash.sh writes wifi.h when you give it a Wi-Fi password; without it the robot has no Wi-Fi at all\n'
         '#if __has_include("wifi.h")\n#include "wifi.h"\n#endif\n'
         '// flash.sh writes desk.h for DESK=1: no car, the screen shows what the wheels would do\n'
-        '#if __has_include("desk.h")\n#include "desk.h"\n#endif\n')
+        '#if __has_include("desk.h")\n#include "desk.h"\n#endif\n'
+        '// flash.sh writes attn.h for ATTN=1: the 8x8 LEDs show one attention head instead of eyes\n'
+        '#if __has_include("attn.h")\n#include "attn.h"\n#endif\n')
     print("wrote", GEN)
 
 
