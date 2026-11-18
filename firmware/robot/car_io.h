@@ -267,6 +267,7 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
 // either). The half above the diagonal stays dark: the causal mask.
 // The newest row is the chain's first eight LEDs, so the chain's last LED is a corner that is never lit
 // (on her matrix that one LED is dead).
+#define ATTN_MAX 40.f                                   // of 255: the brightest a cell gets
 static bool attn_test = false;                          // a test picture stays until the next sentence or head
 static void attn_show() {
   if (attn_test) return;
@@ -275,8 +276,11 @@ static void attn_show() {
   for (int r = 0; r < ATTN_WIN; r++)
     for (int c = 0; c <= r; c++) {
       float b = sqrtf(attn_cell(r, c));
-      if (b < 0.04f) continue;
-      eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), (int)(col[0] * b), (int)(col[1] * b), (int)(col[2] * b));
+      if (b < 0.05f) continue;
+      // the two channels are rounded together: a faint cell stays orange instead of losing its green and going red
+      int red = (int)lroundf(ATTN_MAX * b), green = (int)lroundf(ATTN_MAX * b * col[1] / col[0]);
+      if (red > 0 && green == 0) green = 1;
+      eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), red, green, 0);
     }
   eyes_px.show();
 }
@@ -442,7 +446,7 @@ static void car_setup() {
 #endif
   eyes_px.begin(); eyes_px.setBrightness(EYES_BRIGHTNESS);
 #if defined(CAR_ATTN)
-  eyes_px.setBrightness(40);                            // few LEDs are lit at once
+  eyes_px.setBrightness(255);                           // attn_show() sets the final values itself
   g_attn.layer = 3; g_attn.head = 4;                    // the liveliest head whose weight stays inside the last 8 tokens (91 %)
 #endif
   eye_mood = 0; eyes_show();
@@ -545,7 +549,7 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
     return;
   }
   if (got >= 1 && !strcmp(name, "leds")) {          // "@leds": every LED of the 8x8 on, to check the wiring
-    for (int i = 0; i < 64; i++) eyes_px.setPixelColor(i, 60, 60, 60);
+    for (int i = 0; i < 64; i++) eyes_px.setPixelColor(i, 8, 8, 8);
 #if defined(CAR_ATTN)
     attn_test = true;
 #endif
@@ -556,8 +560,8 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
     eyes_px.clear();                                // triangle, its diagonal white, the newest token's corner green
     for (int r = 0; r < ATTN_WIN; r++)
       for (int c = 0; c <= r; c++)
-        eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), c == r ? 200 : 120, c == r ? 200 : 0, c == r ? 200 : 0);
-    eyes_px.setPixelColor(eye_px(ATTN_WIN - 1, 0), 0, 255, 0);
+        eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), c == r ? 30 : 18, c == r ? 30 : 0, c == r ? 30 : 0);
+    eyes_px.setPixelColor(eye_px(ATTN_WIN - 1, 0), 0, 40, 0);
     attn_test = true;
     eyes_px.show(); Serial.printf("[leds: init %d, %d bytes] ", eyes_px.up, eyes_px.sent);
     Serial.println("triangle: red, white diagonal, green corner = newest token on itself"); return;
