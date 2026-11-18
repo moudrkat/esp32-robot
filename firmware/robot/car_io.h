@@ -227,7 +227,7 @@ struct Leds64 {
         for (int bit = 7; bit >= 0; bit--) wave[n++] = (v & (1 << bit)) ? 0xF8 : 0xC0;
       }
     for (int i = 0; i < 8; i++) wave[n++] = 0;                  // and low after the last: the LEDs latch
-    spi.beginTransaction(SPISettings(6400000, MSBFIRST, SPI_MODE0));   // one SPI bit ~0.15 us, one LED bit ~1.2 us
+    spi.beginTransaction(SPISettings(5700000, MSBFIRST, SPI_MODE0));   // one SPI bit 0.175 us: a zero is 0.35 us high, a one 0.875 us, a bit 1.4 us
     portENTER_CRITICAL(&mux);
     spi.writeBytes(wave, n);
     portEXIT_CRITICAL(&mux);
