@@ -104,6 +104,30 @@ static inline void steer_from_token_pair(Model *m, int tok_a, int tok_b) {
 
 // -------------------------------------------------------------- capture ---
 
+// Every head at once, as a summary, to choose which one to watch: where its weight goes on average (on the token
+// itself, 1 back, ... 7 back, further), and how much its row changes from one token to the next.
+#define ATTN_STAT_L 8
+#define ATTN_STAT_H 8
+static int g_attn_stat_on = 0;
+static float g_attn_off[ATTN_STAT_L][ATTN_STAT_H][ATTN_WIN + 1], g_attn_prev[ATTN_STAT_L][ATTN_STAT_H][ATTN_WIN];
+static float g_attn_move[ATTN_STAT_L][ATTN_STAT_H];
+static int g_attn_cnt[ATTN_STAT_L][ATTN_STAT_H];
+static inline void attn_stat_clear(void) {
+  memset(g_attn_off, 0, sizeof g_attn_off); memset(g_attn_prev, 0, sizeof g_attn_prev);
+  memset(g_attn_move, 0, sizeof g_attn_move); memset(g_attn_cnt, 0, sizeof g_attn_cnt);
+}
+static inline void attn_stat(int l, int h, const float *scores, float maxs, float denom, int pos) {
+  if (!g_attn_stat_on || l >= ATTN_STAT_L || h >= ATTN_STAT_H || pos < ATTN_WIN) return;
+  float near = 0.f, mv = 0.f;
+  for (int j = 0; j < ATTN_WIN; j++) {                   // j tokens back
+    float w = expf(scores[pos - j] - maxs) / denom;
+    g_attn_off[l][h][j] += w; near += w;
+    mv += fabsf(w - g_attn_prev[l][h][j]); g_attn_prev[l][h][j] = w;
+  }
+  g_attn_off[l][h][ATTN_WIN] += 1.f - near;
+  g_attn_move[l][h] += mv; g_attn_cnt[l][h]++;
+}
+
 // Called from inside the head loop once the softmax denominator is known.
 static inline void attn_capture(const float *scores, float maxs, float denom,
                                 int pos) {

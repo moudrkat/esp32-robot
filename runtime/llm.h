@@ -529,6 +529,7 @@ static void llm_forward(Model *m, int token, int pos, Scratch *s) {
       /* The softmax weights are consumed inline above and never stored, but
        * maxs and denom are still in scope, so one head costs pos+1 expf calls
        * to recover -- and only for the head being watched. */
+      attn_stat(l, hh, s->scores, maxs, denom, pos);
       if (l == g_attn.layer && hh == g_attn.head)
         attn_capture(s->scores, maxs, denom, pos);
 #endif

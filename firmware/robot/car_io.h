@@ -226,12 +226,11 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
 // ---------------------------------------------------------------- attention on the 8x8
 // One head of the model, as it writes: row = the token that looks, column = the token it looks at, the last 8
 // tokens both ways, newest at the bottom right. Brightness is the square root of the weight (the eye is not linear
-// either), colour is the layer. The half above the diagonal stays dark: the causal mask.
+// either). The half above the diagonal stays dark: the causal mask.
 // The newest row is the chain's first eight LEDs, so the chain's last LED is a corner that is never lit
 // (on her matrix that one LED is dead).
-static const uint8_t ATTN_RGB[6][3] = {{255, 40, 20}, {255, 150, 0}, {160, 255, 0}, {0, 255, 140}, {0, 120, 255}, {190, 60, 255}};
 static void attn_show() {
-  const uint8_t *col = ATTN_RGB[g_attn.layer % 6];
+  static const uint8_t col[3] = {255, 110, 0};          // one colour: brightness is the only thing that speaks
   eyes_px.clear();
   for (int r = 0; r < ATTN_WIN; r++)
     for (int c = 0; c <= r; c++) {
@@ -399,6 +398,9 @@ static void car_setup() {
   web_setup();
 #endif
   eyes_px.begin(); eyes_px.setBrightness(EYES_BRIGHTNESS);
+#if defined(CAR_ATTN)
+  g_attn.layer = 3; g_attn.head = 4;                    // the liveliest head whose weight stays inside the last 8 tokens (91 %)
+#endif
   eye_mood = 0; eyes_show();
 }
 
@@ -499,10 +501,31 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
     return;
   }
   if (got >= 1 && !strcmp(name, "leds")) {          // "@leds": every LED of the 8x8 on, to check the wiring
-    for (int i = 0; i < 64; i++) eyes_px.setPixelColor(i, 255, 255, 255);
+    for (int i = 0; i < 64; i++) eyes_px.setPixelColor(i, 60, 60, 60);
     eyes_px.show(); Serial.println("all 64 LEDs on, dim white"); return;
   }
 #if defined(CAR_ATTN)
+  if (got >= 1 && !strcmp(name, "tri")) {           // "@tri": the shape attention must have, standing still: a red
+    eyes_px.clear();                                // triangle, its diagonal white, the newest token's corner green
+    for (int r = 0; r < ATTN_WIN; r++)
+      for (int c = 0; c <= r; c++)
+        eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), c == r ? 200 : 120, c == r ? 200 : 0, c == r ? 200 : 0);
+    eyes_px.setPixelColor(eye_px(ATTN_WIN - 1, 0), 0, 255, 0);
+    eyes_px.show(); Serial.println("triangle: red, white diagonal, green corner = newest token on itself"); return;
+  }
+  if (got >= 1 && !strcmp(name, "stat")) {          // "@stat": start counting; "@stat" again prints every head and resets
+    if (g_attn_stat_on) {
+      Serial.println("L H  self  -1   -2   -3   -4   -5   -6   -7  far  move  n");
+      for (int l = 0; l < model.c.n_layers; l++)
+        for (int h = 0; h < model.c.n_heads; h++) {
+          int n = g_attn_cnt[l][h] ? g_attn_cnt[l][h] : 1;
+          Serial.printf("%d %d ", l, h);
+          for (int j = 0; j <= ATTN_WIN; j++) Serial.printf(" %.2f", g_attn_off[l][h][j] / n);
+          Serial.printf("  %.2f  %d\n", g_attn_move[l][h] / n, g_attn_cnt[l][h]);
+        }
+    }
+    attn_stat_clear(); g_attn_stat_on = 1; Serial.println("counting every head"); return;
+  }
   if (got >= 1 && !strcmp(name, "head")) {          // "@head" next, "@head 2 3" layer 2 head 3
     int l = 0, h = 0;
     if (sscanf(line, "%*s %d %d", &l, &h) == 2) attn_head(l, h); else attn_next();
