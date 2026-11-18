@@ -196,20 +196,25 @@ static int c_sense(void *, int which) {
 }
 
 // ---------------------------------------------------------------- eyes: two eyes on the 8x8, one byte per row
-// The 64 LEDs are driven here, as a waveform clocked out of the SPI peripheral with interrupts held off for the
-// 2 ms it takes: one SPI byte is one LED bit (0xC0 = a short pulse = 0, 0xF8 = a long pulse = 1).
-// Two things failed first (18. 11. 2026): the NeoPixel library, and the RMT peripheral driven directly. Both need
-// an interrupt to refill a 48-symbol buffer every ~30 us; while the model writes, serial and the screen keep the
-// chip busy, a refill comes late, and the LEDs read noise: rows of full white, then random colours.
-#include <SPI.h>
-#ifndef PIN_LEDS_CLK
-#define PIN_LEDS_CLK 47        // SPI needs a clock pin; nothing is connected to it
-#endif
+// The 64 LEDs are driven here: the whole frame is one waveform, handed to the SPI peripheral with DMA, so the
+// hardware clocks it out in one piece and nothing the chip is doing meanwhile can stretch a pulse. Four SPI bits
+// are one LED bit at 3.2 MHz: 1000 is a zero (0.31 us high), 1110 is a one (0.94 us high), a bit lasts 1.25 us.
+// What failed first (18. 11. 2026): the NeoPixel library and the RMT peripheral driven directly (both need an
+// interrupt to refill a 48-symbol buffer every ~30 us, and while the model writes a refill comes late: rows of
+// full white, then random colours), and SPI fed by the CPU in 64-byte pieces (a stray wrong pixel now and then).
+#include "driver/spi_master.h"
 struct Leds64 {
-  uint8_t px[64][3]; uint8_t bright = 255; bool up = false, ok = false; int sent = 0;
-  SPIClass spi = SPIClass(HSPI);
-  portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
-  void begin() { up = spi.begin(PIN_LEDS_CLK, -1, PIN_EYES, -1); clear(); }
+  uint8_t px[64][3]; uint8_t bright = 255; bool up = false; int sent = 0;
+  spi_device_handle_t dev = NULL; uint8_t *wave = NULL;
+  enum { LEAD = 4, BODY = 64 * 24 / 2, TAIL = 44 };            // TAIL: the line low for > 100 us, the LEDs latch
+  void begin() {
+    spi_bus_config_t bus = {}; bus.mosi_io_num = PIN_EYES; bus.miso_io_num = -1; bus.sclk_io_num = -1;
+    bus.quadwp_io_num = -1; bus.quadhd_io_num = -1; bus.max_transfer_sz = LEAD + BODY + TAIL;
+    spi_device_interface_config_t cfg = {}; cfg.clock_speed_hz = 3200000; cfg.mode = 0; cfg.spics_io_num = -1; cfg.queue_size = 1;
+    wave = (uint8_t *)heap_caps_calloc(1, LEAD + BODY + TAIL, MALLOC_CAP_DMA);
+    up = wave && spi_bus_initialize(SPI3_HOST, &bus, SPI_DMA_CH_AUTO) == ESP_OK && spi_bus_add_device(SPI3_HOST, &cfg, &dev) == ESP_OK;
+    clear();
+  }
   void setBrightness(uint8_t b) { bright = b; }
   void clear() { memset(px, 0, sizeof px); }
   void setPixelColor(int i, int r, int g, int b) {
@@ -217,22 +222,16 @@ struct Leds64 {
     px[i][0] = g < 0 ? 0 : g > 255 ? 255 : g; px[i][1] = r < 0 ? 0 : r > 255 ? 255 : r; px[i][2] = b < 0 ? 0 : b > 255 ? 255 : b;   // the wire order is G R B
   }
   void show() {
-    static uint8_t wave[8 + 64 * 24 + 8];
     if (!up) return;
-    int n = 0;
-    for (int i = 0; i < 8; i++) wave[n++] = 0;                  // the line low before the first bit
+    int n = LEAD;
     for (int i = 0; i < 64; i++)
       for (int c = 0; c < 3; c++) {
         uint8_t v = (uint16_t)px[i][c] * bright / 255;
-        for (int bit = 7; bit >= 0; bit--) wave[n++] = (v & (1 << bit)) ? 0xF8 : 0xC0;
+        for (int bit = 7; bit >= 0; bit -= 2)                   // two LED bits in one SPI byte
+          wave[n++] = ((v & (1 << bit)) ? 0xE0 : 0x80) | ((v & (1 << (bit - 1))) ? 0x0E : 0x08);
       }
-    for (int i = 0; i < 8; i++) wave[n++] = 0;                  // and low after the last: the LEDs latch
-    spi.beginTransaction(SPISettings(5700000, MSBFIRST, SPI_MODE0));   // one SPI bit 0.175 us: a zero is 0.35 us high, a one 0.875 us, a bit 1.4 us
-    portENTER_CRITICAL(&mux);
-    spi.writeBytes(wave, n);
-    portEXIT_CRITICAL(&mux);
-    spi.endTransaction();
-    ok = true; sent = n;
+    spi_transaction_t t = {}; t.length = (LEAD + BODY + TAIL) * 8; t.tx_buffer = wave;
+    up = spi_device_transmit(dev, &t) == ESP_OK; sent = LEAD + BODY + TAIL;
   }
 };
 static Leds64 eyes_px;
