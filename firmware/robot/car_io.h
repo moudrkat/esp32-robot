@@ -227,6 +227,8 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
 // One head of the model, as it writes: row = the token that looks, column = the token it looks at, the last 8
 // tokens both ways, newest at the bottom right. Brightness is the square root of the weight (the eye is not linear
 // either), colour is the layer. The half above the diagonal stays dark: the causal mask.
+// The newest row is the chain's first eight LEDs, so the chain's last LED is a corner that is never lit
+// (on her matrix that one LED is dead).
 static const uint8_t ATTN_RGB[6][3] = {{255, 40, 20}, {255, 150, 0}, {160, 255, 0}, {0, 255, 140}, {0, 120, 255}, {190, 60, 255}};
 static void attn_show() {
   const uint8_t *col = ATTN_RGB[g_attn.layer % 6];
@@ -235,7 +237,7 @@ static void attn_show() {
     for (int c = 0; c <= r; c++) {
       float b = sqrtf(attn_cell(r, c));
       if (b < 0.04f) continue;
-      eyes_px.setPixelColor(eye_px(c, r), (int)(col[0] * b), (int)(col[1] * b), (int)(col[2] * b));
+      eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), (int)(col[0] * b), (int)(col[1] * b), (int)(col[2] * b));
     }
   eyes_px.show();
 }
@@ -495,6 +497,10 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
     desk_level = -1;
 #endif
     return;
+  }
+  if (got >= 1 && !strcmp(name, "leds")) {          // "@leds": every LED of the 8x8 on, to check the wiring
+    for (int i = 0; i < 64; i++) eyes_px.setPixelColor(i, 255, 255, 255);
+    eyes_px.show(); Serial.println("all 64 LEDs on, dim white"); return;
   }
 #if defined(CAR_ATTN)
   if (got >= 1 && !strcmp(name, "head")) {          // "@head" next, "@head 2 3" layer 2 head 3
