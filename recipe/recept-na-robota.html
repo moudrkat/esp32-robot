@@ -69,6 +69,7 @@ td:last-child { font-family: var(--mono); font-size: .9rem; }
       <li><label><input type="checkbox" id="p8"><span>potenciometr 10k</span></label></li>
       <li><label><input type="checkbox" id="p9"><span>podvozek: 4 motory, 4 kola, obě desky, sloupky, šroubky</span></label></li>
       <li><label><input type="checkbox" id="p10"><span>2× ovladač motorů L9110S</span></label></li>
+      <li><label><input type="checkbox" id="p20"><span>dálkoměr (ultrazvukový, dva stříbrné válečky, nápis RCWL-9610)</span></label></li>
       <li><label><input type="checkbox" id="p11"><span>držák baterií se dvěma nabitými články 18650</span></label></li>
     </ul>
     <h3>Na pájení</h3>
@@ -160,7 +161,18 @@ td:last-child { font-family: var(--mono); font-size: .9rem; }
     <p>A potom na podlaze:</p>
     <div class="cmd"><code>okay buddy let's go</code><button type="button">Kopírovat</button></div>
     <div class="cmd"><code>do a little dance</code><button type="button">Kopírovat</button></div>
-    <p class="lead">Nemá ještě oči ani dálkoměr. Jakákoli nová věta ho zastaví dřív, než začne přemýšlet.</p>
+    <p class="lead">Ještě nevidí. Jakákoli nová věta ho zastaví dřív, než začne přemýšlet.</p>
+  </section>
+
+  <section>
+    <div class="meta"><h2>Chod 6: dálkoměr</h2><span class="pill">15 minut</span><span class="pill">bez pájení</span></div>
+    <p>Přilep ho dopředu na podvozek, válečky ve směru jízdy.</p>
+    <div class="tablewrap"><table><tr><th>dálkoměr</th><th>deska</th></tr><tr><td>VCC</td><td>3V3</td></tr><tr><td>GND</td><td>GND</td></tr><tr><td>Trig</td><td>pin 9</td></tr><tr><td>Echo</td><td>pin 10</td></tr></table></div>
+    <p><b>Z 3,3 V, ne z 5 V.</b> Na 5 V by vracel 5V signál do pinu desky. Má na něm být nápis RCWL-9610; klasický HC-SR04 na 3,3 V měřit nemusí.</p>
+    <div class="cmd"><code>!while 1:\n    clear()\n    text(0, 28, str(distance()) + " cm")\n    wait(200)</code><button type="button">Kopírovat</button></div>
+    <div class="cmd"><code>go to the wall</code><button type="button">Kopírovat</button></div>
+    <p class="ok"><b>✓</b><span>Displej ukazuje vzdálenost, s rukou před válečky číslo klesá. Potom dojede ke zdi a zastaví.</span></p>
+    <p class="no"><b>✗</b><span>Pořád 400: prohozené Trig a Echo.</span></p>
   </section>
 
   <p class="lead">Na skutečném hardwaru to ještě neběželo. První zapnutí je pokus: co se ukáže obráceně, se opraví přehozením drátků nebo jedním číslem v programu.</p>
