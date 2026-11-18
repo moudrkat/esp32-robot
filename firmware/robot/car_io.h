@@ -199,7 +199,7 @@ static int c_sense(void *, int which) {
 // The 64 LEDs are driven here, through the chip's RMT peripheral, with the bit timing written out. The NeoPixel
 // library on this core sent bits the matrix read as ones: the first rows full white, then noise (18. 11. 2026).
 struct Leds64 {
-  uint8_t px[64][3]; uint8_t bright = 255; bool up = false;
+  uint8_t px[64][3]; uint8_t bright = 255; bool up = false, ok = false; int sent = 0;
   void begin() { up = rmtInit(PIN_EYES, RMT_TX_MODE, RMT_MEM_NUM_BLOCKS_1, 10000000); clear(); }   // one tick = 0.1 us
   void setBrightness(uint8_t b) { bright = b; }
   void clear() { memset(px, 0, sizeof px); }
@@ -222,7 +222,7 @@ struct Leds64 {
         }
       }
     sym[n].level0 = 0; sym[n].duration0 = 3000; sym[n].level1 = 0; sym[n].duration1 = 3000; n++;   // 0.6 ms low: latch
-    rmtWrite(PIN_EYES, sym, n, RMT_WAIT_FOR_EVER);
+    ok = rmtWrite(PIN_EYES, sym, n, 50); sent = n;                // never wait for the LEDs longer than 50 ms
   }
 };
 static Leds64 eyes_px;
@@ -550,7 +550,8 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
         eyes_px.setPixelColor(eye_px(c, ATTN_WIN - 1 - r), c == r ? 200 : 120, c == r ? 200 : 0, c == r ? 200 : 0);
     eyes_px.setPixelColor(eye_px(ATTN_WIN - 1, 0), 0, 255, 0);
     attn_test = true;
-    eyes_px.show(); Serial.println("triangle: red, white diagonal, green corner = newest token on itself"); return;
+    eyes_px.show(); Serial.printf("[leds: init %d, write %d, %d symbols] ", eyes_px.up, eyes_px.ok, eyes_px.sent);
+    Serial.println("triangle: red, white diagonal, green corner = newest token on itself"); return;
   }
   if (got >= 1 && !strcmp(name, "stat")) {          // "@stat": start counting; "@stat" again prints every head and resets
     if (g_attn_stat_on) {
