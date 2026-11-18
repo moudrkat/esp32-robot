@@ -306,7 +306,9 @@ static void desk_led() {                              // the wheels as light: br
   int r = eye_mood == 3 ? 255 : eye_r, g = eye_mood == 3 ? 0 : eye_g, b = eye_mood == 3 ? 0 : eye_b;
   if (desk_light) { r = g = b = 160; if (v < 25) v = 25; }
   r = r * v / 400; g = g * v / 400; b = b * v / 400;  // a quarter of full at speed 100: it is bright enough to film
+#if !defined(CAR_ATTN)                                // the 8x8 has the RMT peripheral to itself
   rgbLedWrite(48, r, g, b); rgbLedWrite(38, r, g, b);
+#endif
   eyes_show();                                        // and the ring, if there is one
 }
 static void c_buzz(void *, int) {}                    // no horn on the table
@@ -399,6 +401,7 @@ static void car_setup() {
 #endif
   eyes_px.begin(); eyes_px.setBrightness(EYES_BRIGHTNESS);
 #if defined(CAR_ATTN)
+  eyes_px.setBrightness(40);                            // few LEDs are lit at once
   g_attn.layer = 3; g_attn.head = 4;                    // the liveliest head whose weight stays inside the last 8 tokens (91 %)
 #endif
   eye_mood = 0; eyes_show();

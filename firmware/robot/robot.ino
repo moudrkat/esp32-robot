@@ -255,6 +255,9 @@ static void alloc_scratch() {
 }
 
 static void blink(uint8_t g) {
+#if defined(CAR_ATTN)
+  (void)g; return;                      // the board's own LED shares the RMT peripheral with the 8x8: leave it alone
+#endif
 #ifdef RGB_BUILTIN
   rgbLedWrite(RGB_BUILTIN, 0, g, g / 3);
 #endif
