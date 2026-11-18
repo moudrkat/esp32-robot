@@ -26,7 +26,7 @@ potom motory. Kdykoli můžeš skončit a máš hotovou věc.
 - [ ] jedno servo SG90 s páčkou a šroubkem
 - [ ] potenciometr 10k
 - [ ] podvozek: 4 motory, 4 kola, obě desky, sloupky, šroubky
-- [ ] 2× ovladač motorů L9110S
+- [ ] 2× ovladač motorů L9110S (H-můstek; malá červená destička se dvěma modrými svorkami)
 - [ ] dálkoměr (ultrazvukový, s nápisem RCWL-9610)
 - [ ] držák baterií se dvěma nabitými články 18650
 

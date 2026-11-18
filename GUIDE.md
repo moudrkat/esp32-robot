@@ -26,7 +26,7 @@ can do something new), then the motors. You can stop at any point and have a fin
 - [ ] one SG90 servo with its horn and screw
 - [ ] a 10k potentiometer
 - [ ] the chassis: 4 motors, 4 wheels, both plates, standoffs, screws
-- [ ] 2× L9110S motor driver
+- [ ] 2× L9110S motor driver (an H-bridge; a small red board with two blue screw terminals)
 - [ ] a rangefinder (ultrasonic, marked RCWL-9610)
 - [ ] a battery holder with two charged 18650 cells
 
