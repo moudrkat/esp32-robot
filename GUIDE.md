@@ -27,6 +27,7 @@ can do something new), then the motors. You can stop at any point and have a fin
 - [ ] a 10k potentiometer
 - [ ] the chassis: 4 motors, 4 wheels, both plates, standoffs, screws
 - [ ] 2× L9110S motor driver
+- [ ] a rangefinder (ultrasonic, marked RCWL-9610)
 - [ ] a battery holder with two charged 18650 cells
 
 **For soldering**
@@ -122,6 +123,27 @@ Little solder, briefly. The motor tabs are thin and the plastic around them melt
 ![Motors, two drivers, batteries and the board](recipe/5-wheels.svg)
 
 This is phase 1 below, with the board left on USB from the laptop instead of a second battery holder.
+
+### Course 6: a rangefinder (15 minutes, no soldering)
+
+Tape it to the front of the chassis, the two cylinders facing forward.
+
+| rangefinder | board |
+|---|---|
+| VCC | 3V3 |
+| GND | GND |
+| Trig | pin 9 |
+| Echo | pin 10 |
+
+**From 3.3 V, not 5 V.** On 5 V it would send a 5 V signal back into a board pin. It should say RCWL-9610; a classic HC-SR04 may not measure on 3.3 V.
+
+```
+!while 1:\n    clear()\n    text(0, 28, str(distance()) + " cm")\n    wait(200)
+go to the wall
+```
+
+- ✅ The screen shows the distance and the number drops with a hand in front. Then it drives to the wall and stops.
+- ❌ Always 400: Trig and Echo are swapped.
 
 ## How to build it: five phases, something works after each
 

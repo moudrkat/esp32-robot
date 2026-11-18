@@ -27,6 +27,7 @@ potom motory. Kdykoli můžeš skončit a máš hotovou věc.
 - [ ] potenciometr 10k
 - [ ] podvozek: 4 motory, 4 kola, obě desky, sloupky, šroubky
 - [ ] 2× ovladač motorů L9110S
+- [ ] dálkoměr (ultrazvukový, s nápisem RCWL-9610)
 - [ ] držák baterií se dvěma nabitými články 18650
 
 **Na pájení**
@@ -153,7 +154,28 @@ stop
 do a little dance
 ```
 
-Nemá ještě oči ani dálkoměr. Jakákoli nová věta ho zastaví dřív, než začne přemýšlet.
+Ještě nevidí. Jakákoli nová věta ho zastaví dřív, než začne přemýšlet.
+
+### Chod 6: dálkoměr (15 minut, bez pájení)
+
+Přilep ho dopředu na podvozek, válečky ve směru jízdy.
+
+| dálkoměr | deska |
+|---|---|
+| VCC | 3V3 |
+| GND | GND |
+| Trig | pin 9 |
+| Echo | pin 10 |
+
+**Z 3,3 V, ne z 5 V.** Na 5 V by vracel 5V signál do pinu desky. Má na něm být nápis RCWL-9610; klasický HC-SR04 na 3,3 V měřit nemusí.
+
+```
+!while 1:\n    clear()\n    text(0, 28, str(distance()) + " cm")\n    wait(200)
+go to the wall
+```
+
+- ✅ Displej ukazuje vzdálenost, s rukou před válečky číslo klesá. Potom dojede ke zdi a zastaví.
+- ❌ Pořád 400: prohozené Trig a Echo.
 
 ## Jak to postavit: pět fází, po každé něco funguje
 
