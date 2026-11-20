@@ -48,7 +48,17 @@
 #endif
 #ifndef MOTOR_L_SIGN
 #define MOTOR_L_SIGN 1         // -1 if the left wheels run backwards on move(60, 0, 0)
+#endif
+#ifndef MOTOR_R_SIGN
 #define MOTOR_R_SIGN 1
+#endif
+// Weak batteries: a geared motor needs more to start than to keep turning, so a side that starts from rest or turns
+// around gets full power for this long first. flash.sh writes generated/kick.h for KICK=150 (ms); 0 is off.
+#if __has_include("generated/kick.h")
+#include "generated/kick.h"
+#endif
+#ifndef MOTOR_KICK_MS
+#define MOTOR_KICK_MS 0
 #endif
 #ifndef CAR_COAST_MS
 #define CAR_COAST_MS 10000
@@ -91,6 +101,15 @@ static void car_wheels(int fwd, int turn) {
   int l = fwd + turn, r = fwd - turn;                 // turn right (+): left side faster
   l = l > 100 ? 100 : l < -100 ? -100 : l;
   r = r > 100 ? 100 : r < -100 ? -100 : r;
+  static int l_was = 0, r_was = 0;
+  bool kl = l && abs(l) < 100 && (!l_was || (l > 0) != (l_was > 0));
+  bool kr = r && abs(r) < 100 && (!r_was || (r > 0) != (r_was > 0));
+  if (MOTOR_KICK_MS > 0 && (kl || kr)) {
+    motor(PIN_ML_A, PIN_ML_B, MOTOR_L_SIGN * (kl ? (l > 0 ? 100 : -100) : l));
+    motor(PIN_MR_A, PIN_MR_B, MOTOR_R_SIGN * (kr ? (r > 0 ? 100 : -100) : r));
+    delay(MOTOR_KICK_MS);
+  }
+  l_was = l; r_was = r;
   motor(PIN_ML_A, PIN_ML_B, MOTOR_L_SIGN * l);
   motor(PIN_MR_A, PIN_MR_B, MOTOR_R_SIGN * r);
 }

@@ -6,6 +6,8 @@
 #   ATTN=1 DESK=1 ./flash.sh                   the 8x8 LEDs show one attention head while the model writes
 #   FLIP=right ./flash.sh                      the right wheels ran backwards on move(60, 0, 0): left | right | both;
 #                                              remembered for the next flash, FLIP=none forgets it
+#   KICK=150 ./flash.sh                        weak batteries: full power for 150 ms whenever a side starts from rest;
+#                                              remembered for the next flash, KICK=0 forgets it
 #   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
@@ -47,6 +49,14 @@ case "${FLIP:-}" in
   "")    ;;
   *)     echo "FLIP is left, right, both or none"; exit 1 ;;
 esac
+KICKH=firmware/robot/generated/kick.h
+case "${KICK:-}" in
+  "") ;;
+  0) rm -f "$KICKH" ;;
+  *[!0-9]*) echo "KICK is milliseconds, like 150"; exit 1 ;;
+  *) printf '#define MOTOR_KICK_MS %s\n' "$KICK" > "$KICKH" ;;
+esac
+[ -f "$KICKH" ] && echo "Start kick: $(cut -d' ' -f3 "$KICKH") ms of full power"
 [ -f "$WHEELS" ] && echo "Wheels flipped: $(tr '\n' ' ' < "$WHEELS")"
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
 [ -n "$ESPTOOL" ] || { echo "esptool not found: pip install esptool"; exit 1; }
