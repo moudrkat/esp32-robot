@@ -19,7 +19,7 @@ import string
 import sys
 from pathlib import Path
 
-from .lang import CW, EYES, H, W, IO0, Inputs, LangError, run
+from .lang import CW, EYES, H, W, IO0, Inputs, LangError, run, same
 
 # the inputs a reacting program is checked with: three presses and the knob turned up in steps
 PROBE = Inputs(presses=[(300, 500), (900, 1000), (1500, 1900)], knob=[(0, 10), (800, 60), (1600, 95)],
@@ -919,6 +919,10 @@ def c_drive(r):
                  "go ahead", "roll ahead"])
     if not back and r.random() < 0.08:
         verb, sp, v = pick(r, ["floor it", "hit the gas", "pedal to the metal"]), "", 100
+    if TALK and r.random() < 0.06:           # a verb that already says how little
+        d = pick(r, ["backwards", "back", "backward"]) if back else pick(r, ["forward", "forwards", "ahead"])
+        return f"{pick(r, ['inch', 'nudge', 'creep', 'edge', 'shuffle', 'budge', 'scooch', 'shift'])} {d}", \
+            f"move({-60 if back else 60}, 0, 0)\nwait(300)\nstop()\n"
     prompt = f"{verb} {phrase}" + (f" {sp}" if sp else "")
     return prompt, f"move({-v if back else v}, 0, 0)\nwait({ms})\nstop()\n"
 
@@ -1342,7 +1346,9 @@ def c_react(r):
         return p, f"while 1:\n    if {cond}:\n        rgb({c[0]}, {c[1]}, {c[2]})\n    else:\n        rgb(0, 0, 0)\n    wait(50)\n"
     if kind == "beep":
         p = pick(r, [f"beep when {when}", f"honk if {when}", f"when {when}, beep", f"warn me when {when}",
-                     f"make noise if {when}"])
+                     f"make noise if {when}", f"if {when}, scream", f"yell when {when}", f"when {when}, shout",
+                     f"squeal if {when}", f"cry out when {when}", f"sound the horn if {when}", f"if {when} make a sound",
+                     f"let me know when {when}", f"alert me if {when}", f"when {when}, toot"])
         return p, f"while 1:\n    if {cond}:\n        beep(150)\n    wait(50)\n"
     if kind == "say":
         w = pick(r, ["hey!", "hi!", "brr", "hot!", "whoa", "wow", "ouch", "hello", "careful", "oops"])
@@ -1719,6 +1725,272 @@ def silent_input(r, prompt, prog, fam):
     return prompt, out, {ch: v}
 
 
+# ---- plain talk (profile "talk"): the car profile, with wordings from a bank, steps chained freely, any trigger with
+# any action, the knob and the button, and more of what it cannot do. Templates teach a sentence; these teach the parts.
+TALK = False  # set by --profile talk: the older families may then say a few more things
+BANK = {}     # program as its family writes it -> many wordings of the same request (research/robot/phrases.jsonl)
+ATOMS = []    # banked programs that end on their own with the wheels still: usable as one step of something longer
+GOES = []     # banked programs that end with the wheels turning: only ever the last step
+
+
+STEP_FAMILIES = {"eyes", "look", "nod_arm", "lights", "voice", "honk", "dance", "turn", "drive", "shape", "go", "face",
+                 "circle", "star", "heart", "house", "square", "triangle", "arrow", "sun", "smiley"}   # not chat: no "when I clap, how are you"
+
+
+def load_bank(path):
+    fam = {}
+    for line in open(path):
+        o = json.loads(line)
+        BANK[o["program"]] = o["p"]
+        fam[o["program"]] = o.get("family")
+    for prog in BANK:
+        if fam[prog] not in STEP_FAMILIES or "while" in prog or len(prog) > 190 or any(x in prog for x in SENSES):
+            continue
+        try:
+            wheels = run(prog).io_log[-1][1][5:8]
+        except LangError:
+            continue
+        (GOES if any(wheels) else ATOMS).append(prog)
+
+
+_bare = lambda s: s.rstrip(" .!?").strip()
+SHOW_ASK = ['write "{w}"', 'write {w} on the screen', 'show "{w}"', 'show the word {w}', 'display "{w}"', 'put "{w}" on your screen',
+            'put up the word {w}', 'print {w}', 'show {w} on the display', 'type {w} on your screen', 'write out {w}',
+            'your screen should say {w}', 'let the screen say "{w}"', 'show my name: {w}', 'my name is {w}, show it',
+            'display the text {w}', 'can you show {w}', 'spell {w} on the screen', 'screen: {w}', 'text "{w}" please',
+            'i want to see {w} on your display', 'make the display read {w}', 'show this on the screen: {w}',
+            'write this: {w}', 'put the word "{w}" up', 'flash up {w}', 'have the screen show {w}', 'say {w} in writing']
+WAIT_ASK = ["wait {n} seconds", "pause for {n} seconds", "hold on {n} sec", "wait {n}s", "pause {n} seconds",
+            "stay still for {n} seconds", "wait for {n} seconds", "give it {n} seconds", "do nothing for {n} seconds"]
+
+
+def _talk_step(r, last=False):
+    """One step of a longer request: (wording, program). Mostly a banked action; sometimes a word, a pause, a drive."""
+    k = r.random()
+    if last and GOES and k < 0.12:
+        prog = pick(r, GOES)
+        return _bare(pick(r, BANK[prog])), prog
+    if k < 0.1:
+        w = word(r)[:14]
+        if r.random() < 0.25:
+            w = w.upper() if r.random() < 0.5 else w.capitalize()
+        return pick(r, SHOW_ASK).format(w=w), say(w)
+    if k < 0.18 and not last:
+        n = r.randint(1, 5)
+        return pick(r, WAIT_ASK).format(n=pick(r, [str(n), ["one", "two", "three", "four", "five"][n - 1]])), f"wait({n * 1000})\n"
+    if k < 0.32:
+        return c_drive(r)
+    if k < 0.42:
+        p, prog = c_turn(r)
+        return (p, prog) if len(prog) < 60 else _talk_step(r, last)
+    prog = pick(r, ATOMS)
+    return _bare(pick(r, BANK[prog])), prog
+
+
+def c_seq(r):
+    """Two to four things, one after another, said the ways people chain things. The program is the steps in the
+    order they should happen, which is not always the order they were said."""
+    n = pick(r, [2, 2, 2, 2, 3, 3, 3, 4])
+    steps = [_talk_step(r, last=i == n - 1) for i in range(n)]
+    if len({s[1] for s in steps}) < n or sum(len(s[1]) for s in steps) > 420:
+        return c_seq(r)
+    ps, prog = [s[0] for s in steps], "".join(s[1] for s in steps)
+    k = r.random()
+    if n == 2 and k < 0.18:                  # said backwards
+        a, b = ps
+        return pick(r, [f"{b}, but first {a}", f"before you {b}, {a}", f"{b} after you {a}", f"{b}, but {a} first",
+                        f"{b} - oh wait, {a} first", f"{b} once you {a}"]), prog
+    if k < 0.36:
+        mid = "".join(pick(r, [", then ", ". then ", ", next ", ". after that ", ", and then "]) + s for s in ps[1:-1])
+        end = pick(r, [", then ", ", and finally ", ". finally ", ", and then ", ", and last ", ". then ", " and to finish "]) + ps[-1]
+        return pick(r, ["first ", "first, ", "start with this: ", "ok first ", "1) "]) + ps[0] + mid + end, prog
+    if k < 0.44:
+        return " ".join(f"{i + 1}. {s}" for i, s in enumerate(ps)) if r.random() < 0.5 else " -> ".join(ps), prog
+    if k < 0.52:
+        return ". ".join(s[0].upper() + s[1:] for s in ps) + ".", prog
+    glue = [pick(r, [" then ", " and then ", ", then ", " and ", ", ", " after that ", " and after that ", "; ",
+                     ", followed by: ", " and next ", ", and when that's done ", " then also ", ", afterwards "])
+            for _ in range(n - 1)]
+    return ps[0] + "".join(g + s for g, s in zip(glue, ps[1:])), prog
+
+
+TRIGGERS = [  # (wordings that follow "when"/"if", condition)
+    (["i clap", "i clap my hands", "you hear a clap", "there's a loud noise", "it gets loud", "you hear a bang",
+      "someone claps", "i make a loud sound", "you hear me clap", "the room gets noisy"], "sound() > 60"),
+    (["i press the button", "i push the button", "the button is pressed", "i hit the button", "someone presses your button",
+      "i tap the button", "the button gets pushed", "you feel the button"], "button()"),
+    (["i pick you up", "someone picks you up", "someone lifts you", "you get picked up", "you're lifted off the ground",
+      "i lift you up", "you leave the ground", "you get lifted"], "tilt() > 30"),
+    (["you bump into something", "you hit something", "someone bumps you", "you crash into something", "i tap you",
+      "i shake you", "something hits you", "you get bumped", "you feel a knock", "i poke you"], "shaken()"),
+    (["something is close", "something gets in your way", "there's something in front of you", "an obstacle is near",
+      "something gets close", "you see something right ahead", "anything blocks your way", "something is right in front of you"],
+     "distance() < 20"),
+    (["something is behind you", "there's something right behind you", "anything gets close behind you",
+      "something sneaks up behind you"], "behind() < 20"),
+    (["you see a line", "you find the black tape", "you spot a line", "there's a line under you", "you notice the tape"],
+     "track() > 0"),
+    (["it gets hot", "it's hot in here", "the room heats up", "it gets really warm"], "temp() > 28"),
+    (["it gets cold", "it's cold in here", "the room cools down", "it gets chilly"], "temp() < 20"),
+    (["it gets humid", "the air is damp", "the air gets muggy", "it's humid in here"], "humidity() > 70"),
+]
+
+
+def _trigger(r):
+    k = r.random()
+    if k < 0.1:
+        n = pick(r, [5, 10, 15, 25, 30, 40, 50])
+        return pick(r, [f"something is closer than {n} cm", f"anything is within {n} cm", f"something is less than {n} cm away",
+                        f"an obstacle is under {n} cm away"]), f"distance() < {n}"
+    if k < 0.2:
+        n = r.randint(15, 30)
+        hot = r.random() < 0.5
+        return pick(r, [f"it's {'warmer' if hot else 'colder'} than {n} degrees", f"it gets {'above' if hot else 'below'} {n} degrees",
+                        f"the temperature goes {'over' if hot else 'under'} {n}"]), f"temp() {'>' if hot else '<'} {n}"
+    ws, cond = pick(r, TRIGGERS)
+    return pick(r, ws), cond
+
+
+def c_when(r):
+    """Any trigger with any action. "when/if/whenever" keeps watching; "wait until/as soon as/once" acts one time."""
+    t, cond = _trigger(r)
+
+    def act():
+        if r.random() < 0.12:
+            w = pick(r, ["ouch", "hey!", "hi!", "whoa", "oops", "help", "stop", "boo", "yay", "no!", "ok", "thanks"] + [word(r)[:10]])
+            if r.random() < 0.4:
+                w = w.upper()
+            return pick(r, SHOW_ASK).format(w=w), say(w)
+        prog = pick(r, ATOMS)
+        while any(x in prog for x in ("beep(250)", "rgb(")) or prog.count("\n") > 9:   # c_react has its own beep and colours
+            prog = pick(r, ATOMS)
+        return _bare(pick(r, BANK[prog])), prog
+
+    a, prog = act()
+    if r.random() < 0.2:                     # two things when it happens
+        a2, prog2 = act()
+        if prog2 != prog and len(prog) + len(prog2) < 260:
+            a, prog = a + pick(r, [" and ", " and then ", ", then ", " and also "]) + a2, prog + prog2
+    once = r.random() < 0.4
+    if once and r.random() < 0.3:            # "... then go": the wait ends in a drive that keeps going
+        if r.random() < 0.5 and GOES:
+            g = pick(r, GOES)
+            a, prog = _bare(pick(r, BANK[g])), g
+        else:
+            a, prog = c_drive(r)
+    if not once:
+        p = pick(r, [f"when {t}, {a}", f"if {t}, {a}", f"whenever {t}, {a}", f"every time {t}, {a}", f"{a} when {t}",
+                     f"{a} if {t}", f"{a} whenever {t}", f"each time {t} {a}", f"if {t} then {a}", f"{a} every time {t}",
+                     f"any time {t}, {a}", f"when {t} i want you to {a}"])
+        return p, f"while 1:\n    if {cond}:\n" + "".join("        " + l + "\n" for l in prog.splitlines()) + "    wait(50)\n"
+    p = pick(r, [f"wait until {t}, then {a}", f"as soon as {t}, {a}", f"once {t}, {a}", f"{a} as soon as {t}",
+                 f"don't do anything until {t}, then {a}", f"{a}, but only after {t}", f"hold still until {t} and then {a}",
+                 f"wait till {t} then {a}", f"the moment {t}, {a}", f"{a} once {t}", f"stay put until {t}, then {a}"])
+    return p, f"while not ({cond}):\n    wait(20)\n" + prog
+
+
+def c_curve(r):
+    left = r.random() < 0.5
+    s = "left" if left else "right"
+    return pick(r, [f"veer {s}", f"veer gently to the {s}", f"curve to the {s}", f"drive in a gentle {s} curve", f"bear {s}",
+                    f"drift {s} while driving", f"go forward but lean {s}", f"drive and curve {s}", f"steer a little {s} and keep going",
+                    f"keep driving, slightly to the {s}", f"arc to the {s}", f"veer gently to the {s} while driving",
+                    f"drive forward bending {s}", f"take a wide {s} curve"]), f"move(60, 0, {-30 if left else 30})\n"
+
+
+KNOB = [
+    (["use the knob to set your speed", "let me control the speed with the knob", "the knob is your throttle",
+      "drive as fast as the knob says", "knob controls how fast you go", "speed follows the knob", "let the dial set your speed",
+      "i'll set your speed with the potentiometer"], "while 1:\n    move(knob(), 0, 0)\n    wait(50)\n"),
+    (["use the knob to steer", "let me steer you with the knob", "the knob is your steering wheel", "steer with the dial",
+      "drive and let the knob steer", "knob controls the steering"], "while 1:\n    move(50, 0, knob() - 50)\n    wait(50)\n"),
+    (["use the knob to dim the light", "knob sets the brightness", "let the knob control how bright your light is",
+      "make the light as bright as the knob says", "dim your light with the dial", "brightness follows the knob"],
+     "while 1:\n    k = knob() * 255 // 100\n    rgb(k, k, k)\n    wait(50)\n"),
+    (["use the knob to set the light color", "let the knob pick the light colour", "knob changes the colour of your light",
+      "fade the light from blue to red with the knob", "the dial sets your light colour", "colour follows the knob"],
+     "while 1:\n    k = knob() * 255 // 100\n    rgb(k, 0, 255 - k)\n    wait(50)\n"),
+    (["turn your head with the knob", "let the knob move your head", "look where the knob points", "the knob aims your head",
+      "head follows the dial", "use the knob to look around"], "while 1:\n    look(knob() * 180 // 100 - 90)\n    wait(50)\n"),
+    (["show the knob value", "what does the knob say", "where is the knob set", "show me the knob position",
+      "display the potentiometer reading", "how far is the knob turned", "put the dial value on the screen"],
+     "while 1:\n    clear()\n    text(52, 28, str(knob()))\n    wait(100)\n"),
+    (["drive while i hold the button", "go only while the button is pressed", "move as long as i hold the button down",
+      "button held means go, released means stop", "drive when i hold the button and stop when i let go",
+      "the button is your gas pedal"], "while 1:\n    if button():\n        move(60, 0, 0)\n    else:\n        stop()\n    wait(20)\n"),
+    (["honk while i hold the button", "the button is your horn", "beep as long as the button is down",
+      "make noise while i press the button"], "while 1:\n    if button():\n        beep(100)\n    wait(20)\n"),
+]
+
+
+def c_blink2(r):
+    a, b = r.sample(list(COLOURS), 2)
+    ca, cb = COLOURS[a], COLOURS[b]
+    n = pick(r, [3, 3, 3, 2, 4, 5])
+    cnt = "" if n == 3 else f" {times(r, n)}"
+    p = pick(r, [f"blink the light {a} and {b}", f"flash {a} and {b}", f"alternate your light between {a} and {b}",
+                 f"blink {a} then {b}", f"flash your lights {a} and {b}", f"switch between {a} and {b} lights",
+                 f"go {a}, {b}, {a}, {b}", f"flicker {a} and {b}", f"make the light blink {a} and {b}",
+                 f"strobe {a} and {b}", f"{a} and {b} lights, blinking", f"pulse {a} and {b}"]) + cnt
+    return p, (f"for i in range({n}):\n    rgb({ca[0]}, {ca[1]}, {ca[2]})\n    wait(300)\n"
+               f"    rgb({cb[0]}, {cb[1]}, {cb[2]})\n    wait(300)\nrgb(0, 0, 0)\n")
+
+
+def c_knob(r):
+    ws, prog = pick(r, KNOB)
+    return pick(r, ws), prog
+
+
+CANT_TALK = [  # no clock, no camera, no voice, no ears for words, no network, no memory, no hands, no wings
+    "what time is it", "what's the time", "tell me the time", "what day is it", "what's the date today", "set a timer for ten minutes",
+    "wake me up at seven", "set an alarm", "how long until lunch", "what year is it",
+    "take a picture of me", "take a photo", "take a selfie", "record a video", "what do you see", "what colour is my shirt",
+    "do you recognize me", "who is standing in front of you", "read this sign", "scan this qr code", "how many fingers am i holding up",
+    "is that a cat or a dog", "describe the room",
+    "say my name out loud", "say hello out loud", "speak to me", "talk to me with your voice", "read this aloud", "tell me a story out loud",
+    "say something in french out loud", "sing the lyrics", "repeat after me", "use your voice",
+    "what did i just say", "did you hear what i said", "listen to this song and name it", "what language am i speaking",
+    "what's the weather tomorrow", "what's the weather in brno tomorrow", "will it rain today", "google something for me",
+    "search the internet", "check my email", "what's the news", "play despacito", "play some spotify", "call my mom",
+    "send a text to my wife", "post this on linkedin", "what's the bitcoin price", "translate this to german", "open youtube",
+    "connect to the wifi", "download an update",
+    "what did i ask you before", "do the same thing as yesterday", "remember my name", "what was my last command",
+    "do that again like five minutes ago", "what's my name",
+    "fly", "fly to the ceiling", "jump over this", "climb the stairs", "slide sideways", "strafe left", "move sideways to the right",
+    "drive up the wall", "do a backflip", "swim across the sink", "hover",
+    "bring me a coffee", "grab that pen", "pick up the cable", "hand me the screwdriver", "open the window", "press the elevator button",
+    "pour me a drink", "carry my bag", "hold my beer", "tie my shoes",
+    "what's two plus two", "solve this equation", "write me a poem", "explain quantum physics", "who is the president",
+    "what's the capital of france", "tell me a joke out loud", "how old are you in dog years", "what is the meaning of life",
+    "charge yourself", "turn yourself off", "print a document", "measure my height", "weigh this apple", "smell the coffee",
+    "taste this", "what does this feel like", "check my pulse", "find the wifi password",
+]
+
+
+def c_cant_talk(r):
+    p = pick(r, CANT_TALK)
+    if r.random() < 0.5:
+        p = pick(r, ["can you ", "could you ", "please ", "hey, ", "i want you to ", "robot, ", "quick, ", "ok now ", ""]) + p
+    return p + pick(r, ["", "", "", "?", " please", " for me", " now"]), 'eyes("sad")\n' + say("can't do that")
+
+
+def c_show(r):
+    w = word(r)[:21]
+    if r.random() < 0.25:
+        w = w.upper() if r.random() < 0.5 else w.capitalize()
+    return pick(r, SHOW_ASK).format(w=w), say(w)
+
+
+def c_answer(r):
+    """An answer in words on the screen: why it cannot, a yes or no from a sensor, small talk (research/robot/answers.py)."""
+    from research.robot.answers import ANSWERS
+    _, _, examples, prog = pick(r, ANSWERS)
+    return pick(r, BANK.get(prog, []) + examples), prog
+
+
+TALK_FAMILIES = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2]
+
+
 CAR_FAMILIES = [c_drive, c_turn, c_shape, c_dance, c_until_close, c_avoid, c_line_follow, c_line_stop,
                 c_follow_hand, c_parking, c_look, c_show_sensor, c_guard, c_climate, c_crash, c_stop,
                 c_chat, c_lights, c_honk, c_combo, c_react, c_face,
@@ -1742,6 +2014,9 @@ PROFILES = {
     "car": CAR_FAMILIES + [f_text, f_two_lines, f_count, f_circle, f_smiley, f_beep, f_blink, f_led_blink, f_unknown,
                            f_blink_screen, f_heart, f_star, f_house, f_square, f_triangle, f_sun, f_arrow],
 }
+PROFILES["talk"] = PROFILES["car"] + TALK_FAMILIES      # needs --bank
+CAR_WEIGHT.update({"seq": 12, "when": 10, "curve": 1, "knob": 3, "answer": 9, "show": 3, "blink2": 2})
+TALK_WEIGHT = {"cant": 2}               # the plain "can't do that" stays as the fallback; a reason is the better answer
 POLITE_PRE = ["please ", "can you ", "could you ", "now ", "hey, ", "ok ", "i want you to ", "go ahead and ", "pls ",
               "would you ", "let's "]
 POLITE_POST = [" please", " for me", " now", ".", "!", " on the screen", " on the display", " on the oled", " thanks"]
@@ -1759,9 +2034,44 @@ def polite(r, prompt):
 
 # the frozen free-form test: no generated request may contain one of its lines, so it stays a test
 _norm = lambda t: " ".join(re.sub(r"[^a-z0-9' ]", " ", t.lower()).split())
-HELDOUT = [_norm(l) for f in ("heldout_talk.txt", "heldout2_talk.txt", "heldout3_talk.txt", "heldout4_talk.txt")
+HELDOUT = [_norm(l) for f in ("heldout_talk.txt", "heldout2_talk.txt", "heldout3_talk.txt", "heldout4_talk.txt",
+                                    "dev5_talk.txt", "heldout5_talk.txt")
            if (Path(__file__).parents[1] / "robot" / f).exists()
            for l in (Path(__file__).parents[1] / "robot" / f).read_text().splitlines() if l.strip()]
+
+
+_MOVE4 = re.compile(r"\s*move\(.+, .+, .+, \d+\)")
+
+
+def timed(prog):
+    """The same program with the time inside the move: move(60, 0, 0) / wait(2000) / stop() is move(60, 0, 0, 2000).
+    A move that says how long cannot be left running by a forgotten stop(). Short waits (a loop polling a sensor) stay
+    as they are, and so does anything that would not do the same thing afterwards."""
+    lines, out, i = prog.split("\n"), [], 0
+    ind = lambda s: len(s) - len(s.lstrip())
+    while i < len(lines):
+        m = re.fullmatch(r"(\s*)move\((.+)\)", lines[i])
+        w = re.fullmatch(r"(\s*)wait\((\d+)\)", lines[i + 1]) if i + 1 < len(lines) else None
+        if m and w and m.group(1) == w.group(1) and int(w.group(2)) >= 150 and m.group(2).count(",") == 2:
+            out.append(f"{m.group(1)}move({m.group(2)}, {w.group(2)})")
+            i += 2
+            continue
+        if lines[i].strip() == "stop()" and out and _MOVE4.fullmatch(out[-1]):
+            d = ind(out[-1]) - ind(lines[i])
+            head = next((l for l in reversed(out) if ind(l) == ind(lines[i])), "")
+            if d == 0 or (d == 4 and head.lstrip().startswith("for ")):
+                i += 1
+                continue
+        out.append(lines[i])
+        i += 1
+    new = "\n".join(out)
+    if new == prog:
+        return prog
+    try:
+        a, b = (run(p, PROBE, horizon=3000) if reacts(p) else run(p) for p in (prog, new))
+    except LangError:
+        return prog
+    return new if same(a, b) else prog
 
 
 def main():
@@ -1771,17 +2081,30 @@ def main():
     ap.add_argument("--profile", default="all", choices=sorted(PROFILES))
     ap.add_argument("--out", default=str(OUT))
     ap.add_argument("--cond", action="store_true", help="also moods as non-word inputs (a 'cond' field per row)")
+    ap.add_argument("--timed", action="store_true", help="moves carry their time: move(f, s, r, ms), see timed()")
+    ap.add_argument("--bank", help="phrases.jsonl: many more wordings per fixed program (research/robot/phrases.jsonl)")
     args = ap.parse_args()
     r = random.Random(args.seed)
     seen, rows, bad = set(), [], {}
+    global TALK
+    TALK = args.profile == "talk"
+    if args.bank:                       # program -> wordings written by a large model; the labels hold by construction
+        load_bank(args.bank)
+    bank = BANK
+    car_like = CAR_FAMILIES + TALK_FAMILIES
     for _ in range(args.n):
         fams = PROFILES[args.profile] or (FAMILIES + CAR_FAMILIES)
-        if args.profile == "car":
+        if args.profile in ("car", "talk"):
             wts = [CAR_WEIGHT.get(f.__name__[2:], 3 if f in CAR_FAMILIES else 1) for f in fams]
+            if args.profile == "talk":
+                wts = [TALK_WEIGHT.get(f.__name__[2:], w) for f, w in zip(fams, wts)]
         else:
             wts = [(3 if f in CAR_FAMILIES else WEIGHT.get(f.__name__[2:], 1)) for f in fams]
         fam = r.choices(fams, weights=wts)[0]
         prompt, prog = fam(r)
+        banked = prog in bank and r.random() < 0.5
+        if banked:
+            prompt = pick(r, bank[prog])
         cond = None
         moodable = fam in CAR_FAMILIES and fam not in (c_chat, c_cant, c_eyes, c_face) and "while 1" not in prog
         k_ = r.random()
@@ -1791,9 +2114,16 @@ def main():
             prog, cond = silent_mood(r, prog, fam)
         elif moodable and args.cond and k_ < 0.5:
             prompt, prog, cond = silent_input(r, prompt, prog, fam)
-        if fam in CAR_FAMILIES:
+        if args.profile == "talk" and fam in (c_shape, c_dance, c_drive, c_turn, c_go) and r.random() < 0.12:
+            prompt += pick(r, [" across the table", " across the room", " on the floor", " on the desk", " around the room",
+                               " over there", " on the table", " across the floor", " in the kitchen", " right here"])
+        if args.timed:
+            prog = timed(prog)
+        if (banked or fam in TALK_FAMILIES) and r.random() < 0.6:
+            pass                        # a banked wording is already how someone talks: mostly left as it is
+        elif fam in car_like:
             prompt = car_polish(r, prompt)
-        elif args.profile == "car" and r.random() < 0.3:   # a screen request said casually; no closer that could be text
+        elif args.profile in ("car", "talk") and r.random() < 0.3:   # a screen request said casually; no closer that could be text
             prompt = pick(r, ["yo ", "hey buddy, ", "ok little guy, ", "car, ", "dude ", "hey, ", "can you ", "pls ",
                               "little car, ", "alright, "]) + prompt + pick(r, ["", "", " pls", " thx", "!"])
         else:
@@ -1804,7 +2134,7 @@ def main():
         if len(prompt) + len(prog) > 640:   # past the model's 256-token window it would learn half a program
             continue
         np_ = _norm(prompt)
-        if any(h in np_ for h in HELDOUT):
+        if any(h == np_ or (h.count(" ") >= 4 and h in np_) for h in HELDOUT):   # a short test line ("turn left") only as itself
             bad["held-out line"] = bad.get("held-out line", 0) + 1
             continue
         key = (prompt, prog)
@@ -1814,6 +2144,7 @@ def main():
         try:
             s = run(prog, PROBE, horizon=3000) if reacts(prog) else run(prog)
             acted = any(sum(f) for _, f in s.frames) or len(s.io_log) > 1 or s.io_log[0][1] != IO0 \
+                or fam in TALK_FAMILIES \
                 or fam in (f_led_set, f_rgb_off, c_stop, c_look, c_guard, c_climate, c_react, c_lights, c_eyes,
                            c_nod_arm, c_ears)
             assert fam is f_clear_screen or acted, "nothing drawn"
