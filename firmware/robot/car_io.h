@@ -101,15 +101,22 @@ static void car_wheels(int fwd, int turn) {
   int l = fwd + turn, r = fwd - turn;                 // turn right (+): left side faster
   l = l > 100 ? 100 : l < -100 ? -100 : l;
   r = r > 100 ? 100 : r < -100 ? -100 : r;
-  static int l_was = 0, r_was = 0;
+  static int l_was = 0, r_was = 0;                    // the last speed that was not a stop, and when the stop came:
+  static unsigned long l_rest = 0, r_rest = 0;        // wheels stopped for under 50 ms are still turning
+  unsigned long now = millis();
+  if (!l && l_was && !l_rest) l_rest = now;
+  if (!r && r_was && !r_rest) r_rest = now;
+  if (l_rest && now - l_rest >= 50) { l_was = 0; }
+  if (r_rest && now - r_rest >= 50) { r_was = 0; }
   bool kl = l && abs(l) < 100 && (!l_was || (l > 0) != (l_was > 0));
   bool kr = r && abs(r) < 100 && (!r_was || (r > 0) != (r_was > 0));
+  if (l) { l_was = l; l_rest = 0; }
+  if (r) { r_was = r; r_rest = 0; }
   if (MOTOR_KICK_MS > 0 && (kl || kr)) {
     motor(PIN_ML_A, PIN_ML_B, MOTOR_L_SIGN * (kl ? (l > 0 ? 100 : -100) : l));
     motor(PIN_MR_A, PIN_MR_B, MOTOR_R_SIGN * (kr ? (r > 0 ? 100 : -100) : r));
     delay(MOTOR_KICK_MS);
   }
-  l_was = l; r_was = r;
   motor(PIN_ML_A, PIN_ML_B, MOTOR_L_SIGN * l);
   motor(PIN_MR_A, PIN_MR_B, MOTOR_R_SIGN * r);
 }

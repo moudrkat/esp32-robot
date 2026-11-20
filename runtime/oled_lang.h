@@ -95,7 +95,7 @@ static const char *OL_FN[F__N] = {"clear", "text", "pixel", "line", "rect", "fil
                                   "move", "stop", "look", "distance", "track", "tilt", "shaken", "temp", "humidity",
                                   "sound", "behind", "eyes", "tone", "nod", "arm"};
 static const int8_t OL_ARGS[F__N] = {0, 3, 2, 4, 4, 4, 3, 1, 1, 1, -1, -1, -2, 1, 3, 1, 0, 0,
-                                     3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1};   // -1: 1+ args, -2: 1..3
+                                     -3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 1};   // -1: 1+ args, -2: 1..3, -3: 3 or 4
 
 // a node: kind, small op/fn field, int payload, and children as a linked list (first child, next sibling)
 typedef struct { uint8_t kind, op; int16_t first, next; int32_t ival; uint16_t sstart, slen; } ol_node;
@@ -235,8 +235,8 @@ static int ol_atom(ol_machine *m) {
       if (ol_expect_op(m, ")")) return -1;
       int want = OL_ARGS[f];
       if (f == F_RANGE) return ol_fail(m, "range only in a for loop");
-      if ((want >= 0 && argc != want) || (want == -1 && argc < 1)) {
-        char b[64]; snprintf(b, sizeof b, "%s takes %d arguments", OL_FN[f], want); return ol_fail(m, b);
+      if ((want >= 0 && argc != want) || (want == -1 && argc < 1) || (want == -3 && argc != 3 && argc != 4)) {
+        char b[64]; snprintf(b, sizeof b, "%s takes %d arguments", OL_FN[f], want == -3 ? 3 : want); return ol_fail(m, b);
       }
       m->node[n].ival = argc;
       return n;
@@ -572,6 +572,10 @@ static int ol_eval(ol_machine *m, int id, ol_val *out, ol_io *io) {
     case F_MOVE: {
       int c[3]; for (int k = 0; k < 3; k++) c[k] = a[k].i < -100 ? -100 : a[k].i > 100 ? 100 : a[k].i;
       if (io->move) io->move(io->ctx, c[0], c[1], c[2]);
+      if (argc == 4) {                         // move(f, s, r, ms): as tone, it holds for ms and then lets go
+        if (ol_wait(m, io, a[3].i)) return -1;
+        if (io->move) io->move(io->ctx, 0, 0, 0);
+      }
       break;
     }
     case F_STOP: if (io->move) io->move(io->ctx, 0, 0, 0); break;

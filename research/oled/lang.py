@@ -20,6 +20,7 @@ Hardware (the board maps each to a pin in its firmware, so a program never names
 A car (four Mecanum wheels, a head on a servo with a distance sensor, two line sensors):
 
     move(f, s, r)               forward, sideways (right +), turn (right +), each -100..100; keeps going
+    move(f, s, r, ms)           the same for ms, then the wheels stop (it waits that long)
     stop()                      all wheels stop
     look(a)                     the head turns to a degrees, -90 (left) .. 90 (right)
     distance()                  cm to whatever the head looks at
@@ -104,9 +105,12 @@ class Screen:
         self.wait(ms)
         self.set_io(self.io[:4] + (0,) + self.io[5:])
 
-    def move(self, f, s, r):
+    def move(self, f, s, r, ms=None):
         c = lambda v: max(-100, min(100, v))
         self.set_io(self.io[:5] + (c(f), c(s), c(r)) + self.io[8:])
+        if ms is not None:              # as beep and tone: it holds for ms, then lets go
+            self.wait(ms)
+            self.stop()
 
     def stop(self):
         self.set_io(self.io[:5] + (0, 0, 0) + self.io[8:])
@@ -284,7 +288,7 @@ def check(src):
                 if not 1 <= len(node.args) <= 3:
                     raise LangError("range takes 1 to 3 numbers")
             elif f in DRAW:
-                if len(node.args) != DRAW[f]:
+                if len(node.args) != DRAW[f] and not (f == "move" and len(node.args) == 4):
                     raise LangError(f"{f} takes {DRAW[f]} arguments")
             elif f in SENSE:
                 if node.args:
@@ -474,7 +478,19 @@ def same(a, b):
     same hardware states in the same order (LED, colour, buzzer, wheels, head, eyes, tone, arm)."""
     fa, fb = [f for _, f in a.frames], [f for _, f in b.frames]
     dedup = lambda fs: [f for i, f in enumerate(fs) if i == 0 or f != fs[i - 1]]
-    return dedup(fa) == dedup(fb) and dedup([v for _, v in a.io_log]) == dedup([v for _, v in b.io_log])
+    return dedup(fa) == dedup(fb) and dedup(_no_blips(a.io_log)) == dedup(_no_blips(b.io_log))
+
+
+def _no_blips(log):
+    """The hardware states without wheel stops that last no time: move(60, 0, 0, 300) then move(-60, 0, 0, 300) stops
+    between the two for 0 ms, and is the same drive as move / wait / move / wait / stop."""
+    out = []
+    for i, (t, v) in enumerate(log):
+        blip = (0 < i < len(log) - 1 and log[i + 1][0] == t and v[5:8] == (0, 0, 0) and any(log[i - 1][1][5:8])
+                and v[:5] + v[8:] == log[i - 1][1][:5] + log[i - 1][1][8:])
+        if not blip:
+            out.append(v)
+    return out
 
 
 def same_timed(a, b, step=10):

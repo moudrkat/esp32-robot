@@ -29,8 +29,8 @@ HITS = re.compile(r"move\((\d+), 0, -?\d+\)\n(while shaken\(\) == 0|while not \(
 
 
 def top_speed(prog):
-    ms = re.findall(r"move\((-?\d+), (-?\d+), (-?\d+)\)", prog)
-    if not ms or "move(" in re.sub(r"move\(-?\d+, -?\d+, -?\d+\)", "", prog):
+    ms = re.findall(r"move\((-?\d+), (-?\d+), (-?\d+)(?:, \d+)?\)", prog)
+    if not ms or "move(" in re.sub(r"move\(-?\d+, -?\d+, -?\d+(?:, \d+)?\)", "", prog):
         return None
     return max(max(abs(int(a)), abs(int(c))) for a, _, c in ms)
 
