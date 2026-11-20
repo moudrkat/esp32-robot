@@ -5,3 +5,5 @@ __pycache__/
 *.pt
 firmware/robot/generated/wifi.h
 firmware/robot/generated/desk.h
+firmware/robot/generated/wheels.h
+firmware/robot/generated/attn.h

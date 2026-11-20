@@ -4,6 +4,8 @@
 #   ROBOT_WIFI_PASS='at least 8 chars' ./flash.sh   also gives it its own Wi-Fi "esp32-robot" and a page for your phone
 #   DESK=1 ./flash.sh                          no car: just the board and its screen (see "On the table" in the README)
 #   ATTN=1 DESK=1 ./flash.sh                   the 8x8 LEDs show one attention head while the model writes
+#   FLIP=right ./flash.sh                      the right wheels ran backwards on move(60, 0, 0): left | right | both;
+#                                              remembered for the next flash, FLIP=none forgets it
 #   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
@@ -36,6 +38,16 @@ if [ "${ATTN:-0}" = 1 ]; then
 else
   rm -f "$ATTNH"
 fi
+WHEELS=firmware/robot/generated/wheels.h
+case "${FLIP:-}" in
+  left)  echo '#define MOTOR_L_SIGN -1' > "$WHEELS" ;;
+  right) echo '#define MOTOR_R_SIGN -1' > "$WHEELS" ;;
+  both)  printf '#define MOTOR_L_SIGN -1\n#define MOTOR_R_SIGN -1\n' > "$WHEELS" ;;
+  none)  rm -f "$WHEELS" ;;
+  "")    ;;
+  *)     echo "FLIP is left, right, both or none"; exit 1 ;;
+esac
+[ -f "$WHEELS" ] && echo "Wheels flipped: $(tr '\n' ' ' < "$WHEELS")"
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
 [ -n "$ESPTOOL" ] || { echo "esptool not found: pip install esptool"; exit 1; }
 [ "${BUILD_ONLY:-0}" = 1 ] && { arduino-cli compile --fqbn "$FQBN" --build-property "upload.maximum_size=2097152" --build-path build firmware/robot; exit 0; }

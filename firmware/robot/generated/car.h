@@ -17,3 +17,7 @@
 #if __has_include("attn.h")
 #include "attn.h"
 #endif
+// flash.sh writes wheels.h for FLIP=left|right|both: that side runs the other way; it stays until FLIP=none
+#if __has_include("wheels.h")
+#include "wheels.h"
+#endif
