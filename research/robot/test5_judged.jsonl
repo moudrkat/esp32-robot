@@ -1,0 +1,88 @@
+{"request": "well done buddy", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\nfor i in range(2):\n    move(0, 0, 80, 250)\n    move(0, 0, -80, 250)\n", "ok": true}
+{"request": "go forward and stop before you hit something", "program": "move(60, 0, 0)\nwhile distance() > 20:\n    wait(20)\nstop()\n", "ok": true}
+{"request": "display the word PRAGUE in big letters", "program": "clear()\ntext(19, 28, \"PRAGUE A LAZING\")\n", "ok": false}
+{"request": "reverse", "program": "move(-50, 0, 0)\n", "ok": true}
+{"request": "fly", "program": "eyes(\"sad\")\nclear()\ntext(25, 28, \"can't do that\")\n", "ok": true}
+{"request": "back up, turn around and flash your lights", "program": "move(-60, 0, 0, 300)\nrgb(255, 255, 255)\n", "ok": false}
+{"request": "what's the temperature in this room?", "program": "while 1:\n    clear()\n    text(40, 28, str(temp()) + \" C\")\n    wait(200)\n", "ok": true}
+{"request": "make a circle", "program": "clear()\ncircle(64, 32, 20)\n", "ok": true}
+{"request": "look angry", "program": "eyes(\"angry\")\ntone(200, 400)\n", "ok": true}
+{"request": "turn right a bit", "program": "move(0, 0, 60, 700)\n", "ok": true}
+{"request": "every time there's a loud noise, blink your eyes", "program": "while 1:\n    if sound() > 60:\n        for i in range(2):\n            eyes(\"closed\")\n            wait(150)\n            eyes(\"open\")\n            wait(300)\n    wait(50)\n", "ok": true}
+{"request": "shake your head no", "program": "for i in range(3):\n    look(-40)\n    wait(250)\n    look(40)\n    wait(250)\nlook(0)\n", "ok": true}
+{"request": "you're so cute", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\nfor i in range(2):\n    move(0, 0, 80, 250)\n    move(0, 0, -80, 250)\n", "ok": true}
+{"request": "countdown from 5 then show GO", "program": "for i in range(5, 0, -1):\n    clear()\n    text(60, 28, str(i))\n    wait(300)\nclear()\ntext(58, 28, \"GO\")\n", "ok": true}
+{"request": "move forward 2 sec then stop", "program": "move(60, 0, 0, 2000)\n", "ok": true}
+{"request": "do what i asked you last time again", "program": "eyes(\"sad\")\nclear()\ntext(7, 28, \"I forget everything\")\n", "ok": true}
+{"request": "look dizzy if someone shakes you", "program": "while 1:\n    if shaken():\n        eyes(\"dizzy\")\n        look(-40)\n        wait(200)\n        look(40)\n        wait(200)\n        look(0)\n    wait(50)\n", "ok": true}
+{"request": "wave hello and then play a little song", "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n", "ok": true}
+{"request": "is there anything behind you?", "program": "while 1:\n    clear()\n    if behind() < 30:\n        text(22, 28, \"yes, behind me\")\n    else:\n        text(31, 28, \"no, nothing\")\n    wait(200)\n", "ok": true}
+{"request": "show me your best dance moves with music", "program": "for i in range(3):\n    move(0, 0, 80, 300)\n    move(0, 0, -80, 300)\n", "ok": false}
+{"request": "turn your light purple pls", "program": "rgb(160, 0, 255)\n", "ok": true}
+{"request": "let me control your speed with the potentiometer", "program": "while 1:\n    move(knob(), 0, 0)\n    wait(50)\n", "ok": true}
+{"request": "are you happy?", "program": "eyes(\"happy\")\nclear()\ntext(37, 28, \"all good!\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n", "ok": true}
+{"request": "please drive straight for about half a meter", "program": "move(60, 0, 0)\n", "ok": false}
+{"request": "spin in place 3 times", "program": "move(0, 0, 60, 8400)\n", "ok": true}
+{"request": "draw a rectangle with a cross inside", "program": "clear()\ntext(61, 28, \"?\")\n", "ok": true}
+{"request": "google the nearest pizza place", "program": "eyes(\"sad\")\nclear()\ntext(10, 28, \"no sensor for that\")\n", "ok": true}
+{"request": "drive around but stay inside the black tape", "program": "while 1:\n    if track() > 0:\n        move(60, 0, 30, 4000)\n    wait(50)\n", "ok": false}
+{"request": "count to three on the screen then honk", "program": "for i in range(1, 4):\n    clear()\n    text(60, 28, str(i))\n    wait(300)\nclear()\ntext(49, 28, \"honks\")\n", "ok": false}
+{"request": "show heart eyes", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n", "ok": true}
+{"request": "look around", "program": "look(-90)\nwait(500)\nlook(90)\nwait(500)\nlook(0)\n", "ok": true}
+{"request": "how close is my hand", "program": "while 1:\n    clear()\n    text(40, 28, str(distance()) + \" cm\")\n    wait(200)\n", "ok": true}
+{"request": "good night robot", "program": "stop()\neyes(\"sleepy\")\nclear()\ntext(52, 28, \"bye!\")\nwait(1500)\neyes(\"closed\")\nclear()\n", "ok": true}
+{"request": "drive a triangle", "program": "for i in range(3):\n    move(60, 0, 0, 1000)\n    move(0, 0, 60, 933)\n", "ok": true}
+{"request": "turn the light red if it's too humid in here", "program": "while 1:\n    if humidity() > 70:\n        rgb(255, 0, 0)\n    else:\n        rgb(0, 0, 0)\n    wait(50)\n", "ok": true}
+{"request": "go fast for one second", "program": "move(90, 0, 0, 1000)\n", "ok": true}
+{"request": "put a star on the oled", "program": "clear()\nline(64, 12, 76, 48)\nline(76, 48, 45, 26)\nline(45, 26, 83, 26)\nline(83, 26, 52, 48)\nline(52, 48, 64, 12)\n", "ok": true}
+{"request": "slide sideways to the left without turning", "program": "eyes(\"sad\")\nclear()\ntext(10, 28, \"no sensor for that\")\n", "ok": true}
+{"request": "explore the table without falling off the edge", "program": "while 1:\n    move(40, 0, 0)\n    if track() == 3:\n        stop()\n        move(-50, 0, 0)\n        wait(500)\n        move(0, 0, 60)\n        wait(700)\n    wait(20)\n", "ok": true}
+{"request": "go straight then left then straight then left", "program": "move(60, 0, 0, 300)\nmove(0, 0, -60, 700)\n", "ok": false}
+{"request": "are you standing on a black line?", "program": "while 1:\n    clear()\n    if track() > 0:\n        text(31, 28, \"yes, a line\")\n    else:\n        text(28, 28, \"no line here\")\n    wait(200)\n", "ok": true}
+{"request": "face the other way", "program": "move(0, 0, 60, 1400)\n", "ok": true}
+{"request": "that was wrong, dummy", "program": "eyes(\"happy\")\nclear()\ntext(40, 28, \"it's ok!\")\n", "ok": false}
+{"request": "rainbow lights", "program": "for i in range(2):\n    rgb(255, 0, 0)\n    wait(300)\n    rgb(255, 80, 0)\n    wait(300)\n    rgb(255, 180, 0)\n    wait(300)\n    rgb(0, 255, 0)\n    wait(300)\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(160, 0, 255)\n    wait(300)\nrgb(0, 0, 0)\n", "ok": true}
+{"request": "roam around and turn away whenever you crash into stuff", "program": "while 1:\n    move(60, 0, 0)\n    if distance() < 20:\n        stop()\n        look(-60)\n        wait(300)\n        left = distance()\n        look(60)\n        wait(300)\n        right = distance()\n        look(0)\n        if left > right:\n            move(0, 0, -60)\n        else:\n            move(0, 0, 60)\n        wait(700)\n    wait(20)\n", "ok": true}
+{"request": "do a little shimmy", "program": "for i in range(3):\n    move(0, 0, 80, 300)\n    move(0, 0, -80, 300)\n", "ok": true}
+{"request": "say hi with your arm", "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": true}
+{"request": "nod, wink, and then reverse slowly", "program": "eyes(\"wink\")\nwait(400)\neyes(\"open\")\nmove(-30, 0, 0)\n", "ok": false}
+{"request": "what is the knob set to?", "program": "while 1:\n    clear()\n    text(52, 28, str(knob()))\n    wait(100)\n", "ok": true}
+{"request": "creep forward at like 20 percent speed", "program": "move(60, 0, 0, 300)\n", "ok": false}
+{"request": "reverse and beep faster as you get closer to something behind you", "program": "while 1:\n    if behind() < 20:\n        move(-60, 0, 0, 800)\n    wait(50)\n", "ok": false}
+{"request": "can you recognize my face?", "program": "eyes(\"sad\")\nclear()\ntext(16, 28, \"no internet here\")\n", "ok": true}
+{"request": "hey whats up", "program": "eyes(\"happy\")\nclear()\ntext(55, 28, \"hi!\")\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": true}
+{"request": "can u show a bouncing ball", "program": "clear()\ntext(25, 28, \"aust rit\")\n", "ok": false}
+{"request": "make a wide curve to the right", "program": "move(60, 0, 30)\n", "ok": true}
+{"request": "honk!", "program": "beep(250)\n", "ok": true}
+{"request": "run away when I get close to your face", "program": "while 1:\n    if distance() < 20:\n        move(-60, 0, 0, 800)\n    wait(50)\n", "ok": true}
+{"request": "spin left, spin right, then take a bow", "program": "move(0, 0, -60, 2800)\nmove(0, 0, 60, 2800)\n", "ok": false}
+{"request": "go around in a big oval twice", "program": "for i in range(2):\n    move(40, 0, 70, 400)\n    move(40, 0, -70, 400)\nmove(0, 0, 90, 2800)\n", "ok": false}
+{"request": "tilt your head down and then back up", "program": "nod(-40)\neyes(\"down\")\n", "ok": false}
+{"request": "display the word PRAGUE in big letters", "program": "clear()\ntext(22, 28, \"PRAGUE infuge\")\n", "ok": false}
+{"request": "back up, turn around and flash your lights", "program": "move(-0, 0, 60)\nwait(1400)\nstop()\nfor i in range(2):\n    rgb(255, 0, 0)\n    wait(300)\n    rgb(255, 80, 0)\n    wait(300)\n    rgb(255, 180, 0)\n    wait(300)\n    rgb(0, 255, 0)\n    wait(300)\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(160, 0, 255)\n    wait(300)\nrgb(0, 0, 0)\n", "ok": false}
+{"request": "every time there's a loud noise, blink your eyes", "program": "for i in range(2):\n    eyes(\"closed\")\n    wait(150)\n    eyes(\"open\")\n    wait(300)\n", "ok": false}
+{"request": "do what i asked you last time again", "program": "clear()\ntext(31, 28, \"domice igain\")\n", "ok": false}
+{"request": "look dizzy if someone shakes you", "program": "eyes(\"dizzy\")\nlook(-40)\nwait(200)\nlook(40)\nwait(200)\nlook(0)\n", "ok": false}
+{"request": "wave hello and then play a little song", "program": "eyes(\"happy\")\nclear()\ntext(55, 28, \"hi!\")\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": false}
+{"request": "is there anything behind you?", "program": "while 1:\n    clear()\n    text(40, 28, str(behind()) + \" cm\")\n    wait(200)\n", "ok": true}
+{"request": "let me control your speed with the potentiometer", "program": "clear()\ntext(19, 20, \"control your\")\ntext(10, 36, \"potentacomeout\")\n", "ok": false}
+{"request": "please drive straight for about half a meter", "program": "while 1:\n    clear()\n    text(52, 28, str(sound()))\n    wait(100)\n", "ok": false}
+{"request": "google the nearest pizza place", "program": "while 1:\n    clear()\n    text(40, 28, str(tilt()) + \" deg\")\n    wait(200)\n", "ok": false}
+{"request": "drive around but stay inside the black tape", "program": "while 1:\n    clear()\n    text(40, 28, str(tilt()) + \" deg\")\n    wait(200)\n", "ok": false}
+{"request": "count to three on the screen then honk", "program": "for i in range(1, 4):\n    clear()\n    text(60, 28, str(i))\n    wait(300)\n", "ok": false}
+{"request": "how close is my hand", "program": "while 1:\n    clear()\n    text(40, 28, str(humidity()) + \" %\")\n    wait(200)\n", "ok": false}
+{"request": "slide sideways to the left without turning", "program": "move(0, 0, -60)\nwait(700)\nstop()\n", "ok": false}
+{"request": "are you standing on a black line?", "program": "while 1:\n    clear()\n    text(40, 28, str(tilt()) + \" deg\")\n    wait(200)\n", "ok": false}
+{"request": "that was wrong, dummy", "program": "clear()\ntext(31, 28, \"was wrong\")\n", "ok": false}
+{"request": "do a little shimmy", "program": "eyes(\"sad\")\nclear()\ntext(25, 28, \"can't do that\")\n", "ok": false}
+{"request": "nod, wink, and then reverse slowly", "program": "eyes(\"wink\")\nwait(400)\neyes(\"open\")\nmove(-30, 0, 0)\nwait(1000)\nstop()\n", "ok": false}
+{"request": "what is the knob set to?", "program": "move(60, 0, 0)\n", "ok": false}
+{"request": "creep forward at like 20 percent speed", "program": "move(20, 0, 0)\n", "ok": true}
+{"request": "reverse and beep faster as you get closer to something behind you", "program": "move(-40, 0, 0)\n", "ok": false}
+{"request": "can you recognize my face?", "program": "eyes(\"sad\")\nclear()\ntext(25, 28, \"can't do that\")\n", "ok": true}
+{"request": "hey whats up", "program": "eyes(\"surprised\")\ntone(1500, 100)\nnod(20)\nwait(400)\nnod(0)\n", "ok": false}
+{"request": "can u show a bouncing ball", "program": "clear()\ntext(19, 28, \"urncing baby\")\n", "ok": false}
+{"request": "make a wide curve to the right", "program": "eyes(\"sad\")\nclear()\ntext(25, 28, \"can't do that\")\n", "ok": false}
+{"request": "spin left, spin right, then take a bow", "program": "move(0, 0, -60)\nwait(700)\nstop()\neyes(\"surprised\")\ntone(1500, 100)\nnod(20)\nwait(400)\nnod(0)\n", "ok": false}
+{"request": "go around in a big oval twice", "program": "for i in range(2):\n    clear()\n    text(34, 28, \"gargal\")\n    wait(300)\n    clear()\n    wait(300)\n", "ok": false}
+{"request": "tilt your head down and then back up", "program": "stop()\n", "ok": false}
