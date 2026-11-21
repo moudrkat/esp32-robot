@@ -60,6 +60,9 @@
 #ifndef MOTOR_KICK_MS
 #define MOTOR_KICK_MS 0
 #endif
+#if __has_include("generated/coast.h")       // flash.sh writes it for COAST=3000 (ms): a shorter leash for a stage
+#include "generated/coast.h"
+#endif
 #ifndef CAR_COAST_MS
 #define CAR_COAST_MS 10000
 #endif

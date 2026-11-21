@@ -8,6 +8,7 @@
 #                                              remembered for the next flash, FLIP=none forgets it
 #   KICK=150 ./flash.sh                        weak batteries: full power for 150 ms whenever a side starts from rest;
 #                                              remembered for the next flash, KICK=0 forgets it
+#   COAST=3000 ./flash.sh                      a drive nobody stopped ends after 3 s instead of 10 (remembered; COAST=0 forgets)
 #   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
@@ -56,6 +57,14 @@ case "${KICK:-}" in
   *[!0-9]*) echo "KICK is milliseconds, like 150"; exit 1 ;;
   *) printf '#define MOTOR_KICK_MS %s\n' "$KICK" > "$KICKH" ;;
 esac
+COASTH=firmware/robot/generated/coast.h
+case "${COAST:-}" in
+  "") ;;
+  0) rm -f "$COASTH" ;;
+  *[!0-9]*) echo "COAST is milliseconds, like 3000"; exit 1 ;;
+  *) printf '#define CAR_COAST_MS %s\n' "$COAST" > "$COASTH" ;;
+esac
+[ -f "$COASTH" ] && echo "Leash: a drive left running stops after $(cut -d' ' -f3 "$COASTH") ms"
 [ -f "$KICKH" ] && echo "Start kick: $(cut -d' ' -f3 "$KICKH") ms of full power"
 [ -f "$WHEELS" ] && echo "Wheels flipped: $(tr '\n' ' ' < "$WHEELS")"
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
