@@ -723,11 +723,13 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8
 <title>robot</title><style>body{font:16px system-ui;margin:16px;max-width:520px}input,button,select{font:inherit;padding:8px;margin:4px 0}
 #t{width:100%;box-sizing:border-box}pre{background:#f2f2f4;padding:8px;white-space:pre-wrap}button{margin-right:6px}</style>
 <h2>robot</h2><input id=t placeholder="yo buddy, let's go" autofocus><button onclick="say(t.value)">send</button>
-<button onclick="say('stop')">stop</button><p>
+<button onclick="say('stop')">stop</button>
+<label style="display:block;margin:8px 0"><input id=a type=checkbox> talk: send when I stop (use the keyboard's microphone)</label><p>
 <select id=m></select> <input id=s type=range min=0 max=100 value=0 oninput="v.textContent=s.value/100"> <span id=v>0</span>
 <button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button></p>
 <p>what it wrote:</p><pre id=p></pre><p id=i></p>
 <script>t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
+let h;t.oninput=()=>{clearTimeout(h);if(a.checked&&t.value.trim())h=setTimeout(()=>say(t.value),1500)};
 function say(x){if(x)fetch('/say?text='+encodeURIComponent(x));t.value=''}
 async function poll(){try{let j=await (await fetch('/state')).json();p.textContent=j.program;i.textContent=j.inputs;
 if(!m.options.length)j.names.forEach(n=>m.add(new Option(n)))}catch(e){}setTimeout(poll,800)}poll()</script>)HTML";
