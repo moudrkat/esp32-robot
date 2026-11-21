@@ -1,0 +1,98 @@
+<title>Dálkoměr na autě</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap">
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1c1a;--mute:#6a665f;--line:#d9d5cc;--card:#ffffff;--red:#c8372d;--blue:#2459b8;--yel:#b98500;--grn:#2f7d4f;--pcb:#1f4f86;--pin:#b9b3a6;--metal:#c9c5bb;--black:#22201d}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#171614;--fg:#eeebe4;--mute:#a39e94;--line:#3a3833;--card:#211f1c;--red:#ff7a6e;--blue:#7fb0ff;--yel:#f2c14e;--grn:#7ed3a0;--pcb:#3f78b8;--pin:#8d877b;--metal:#8f8a80;--black:#0c0b0a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171614;--fg:#eeebe4;--mute:#a39e94;--line:#3a3833;--card:#211f1c;--red:#ff7a6e;--blue:#7fb0ff;--yel:#f2c14e;--grn:#7ed3a0;--pcb:#3f78b8;--pin:#8d877b;--metal:#8f8a80;--black:#0c0b0a;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 Inter,system-ui,sans-serif;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:720px;margin:0 auto}
+h1,h2{font-family:"Space Grotesk",Inter,sans-serif;text-wrap:balance;line-height:1.2}
+h1{font-size:1.9rem;margin:0 0 6px}h2{font-size:1.25rem;margin:36px 0 10px}
+p{margin:0 0 12px}.lead{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.t{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:600}
+code{font:600 .92em ui-monospace,Menlo,monospace}
+.warn{border-left:4px solid var(--red);padding:10px 14px;background:var(--card);border-radius:0 10px 10px 0;margin:12px 0}
+ol{padding-left:1.2em}li{margin:6px 0}
+.lab{font:600 13px Inter,sans-serif;fill:var(--fg)}.sm{font:12px Inter,sans-serif;fill:var(--mute)}.w{font:600 12px Inter,sans-serif;fill:#fff}
+</style>
+<main>
+<h1>Dálkoměr na autě</h1>
+<p class="lead">Destička se dvěma „očima“. Čtyři drátky, bez pájení.</p>
+
+<h2>1. Nejdřív zjisti, kterou verzi máš</h2>
+<p>Otoč destičku a přečti, co je na ní natištěno. Stejně vypadají dvě verze a jen jedna se smí zapojit rovnou.</p>
+<div class="t"><table>
+<tr><th>Nápis na destičce</th><th>Co s ní</th></tr>
+<tr><td><code>RCWL-9610</code>, <code>HC-SR04P</code>, <code>3V-5.5V</code> nebo <code>3.3V</code></td><td>bezpečná, zapoj podle obrázku</td></tr>
+<tr><td>jen <code>HC-SR04</code>, nic dalšího</td><td><strong>nezapojuj</strong>, vyfoť ji a napiš Claudovi</td></tr>
+</table></div>
+<div class="warn">Stará verze vrací na kolíku <code>Echo</code> 5 V. ESP snese na pinech 3,3 V a mohlo by se poškodit.</div>
+
+<h2>2. Jak vypadá</h2>
+<div class="card">
+<svg viewBox="0 0 520 210" role="img" aria-label="Dálkoměr zepředu: dva kovové válečky vedle sebe, dole čtyři kolíky VCC, Trig, Echo, GND">
+  <rect x="60" y="30" width="400" height="120" rx="8" fill="var(--pcb)"/>
+  <circle cx="160" cy="90" r="48" fill="var(--metal)"/><circle cx="160" cy="90" r="38" fill="var(--black)"/><circle cx="160" cy="90" r="30" fill="none" stroke="var(--metal)" stroke-dasharray="3 5"/>
+  <circle cx="360" cy="90" r="48" fill="var(--metal)"/><circle cx="360" cy="90" r="38" fill="var(--black)"/><circle cx="360" cy="90" r="30" fill="none" stroke="var(--metal)" stroke-dasharray="3 5"/>
+  <text x="160" y="24" text-anchor="middle" class="sm">vysílá</text><text x="360" y="24" text-anchor="middle" class="sm">poslouchá</text>
+  <g stroke="var(--pin)" stroke-width="6" stroke-linecap="round"><line x1="215" y1="150" x2="215" y2="182"/><line x1="245" y1="150" x2="245" y2="182"/><line x1="275" y1="150" x2="275" y2="182"/><line x1="305" y1="150" x2="305" y2="182"/></g>
+  <g class="sm" text-anchor="middle"><text x="205" y="202">VCC</text><text x="243" y="202">Trig</text><text x="277" y="202">Echo</text><text x="315" y="202">GND</text></g>
+</svg>
+<p>Dva kovové válečky se síťkou vedle sebe a pod nimi čtyři kolíky v řadě. Popisky kolíků jsou natištěné na destičce, pořadí bývá <code>VCC</code>, <code>Trig</code>, <code>Echo</code>, <code>GND</code>. Řiď se popisky, ne pořadím.</p>
+</div>
+
+<h2>3. Kam vedou drátky</h2>
+<div class="card">
+<svg viewBox="0 0 640 280" role="img" aria-label="VCC na 3V3, Trig na pin 9, Echo na pin 10, GND do modré lišty">
+  <rect x="20" y="20" width="150" height="240" rx="10" fill="var(--pcb)"/>
+  <text x="95" y="14" text-anchor="middle" class="lab">ESP32</text>
+  <g class="w"><text x="122" y="64">3V3</text><text x="138" y="124">9</text><text x="132" y="184">10</text><text x="122" y="244">GND</text></g>
+  <g fill="var(--pin)"><circle cx="160" cy="60" r="6"/><circle cx="160" cy="120" r="6"/><circle cx="160" cy="180" r="6"/><circle cx="160" cy="240" r="6"/></g>
+  <rect x="430" y="50" width="190" height="80" rx="8" fill="var(--pcb)"/>
+  <circle cx="478" cy="90" r="28" fill="var(--metal)"/><circle cx="478" cy="90" r="21" fill="var(--black)"/>
+  <circle cx="572" cy="90" r="28" fill="var(--metal)"/><circle cx="572" cy="90" r="21" fill="var(--black)"/>
+  <g fill="var(--pin)"><circle cx="495" cy="140" r="5"/><circle cx="515" cy="140" r="5"/><circle cx="535" cy="140" r="5"/><circle cx="555" cy="140" r="5"/></g>
+  <g class="sm" text-anchor="middle"><text x="488" y="162">VCC</text><text x="514" y="176">Trig</text><text x="538" y="162">Echo</text><text x="566" y="176">GND</text></g>
+  <rect x="300" y="246" width="320" height="14" rx="4" fill="var(--blue)" opacity=".85"/>
+  <text x="460" y="276" text-anchor="middle" class="sm">modrá lišta „−“</text>
+  <g fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M160 60 C300 40 400 180 495 140" stroke="var(--red)"/>
+    <path d="M160 120 C300 120 420 200 515 140" stroke="var(--yel)"/>
+    <path d="M160 180 C300 180 440 215 535 140" stroke="var(--grn)"/>
+    <path d="M555 140 C575 190 580 220 580 246" stroke="var(--blue)"/>
+    <path d="M160 240 C230 246 270 246 310 246" stroke="var(--blue)"/>
+  </g>
+</svg>
+</div>
+<div class="t"><table>
+<tr><th>Kolík na dálkoměru</th><th>Kam</th></tr>
+<tr><td><code>VCC</code></td><td>pin <strong>3V3</strong> na ESP</td></tr>
+<tr><td><code>Trig</code></td><td>pin <strong>9</strong></td></tr>
+<tr><td><code>Echo</code></td><td>pin <strong>10</strong></td></tr>
+<tr><td><code>GND</code></td><td>modrá lišta „−“</td></tr>
+</table></div>
+<p>Pin 3V3 už nejspíš používá bzučák. Je na desce jen jeden, takže z něj veď jeden drátek do volné řady nepájivého pole a všechno, co chce 3,3 V, připoj do té řady.</p>
+
+<h2>4. Postup</h2>
+<ol>
+<li>Odpoj USB a vyndej jednu baterii.</li>
+<li>Na kolíky dálkoměru nasaď čtyři drátky s dutinkou. Jestli máš jen drátky s kolíky na obou koncích, zastrč dálkoměr do nepájivého pole, každý kolík do jiné řady.</li>
+<li>Zapoj je podle tabulky.</li>
+<li>Postav dálkoměr na přední konec auta, válečky ve směru jízdy. Před ním nesmí být kabel ani okraj desky.</li>
+<li>Zapoj USB, vrať baterii a napiš Claudovi „dálkoměr zapojený“.</li>
+</ol>
+
+<h2>5. Jak poznáš, že funguje</h2>
+<p>Claude pošle <code>how far is the wall?</code>. Na displeji začnou běžet centimetry. Dej před dálkoměr ruku a číslo se musí zmenšit.</p>
+<div class="t"><table>
+<tr><th>Co ukazuje</th><th>Co je špatně</th></tr>
+<tr><td>pořád 0</td><td>prohozené <code>Trig</code> a <code>Echo</code>, nebo chybí napájení</td></tr>
+<tr><td>číslo skáče sem a tam</td><td>něco překáží těsně před válečky</td></tr>
+<tr><td>pořád stejné velké číslo</td><td>míří do prázdna, to je v pořádku; zkus ruku</td></tr>
+</table></div>
+<p class="lead">Obrázek je nakreslený podle obvyklé podoby dílu. Tvůj jsem neviděla, řiď se popisky na destičce.</p>
+</main>
