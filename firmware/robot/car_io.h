@@ -726,6 +726,7 @@ static void car_early_check(const char *prog, int len) {
 #if defined(CAR_WEB)
 #include <WiFi.h>
 #include <WebServer.h>
+#include <ESPmDNS.h>
 #ifndef CAR_WIFI_NAME
 #define CAR_WIFI_NAME "esp32-robot"
 #endif
@@ -755,8 +756,15 @@ async function poll(){try{let j=await (await fetch('/state')).json();p.textConte
 if(k.checked&&j.says&&j.says!=was&&Date.now()-at>1500&&/[a-z]/i.test(j.says)){was=j.says;at=Date.now();speak(j.says)}if(!j.says)was='';
 if(!m.options.length)j.names.forEach(n=>m.add(new Option(n)))}catch(e){}setTimeout(poll,800)}poll()</script>)HTML";
 static void web_setup() {
+#if defined(HOME_WIFI_NAME)                              // its own network and, beside it, a guest on yours
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.softAP(CAR_WIFI_NAME, CAR_WIFI_PASS);
+  WiFi.setAutoReconnect(true);
+  WiFi.begin(HOME_WIFI_NAME, HOME_WIFI_PASS);
+#else
   WiFi.mode(WIFI_AP);
   WiFi.softAP(CAR_WIFI_NAME, CAR_WIFI_PASS);
+#endif
   web.on("/", []() { web.send_P(200, "text/html", WEB_PAGE); });
   web.on("/say", []() {
     snprintf(web_line, sizeof web_line, "%s", web.arg("text").c_str());
@@ -788,6 +796,17 @@ static void web_setup() {
 }
 // called from poll_serial_line(), between tokens and in every wait: a line from the phone counts as a typed line
 static bool car_web_poll() {
+#if defined(HOME_WIFI_NAME)
+  {                                                     // say once where it can be found on the home network
+    static bool told = false;
+    if (!told && WiFi.status() == WL_CONNECTED) {
+      told = true;
+      MDNS.begin("esp32-robot");
+      Serial.printf("home Wi-Fi \"%s\": http://%s  (or http://esp32-robot.local)\n", HOME_WIFI_NAME, WiFi.localIP().toString().c_str());
+    }
+    if (told && WiFi.status() != WL_CONNECTED) told = false;
+  }
+#endif
   web.handleClient();
   if (!web_ready) return false;
   web_ready = false;

@@ -2083,6 +2083,7 @@ def main():
     ap.add_argument("--cond", action="store_true", help="also moods as non-word inputs (a 'cond' field per row)")
     ap.add_argument("--timed", action="store_true", help="moves carry their time: move(f, s, r, ms), see timed()")
     ap.add_argument("--bank", help="phrases.jsonl: many more wordings per fixed program (research/robot/phrases.jsonl)")
+    ap.add_argument("--lang", default="en", choices=["en", "cs"], help="cs: the same programs asked for in Czech (research/robot/cs.py)")
     args = ap.parse_args()
     r = random.Random(args.seed)
     seen, rows, bad = set(), [], {}
@@ -2092,6 +2093,12 @@ def main():
         load_bank(args.bank)
     bank = BANK
     car_like = CAR_FAMILIES + TALK_FAMILIES
+    cs = None
+    if args.lang == "cs":
+        from research.robot import cs
+        cs.gen = sys.modules[__name__]      # run as a script this module is __main__: cs must see this bank, not a second copy
+        car_fams = [f for f in PROFILES["car"] if f not in (c_combo, c_cant)] + [cs.c_cant]
+        cs_fams = car_fams + cs.TALK
     for _ in range(args.n):
         fams = PROFILES[args.profile] or (FAMILIES + CAR_FAMILIES)
         if args.profile in ("car", "talk"):
@@ -2100,14 +2107,24 @@ def main():
                 wts = [TALK_WEIGHT.get(f.__name__[2:], w) for f, w in zip(fams, wts)]
         else:
             wts = [(3 if f in CAR_FAMILIES else WEIGHT.get(f.__name__[2:], 1)) for f in fams]
+        if cs:
+            fams = cs_fams
+            wts = [TALK_WEIGHT.get(f.__name__[2:], CAR_WEIGHT.get(f.__name__[2:], 3 if f in CAR_FAMILIES else 1)) for f in fams]
         fam = r.choices(fams, weights=wts)[0]
         prompt, prog = fam(r)
-        banked = prog in bank and r.random() < 0.5
+        banked = prog in bank and (cs is not None or r.random() < 0.5)
         if banked:
             prompt = pick(r, bank[prog])
+        elif cs and fam not in cs.TALK and fam is not cs.c_cant:
+            prompt = cs.render(cs.cs_prog(prog), r)       # said from the program itself; what cannot be said is left out
+            if not prompt:
+                bad["cs: no wording"] = bad.get("cs: no wording", 0) + 1
+                continue
         cond = None
         moodable = fam in CAR_FAMILIES and fam not in (c_chat, c_cant, c_eyes, c_face) and "while 1" not in prog
         k_ = r.random()
+        if cs and k_ < 0.15:
+            k_ = 0.9                    # moods said in words are English only; the silent inputs work the same
         if moodable and k_ < 0.15:
             prompt, prog, _ = moody(r, prompt, prog, fam)
         elif moodable and args.cond and k_ < 0.33:
@@ -2117,9 +2134,13 @@ def main():
         if args.profile == "talk" and fam in (c_shape, c_dance, c_drive, c_turn, c_go) and r.random() < 0.12:
             prompt += pick(r, [" across the table", " across the room", " on the floor", " on the desk", " around the room",
                                " over there", " on the table", " across the floor", " in the kitchen", " right here"])
+        if cs:
+            prog = cs.cs_prog(prog)
         if args.timed:
             prog = timed(prog)
-        if (banked or fam in TALK_FAMILIES) and r.random() < 0.6:
+        if cs:
+            prompt = cs.polish(r, cs.plain(prompt))
+        elif (banked or fam in TALK_FAMILIES) and r.random() < 0.6:
             pass                        # a banked wording is already how someone talks: mostly left as it is
         elif fam in car_like:
             prompt = car_polish(r, prompt)
@@ -2129,7 +2150,7 @@ def main():
         else:
             prompt = polite(r, prompt)
         prompt = " ".join(prompt.split())
-        if r.random() < 0.3 and prompt.split()[0].strip("\"'") not in prog:   # never change a word to be copied
+        if not cs and r.random() < 0.3 and prompt.split()[0].strip("\"'") not in prog:   # never change a word to be copied
             prompt = prompt[0].upper() + prompt[1:]
         if len(prompt) + len(prog) > 640:   # past the model's 256-token window it would learn half a program
             continue
@@ -2144,7 +2165,7 @@ def main():
         try:
             s = run(prog, PROBE, horizon=3000) if reacts(prog) else run(prog)
             acted = any(sum(f) for _, f in s.frames) or len(s.io_log) > 1 or s.io_log[0][1] != IO0 \
-                or fam in TALK_FAMILIES \
+                or fam in TALK_FAMILIES or (cs is not None and fam in cs.TALK) \
                 or fam in (f_led_set, f_rgb_off, c_stop, c_look, c_guard, c_climate, c_react, c_lights, c_eyes,
                            c_nod_arm, c_ears)
             assert fam is f_clear_screen or acted, "nothing drawn"

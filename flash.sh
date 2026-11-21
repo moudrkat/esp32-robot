@@ -2,6 +2,7 @@
 # Build the firmware and put the robot's model on the board: the model into its flash partition, then the program.
 #   ./flash.sh [port]                          (default /dev/ttyACM0)
 #   ROBOT_WIFI_PASS='at least 8 chars' ./flash.sh   also gives it its own Wi-Fi "esp32-robot" and a page for your phone
+#   HOME_WIFI_NAME='yours' HOME_WIFI_PASS='...' ./flash.sh   it joins your Wi-Fi too (HOME_WIFI_NAME=0 forgets); WIFI_OFF=1: no radio
 #   DESK=1 ./flash.sh                          no car: just the board and its screen (see "On the table" in the README)
 #   ATTN=1 DESK=1 ./flash.sh                   the 8x8 LEDs show one attention head while the model writes
 #   FLIP=right ./flash.sh                      the right wheels ran backwards on move(60, 0, 0): left | right | both;
@@ -17,13 +18,23 @@ set -e
 cd "$(dirname "$0")"
 PORT=${1:-/dev/ttyACM0}
 FQBN='esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=custom,PSRAM=opi'
-WIFI=firmware/robot/generated/wifi.h
+WIFI=firmware/robot/generated/wifi.h      # remembered between flashes, like FLIP; WIFI=0 turns the radio off
+HOME_LINES=$(grep '^#define HOME_WIFI' "$WIFI" 2>/dev/null || true)
 if [ -n "${ROBOT_WIFI_PASS:-}" ]; then
   [ ${#ROBOT_WIFI_PASS} -ge 8 ] || { echo "ROBOT_WIFI_PASS needs at least 8 characters"; exit 1; }
   printf '#define CAR_WEB 1\n#define CAR_WIFI_PASS "%s"\n' "$ROBOT_WIFI_PASS" > "$WIFI"
+  [ -n "$HOME_LINES" ] && printf '%s\n' "$HOME_LINES" >> "$WIFI"
+fi
+if [ -n "${HOME_WIFI_NAME:-}" ]; then      # also join this network (yours), so a laptop on it can reach the robot
+  [ -f "$WIFI" ] || { echo "HOME_WIFI_NAME needs ROBOT_WIFI_PASS too, at least once"; exit 1; }
+  grep -v '^#define HOME_WIFI' "$WIFI" > "$WIFI.tmp" && mv "$WIFI.tmp" "$WIFI"
+  [ "$HOME_WIFI_NAME" = 0 ] || printf '#define HOME_WIFI_NAME "%s"\n#define HOME_WIFI_PASS "%s"\n' "$HOME_WIFI_NAME" "${HOME_WIFI_PASS:-}" >> "$WIFI"
+fi
+[ "${WIFI_OFF:-0}" = 1 ] && rm -f "$WIFI"
+if [ -f "$WIFI" ]; then
   echo "Wi-Fi on: network esp32-robot, your password, page at http://192.168.4.1"
+  grep -q '^#define HOME_WIFI_NAME' "$WIFI" && echo "  and a guest on $(sed -n 's/^#define HOME_WIFI_NAME "\(.*\)"$/\1/p' "$WIFI"): the address is printed when it connects (http://esp32-robot.local)"
 else
-  rm -f "$WIFI"
   echo "Wi-Fi off (set ROBOT_WIFI_PASS to turn the phone page on)"
 fi
 DESKH=firmware/robot/generated/desk.h
