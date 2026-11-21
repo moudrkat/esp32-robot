@@ -1,0 +1,4502 @@
+[
+ {
+  "id": 0,
+  "family": "arrow",
+  "n": 366,
+  "program": "clear()\nline(20, 32, 108, 32)\nline(108, 32, 92, 20)\nline(108, 32, 92, 44)\n",
+  "examples": [
+   "point right",
+   "Point right",
+   "point right.",
+   "Point right!",
+   "yo point right",
+   "ok point right",
+   "make a right arrow now",
+   "Can you draw an arrow pointing right",
+   "i want you to make a right arrow for me",
+   "i want you to an arrow to the right please",
+   "Little car, draw an arrow pointing right thx",
+   "show an arrow right!"
+  ]
+ },
+ {
+  "id": 1,
+  "family": "arrow",
+  "n": 355,
+  "program": "clear()\nline(20, 32, 108, 32)\nline(20, 32, 36, 20)\nline(20, 32, 36, 44)\n",
+  "examples": [
+   "Point left",
+   "point left",
+   "point left.",
+   "Ok point left",
+   "yo point left",
+   "ok point left",
+   "alright, make a left arrow pls",
+   "dude show an arrow left!",
+   "draw an arrow pointing left!",
+   "little car, make a left arrow!",
+   "little car, make a left arrow",
+   "point left on the oled"
+  ]
+ },
+ {
+  "id": 2,
+  "family": "arrow",
+  "n": 352,
+  "program": "clear()\nline(64, 4, 64, 60)\nline(64, 4, 52, 18)\nline(64, 4, 76, 18)\n",
+  "examples": [
+   "point up",
+   "Point up",
+   "point up.",
+   "Point up.",
+   "point up!",
+   "ok point up",
+   "Ok show an arrow up",
+   "let's point up on the screen",
+   "dude draw an arrow pointing up pls",
+   "Car, draw an arrow pointing up!",
+   "hey buddy, make a up arrow!",
+   "Pls make a up arrow"
+  ]
+ },
+ {
+  "id": 3,
+  "family": "arrow",
+  "n": 344,
+  "program": "clear()\nline(64, 4, 64, 60)\nline(64, 60, 52, 46)\nline(64, 60, 76, 46)\n",
+  "examples": [
+   "point down",
+   "Point down",
+   "point down.",
+   "Point down.",
+   "ok point down",
+   "yo point down",
+   "alright, draw an arrow pointing down",
+   "point down.",
+   "an arrow pointing down.",
+   "draw an arrow pointing down for me",
+   "pls draw an arrow pointing down",
+   "Would you draw an arrow pointing down"
+  ]
+ },
+ {
+  "id": 4,
+  "family": "avoid",
+  "n": 9408,
+  "program": "while 1:\n    move(60, 0, 0)\n    if distance() < 20:\n        stop()\n        look(-60)\n        wait(300)\n        left = distance()\n        look(60)\n        wait(300)\n        right = distance()\n        look(0)\n        if left > right:\n            move(0, 0, -60)\n        else:\n            move(0, 0, 60)\n        wait(700)\n    wait(20)\n",
+  "examples": [
+   "free roam",
+   "Free roam",
+   "Wander off",
+   "Free roam?",
+   "go explore",
+   "wander off",
+   "go check out the office for me",
+   "Car, free roam right now",
+   "Alright alright, drive around the room",
+   "how about you avoid obstacles",
+   "drive forward, and when something is close turn away mate",
+   "come on, do your thing if you understand if you can"
+  ]
+ },
+ {
+  "id": 5,
+  "family": "behind",
+  "n": 2070,
+  "program": "while 1:\n    clear()\n    text(40, 28, str(behind()) + \" cm\")\n    wait(200)\n",
+  "examples": [
+   "what's behind you",
+   "What's behind you",
+   "what's behind you!",
+   "what's behind you!!",
+   "yo what's behind you",
+   "what's behind you <3",
+   "please how far is the thing behind you thx",
+   "listen, how far is the thing behind you please and thank you",
+   "right, how far is the thing behind you like a champ <3",
+   "Right, how far is the thing behind you plz",
+   "um, what's behind you one more time",
+   "Let's see you what's behind you already"
+  ]
+ },
+ {
+  "id": 6,
+  "family": "behind",
+  "n": 1830,
+  "program": "move(-40, 0, 0)\nwhile behind() > 15:\n    wait(20)\nstop()\n",
+  "examples": [
+   "park backwards",
+   "park backwards!",
+   "park backwards?",
+   "park backwards!!",
+   "ooh park backwards",
+   "park backwards ok?",
+   "ok so reverse until something is behind you!!",
+   "Ugh, reverse until something is behind you",
+   "so, back up to the wall <3",
+   "yo buddy, back up to the wall thx",
+   "can you maybe park backwards haha",
+   "aww back up but don't hit anything mate"
+  ]
+ },
+ {
+  "id": 7,
+  "family": "chat",
+  "n": 2014,
+  "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\nfor i in range(2):\n    move(0, 0, 80)\n    wait(250)\n    move(0, 0, -80)\n    wait(250)\nstop()\n",
+  "examples": [
+   "nice!?",
+   "so cool",
+   "So cool",
+   "awesome",
+   "Amazing",
+   "amazing?",
+   "Robot, amazing you little rascal plz",
+   "ok little guy, good little car",
+   "My little car, you rock my friend",
+   "ok so such a good robot, my boss is watching",
+   "Great job",
+   "let's see you so cool!!!"
+  ]
+ },
+ {
+  "id": 8,
+  "family": "chat",
+  "n": 1990,
+  "program": "eyes(\"open\")\nclear()\ntext(34, 28, \"I'm awake!\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\nlook(-30)\nwait(200)\nlook(30)\nwait(200)\nlook(0)\n",
+  "examples": [
+   "get up",
+   "Get up.",
+   "wake up",
+   "Get up!",
+   "up up up",
+   "Up up up",
+   "yo time to wake up for fun my friend",
+   "Alright alright, get up like a maniac go!",
+   "dude, time to wake up, i'm filming go!",
+   "hey car, hey sleepyhead please and thank you",
+   "pretty please get up one more time please and thank you",
+   "can you time to wake up little guy"
+  ]
+ },
+ {
+  "id": 9,
+  "family": "chat",
+  "n": 1940,
+  "program": "eyes(\"happy\")\nclear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\nfor i in range(3):\n    move(0, 0, 80)\n    wait(300)\n    move(0, 0, -80)\n    wait(300)\nstop()\n",
+  "examples": [
+   "i'm sad",
+   "bad day",
+   "i am sad",
+   "I'm sad?",
+   "i'm tired",
+   "I'm tired",
+   "robot, cheer me up thanks",
+   "CAN YOU CHEER ME UP LIKE A CHAMP LOL",
+   "okay i am sad :D",
+   "Alright car, i am sad thx",
+   "yay cheer me up for the captain thx",
+   "time to cheer me up thanks"
+  ]
+ },
+ {
+  "id": 10,
+  "family": "chat",
+  "n": 1927,
+  "program": "stop()\neyes(\"sleepy\")\nclear()\ntext(52, 28, \"bye!\")\nwait(1500)\neyes(\"closed\")\nclear()\n",
+  "examples": [
+   "BYE",
+   "bye",
+   "Bye.",
+   "later",
+   "LATER",
+   "sleep",
+   "so, see you later ok buddy",
+   "Little car, bye bye thanks",
+   "Buddy, go to bed.",
+   "yay good night ok thanks",
+   "OK LITTLE GUY, GOODBYE",
+   "Yo bye bye if you agree!"
+  ]
+ },
+ {
+  "id": 11,
+  "family": "chat",
+  "n": 1883,
+  "program": "eyes(\"wink\")\nclear()\ntext(28, 20, \"tiny car\")\ntext(10, 36, \"I run on a chip\")\n",
+  "examples": [
+   "who are you",
+   "Who are you",
+   "who are you!",
+   "WHAT ARE YOU",
+   "what are you",
+   "who are you.",
+   "meh, what's your name, the cat is watching mate",
+   "dude, what are you if you can",
+   "Aww what's your name my friend",
+   "Hmm, what are you for grandma",
+   "WHAT ARE YOU",
+   "Phew, tell me about yourself mate"
+  ]
+ },
+ {
+  "id": 12,
+  "family": "chat",
+  "n": 1881,
+  "program": "eyes(\"happy\")\nclear()\ntext(55, 28, \"hi!\")\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n",
+  "examples": [
+   "yo",
+   "hi",
+   "Yo.",
+   "hey",
+   "Yo?",
+   "hi :)",
+   "Alright alright, yo ok ok?",
+   "yo buddy, hi for the captain",
+   "right, hi there please and thank you",
+   "oh no, wave hello if you can",
+   "HA, HELLO LITTLE CAR",
+   "ugh, hi there my friend"
+  ]
+ },
+ {
+  "id": 13,
+  "family": "chat",
+  "n": 1878,
+  "program": "eyes(\"happy\")\nclear()\ntext(37, 28, \"all good!\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n",
+  "examples": [
+   "YOU OK",
+   "You ok",
+   "you good",
+   "YOU OK <3",
+   "You good!",
+   "Yo you ok",
+   "phew, everything ok for me, ok?",
+   "Ugh, all good?",
+   "Come on, you alright you little rascal plz",
+   "omg how are you doing",
+   "Hey hey, are you happy my friend",
+   "Dude, everything ok"
+  ]
+ },
+ {
+  "id": 14,
+  "family": "chat",
+  "n": 1866,
+  "program": "stop()\neyes(\"sad\")\nnod(-30)\ntone(784, 250)\ntone(659, 250)\ntone(523, 250)\ntone(392, 500)\nnod(0)\n",
+  "examples": [
+   "bad car",
+   "naughty",
+   "bad boy",
+   "Bad boy!",
+   "bad boy.",
+   "bad car!",
+   "yo naughty because why not ok?",
+   "Okay shame on you lol",
+   "yo bad robot",
+   "How about you shame on you if you can",
+   "ooh naughty :D",
+   "oi, naughty now"
+  ]
+ },
+ {
+  "id": 15,
+  "family": "chat",
+  "n": 1864,
+  "program": "eyes(\"happy\")\nclear()\ntext(49, 28, \"nope!\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n",
+  "examples": [
+   "are you sad",
+   "are you mad",
+   "you hate me?",
+   "are you upset",
+   "you hate me?!",
+   "Are you angry",
+   "now are you sad",
+   "wheee are you scared of me plz",
+   "are you angry!!",
+   "Ok little guy, are you scared of loud stuff.",
+   "So, are you scared of me like a race car now",
+   "now are you scared thanks"
+  ]
+ },
+ {
+  "id": 16,
+  "family": "chat",
+  "n": 1809,
+  "program": "eyes(\"happy\")\nclear()\ntext(22, 28, \"you're welcome\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n",
+  "examples": [
+   "ty",
+   "thx",
+   "Thx.",
+   "thx.",
+   "thx!",
+   "thx?",
+   "UM, THANK YOU IF YOU CAN",
+   "Thx for me, ok?",
+   "my little car, thanks buddy :D",
+   "omg ty if you can",
+   "now thanks if you hear me plz",
+   "Car, cheers you little rascal <3"
+  ]
+ },
+ {
+  "id": 17,
+  "family": "circle",
+  "n": 316,
+  "program": "clear()\ncircle(64, 32, 28)\n",
+  "examples": [
+   "make a big ring",
+   "Draw a big ring",
+   "Put a large ring",
+   "draw a huge ring",
+   "Draw a big circle",
+   "put a large ring!",
+   "pls show me a big round shape in the centre pls",
+   "pls draw a large circle in the centre",
+   "pls paint a huge round shape in the center!",
+   "display a huge round shape in the middle",
+   "Sketch a huge round shape",
+   "alright, give me a large circle"
+  ]
+ },
+ {
+  "id": 18,
+  "family": "circle",
+  "n": 234,
+  "program": "clear()\ncircle(64, 32, 8)\n",
+  "examples": [
+   "put a small ring",
+   "Draw a small ring",
+   "make a small ring",
+   "draw a little ring",
+   "Make a little ring",
+   "i want a small ring",
+   "sketch a small circle in the centre",
+   "make a little ring in the centre",
+   "Alright, show me a small circle thx",
+   "let's draw a little round shape in the centre",
+   "Put a small ring in the middle",
+   "little car, put a little circle in the middle!"
+  ]
+ },
+ {
+  "id": 19,
+  "family": "circle",
+  "n": 219,
+  "program": "clear()\ncircle(64, 32, 20)\n",
+  "examples": [
+   "put a ring",
+   "make a ring",
+   "draw a ring",
+   "put a circle",
+   "paint a ring",
+   "draw a ring!",
+   "show me a circle in the center",
+   "Yo make a round shape thx",
+   "yo put a circle in the centre thx",
+   "now paint a circle in the centre",
+   "Display a circle in the center",
+   "i want you to show me a circle in the center"
+  ]
+ },
+ {
+  "id": 20,
+  "family": "climate",
+  "n": 1142,
+  "program": "while 1:\n    if humidity() > 60:\n        beep(200)\n    wait(500)\n",
+  "examples": [
+   "warn me when it gets more humid than 60 %",
+   "BEEP WHEN THE HUMIDITY IS OVER 60 PERCENT",
+   "Warn me when it gets more humid than 60 %",
+   "beep when the humidity is over 60 percent",
+   "BEEP WHEN THE HUMIDITY IS OVER 60 PERCENT!",
+   "beep when the humidity is over 60 percent.",
+   "ha, warn me when it gets more humid than 60 % plz",
+   "um, beep when the humidity is over 60 percent because why not please",
+   "My little car, beep when the humidity is over 60 percent",
+   "yikes, beep when the humidity is over 60 percent.",
+   "aww warn me when it gets more humid than 60 %!!",
+   "oi, warn me when it gets more humid than 60 % for me, ok?"
+  ]
+ },
+ {
+  "id": 21,
+  "family": "climate",
+  "n": 1118,
+  "program": "while 1:\n    if humidity() > 50:\n        beep(200)\n    wait(500)\n",
+  "examples": [
+   "beep when the humidity is over 50 percent",
+   "warn me when it gets more humid than 50 %",
+   "Warn me when it gets more humid than 50 %",
+   "warn me when it gets more humid than 50 %.",
+   "beep when the humidity is over 50 percent!",
+   "beep when the humidity is over 50 percent.",
+   "ok ok beep when the humidity is over 50 percent mate",
+   "Hey robot, beep when the humidity is over 50 percent :d",
+   "i want you to beep when the humidity is over 50 percent my friend",
+   "Yay beep when the humidity is over 50 percent please",
+   "omg beep when the humidity is over 50 percent haha",
+   "just warn me when it gets more humid than 50 % please and thank you"
+  ]
+ },
+ {
+  "id": 22,
+  "family": "climate",
+  "n": 1112,
+  "program": "while 1:\n    if humidity() > 70:\n        beep(200)\n    wait(500)\n",
+  "examples": [
+   "beep when the humidity is over 70 percent",
+   "warn me when it gets more humid than 70 %",
+   "warn me when it gets more humid than 70 %!",
+   "warn me when it gets more humid than 70 %.",
+   "beep when the humidity is over 70 percent!",
+   "warn me when it gets more humid than 70 %?",
+   "Would you warn me when it gets more humid than 70 %!",
+   "omg beep when the humidity is over 70 percent my friend",
+   "dude, beep when the humidity is over 70 percent go!",
+   "aww beep when the humidity is over 70 percent now",
+   "oi, beep when the humidity is over 70 percent for the video please",
+   "robot, beep when the humidity is over 70 percent if you dare."
+  ]
+ },
+ {
+  "id": 23,
+  "family": "climate",
+  "n": 1096,
+  "program": "while 1:\n    if humidity() > 80:\n        beep(200)\n    wait(500)\n",
+  "examples": [
+   "beep when the humidity is over 80 percent",
+   "Warn me when it gets more humid than 80 %",
+   "warn me when it gets more humid than 80 %",
+   "warn me when it gets more humid than 80 %.",
+   "Warn me when it gets more humid than 80 %?",
+   "warn me when it gets more humid than 80 %?",
+   "buddy, beep when the humidity is over 80 percent right now",
+   "little car, warn me when it gets more humid than 80 % :D",
+   "right, beep when the humidity is over 80 percent, i'm filming my friend",
+   "whoa, warn me when it gets more humid than 80 % for me, ok?",
+   "Um, warn me when it gets more humid than 80 % mate",
+   "Ooh warn me when it gets more humid than 80 % for fun!"
+  ]
+ },
+ {
+  "id": 24,
+  "family": "climate",
+  "n": 257,
+  "program": "move(40, 0, 0)\nwhile temp() >= 23:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 23 degrees",
+   "Find a place colder than 23 degrees!!!",
+   "find a place colder than 23 degrees lol",
+   "Ooh find a place colder than 23 degrees!",
+   "find a place colder than 23 degrees haha",
+   "now find a place colder than 23 degrees.",
+   "now drive forward until it is colder than 23 degrees now",
+   "buddy, go until the temperature drops below 23.",
+   "omg find a place colder than 23 degrees because why not!",
+   "whoa, find a place colder than 23 degrees, i'm filming!!",
+   "find a place colder than 23 degrees thanks",
+   "oh no, go until the temperature drops below 23 pls"
+  ]
+ },
+ {
+  "id": 25,
+  "family": "climate",
+  "n": 241,
+  "program": "move(40, 0, 0)\nwhile temp() >= 17:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 17 degrees",
+   "find a place colder than 17 degrees.",
+   "go until the temperature drops below 17",
+   "Find a place colder than 17 degrees now",
+   "ha, find a place colder than 17 degrees",
+   "just find a place colder than 17 degrees",
+   "Meh, drive forward until it is colder than 17 degrees please and thank you",
+   "go ahead and drive forward until it is colder than 17 degrees",
+   "alright alright, find a place colder than 17 degrees",
+   "can you maybe go until the temperature drops below 17!",
+   "please go until the temperature drops below 17 like a maniac <3",
+   "Alright car, drive forward until it is colder than 17 degrees for me"
+  ]
+ },
+ {
+  "id": 26,
+  "family": "climate",
+  "n": 230,
+  "program": "move(40, 0, 0)\nwhile temp() >= 25:\n    wait(100)\nstop()\n",
+  "examples": [
+   "Find a place colder than 25 degrees",
+   "yo find a place colder than 25 degrees",
+   "ooh find a place colder than 25 degrees",
+   "go until the temperature drops below 25",
+   "Oi, find a place colder than 25 degrees",
+   "find a place colder than 25 degrees mate",
+   "my little car, drive forward until it is colder than 25 degrees right now",
+   "Ok ok find a place colder than 25 degrees now",
+   "my little car, drive forward until it is colder than 25 degrees haha",
+   "listen, drive forward until it is colder than 25 degrees",
+   "Ooh go until the temperature drops below 25 my friend",
+   "drive forward until it is colder than 25 degrees :d"
+  ]
+ },
+ {
+  "id": 27,
+  "family": "climate",
+  "n": 228,
+  "program": "move(40, 0, 0)\nwhile temp() >= 15:\n    wait(100)\nstop()\n",
+  "examples": [
+   "Find a place colder than 15 degrees",
+   "find a place colder than 15 degrees",
+   "find a place colder than 15 degrees.",
+   "find a place colder than 15 degrees!!!",
+   "yo find a place colder than 15 degrees",
+   "Ha, find a place colder than 15 degrees",
+   "Ok so drive forward until it is colder than 15 degrees for grandma!!!",
+   "Aww drive forward until it is colder than 15 degrees!!",
+   "robot, go until the temperature drops below 15 :)",
+   "so, find a place colder than 15 degrees haha",
+   "i want you to drive forward until it is colder than 15 degrees thx",
+   "Meh, go until the temperature drops below 15 plz"
+  ]
+ },
+ {
+  "id": 28,
+  "family": "climate",
+  "n": 225,
+  "program": "move(40, 0, 0)\nwhile temp() >= 24:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 24 degrees?",
+   "find a place colder than 24 degrees lol",
+   "Omg find a place colder than 24 degrees",
+   "meh, find a place colder than 24 degrees",
+   "Yay find a place colder than 24 degrees?",
+   "hmm, find a place colder than 24 degrees",
+   "Buddy, find a place colder than 24 degrees for the video, will ya?",
+   "hmm, drive forward until it is colder than 24 degrees little guy",
+   "Hey buddy, find a place colder than 24 degrees thx",
+   "ooh go until the temperature drops below 24",
+   "go until the temperature drops below 24 mate",
+   "hey car, find a place colder than 24 degrees pls"
+  ]
+ },
+ {
+  "id": 29,
+  "family": "climate",
+  "n": 222,
+  "program": "move(40, 0, 0)\nwhile temp() >= 22:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 22 degrees",
+   "Find a place colder than 22 degrees.",
+   "aww find a place colder than 22 degrees",
+   "Find a place colder than 22 degrees pls",
+   "Go until the temperature drops below 22!",
+   "ha, find a place colder than 22 degrees?",
+   "ok ok drive forward until it is colder than 22 degrees?",
+   "Could you go until the temperature drops below 22 plz",
+   "wheee drive forward until it is colder than 22 degrees now",
+   "meh, find a place colder than 22 degrees now",
+   "wanna find a place colder than 22 degrees for me",
+   "please find a place colder than 22 degrees"
+  ]
+ },
+ {
+  "id": 30,
+  "family": "climate",
+  "n": 220,
+  "program": "move(40, 0, 0)\nwhile temp() >= 20:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 20 degrees :)",
+   "Go until the temperature drops below 20",
+   "Find a place colder than 20 degrees pls",
+   "omg find a place colder than 20 degrees",
+   "find a place colder than 20 degrees now",
+   "go until the temperature drops below 20?",
+   "pretty please find a place colder than 20 degrees, come on for me, ok?",
+   "Alright alright, go until the temperature drops below 20 for me",
+   "Yay drive forward until it is colder than 20 degrees lol",
+   "just drive forward until it is colder than 20 degrees?",
+   "now go until the temperature drops below 20 please and thank you",
+   "would you find a place colder than 20 degrees for me"
+  ]
+ },
+ {
+  "id": 31,
+  "family": "climate",
+  "n": 220,
+  "program": "move(40, 0, 0)\nwhile temp() >= 19:\n    wait(100)\nstop()\n",
+  "examples": [
+   "yo find a place colder than 19 degrees",
+   "go until the temperature drops below 19",
+   "Go until the temperature drops below 19",
+   "omg find a place colder than 19 degrees",
+   "oi, find a place colder than 19 degrees?",
+   "Meh, find a place colder than 19 degrees",
+   "Ha, go until the temperature drops below 19 plz",
+   "buddy, find a place colder than 19 degrees you little rascal plz",
+   "Alright alright, drive forward until it is colder than 19 degrees!!",
+   "pretty please find a place colder than 19 degrees",
+   "whoa, find a place colder than 19 degrees haha",
+   "Can you go until the temperature drops below 19 :)"
+  ]
+ },
+ {
+  "id": 32,
+  "family": "climate",
+  "n": 218,
+  "program": "move(40, 0, 0)\nwhile temp() >= 16:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 16 degrees",
+   "Find a place colder than 16 degrees",
+   "UM, FIND A PLACE COLDER THAN 16 DEGREES",
+   "go until the temperature drops below 16",
+   "Ha, find a place colder than 16 degrees",
+   "yay find a place colder than 16 degrees!",
+   "COME ON, DRIVE FORWARD UNTIL IT IS COLDER THAN 16 DEGREES :)",
+   "Can you maybe drive forward until it is colder than 16 degrees",
+   "Please go until the temperature drops below 16 right now",
+   "so, find a place colder than 16 degrees if you can",
+   "okay drive forward until it is colder than 16 degrees haha",
+   "yo go until the temperature drops below 16 if you understand my friend"
+  ]
+ },
+ {
+  "id": 33,
+  "family": "climate",
+  "n": 212,
+  "program": "move(40, 0, 0)\nwhile temp() >= 18:\n    wait(100)\nstop()\n",
+  "examples": [
+   "find a place colder than 18 degrees!",
+   "find a place colder than 18 degrees!!",
+   "Go until the temperature drops below 18",
+   "find a place colder than 18 degrees pls",
+   "go until the temperature drops below 18",
+   "Find a place colder than 18 degrees ok?",
+   "hey buddy, find a place colder than 18 degrees if you understand!!!",
+   "Let's see you find a place colder than 18 degrees ok?",
+   "find a place colder than 18 degrees pls",
+   "phew, find a place colder than 18 degrees",
+   "Ha, go until the temperature drops below 18 for the video!!!",
+   "ok so find a place colder than 18 degrees!"
+  ]
+ },
+ {
+  "id": 34,
+  "family": "climate",
+  "n": 207,
+  "program": "move(40, 0, 0)\nwhile temp() >= 21:\n    wait(100)\nstop()\n",
+  "examples": [
+   "Find a place colder than 21 degrees",
+   "find a place colder than 21 degrees",
+   "find a place colder than 21 degrees!!!",
+   "Find a place colder than 21 degrees :)",
+   "find a place colder than 21 degrees :)",
+   "Find a place colder than 21 degrees now",
+   "oh no, drive forward until it is colder than 21 degrees!",
+   "listen, go until the temperature drops below 21 for me",
+   "Yay drive forward until it is colder than 21 degrees for me, ok?",
+   "little car, find a place colder than 21 degrees lol",
+   "Oh no, go until the temperature drops below 21 mate",
+   "hey hey, find a place colder than 21 degrees because why not thx"
+  ]
+ },
+ {
+  "id": 35,
+  "family": "crash",
+  "n": 1300,
+  "program": "move(60, 0, 0)\nwhile shaken() == 0:\n    wait(20)\nstop()\n",
+  "examples": [
+   "ram the bin",
+   "ram the wall",
+   "Ram the wall!!",
+   "Bonk the box :D",
+   "ram the wall :D",
+   "go and crash <3",
+   "wanna crash into the table leg ok?",
+   "You know what, go and crash for the captain for me, ok?",
+   "i want you to smash into the wall my friend",
+   "listen, headbutt the wall buddy",
+   "yo buddy, crash into stuff, will ya?",
+   "Ugh, i dare you to hit the wall <3"
+  ]
+ },
+ {
+  "id": 36,
+  "family": "crash",
+  "n": 1222,
+  "program": "move(60, 0, 0)\nwhile shaken() == 0:\n    wait(20)\nstop()\nmove(-60, 0, 0)\nwait(800)\nstop()\n",
+  "examples": [
+   "hit my foot and reverse?",
+   "Hit my shoe and reverse!",
+   "Hit the wall and reverse",
+   "hit the wall and reverse",
+   "hit the sofa and reverse",
+   "Hit the wall and reverse.",
+   "little car, hit the table leg and reverse now",
+   "Crash into something then back up",
+   "How about you hit the table leg and reverse at normal speed right now",
+   "Can you maybe hit the wall then back it up because why not!!!",
+   "Buddy, ram the wall and back off for me",
+   "Hey hey, hit the wall then back it up already please and thank you"
+  ]
+ },
+ {
+  "id": 37,
+  "family": "crash",
+  "n": 159,
+  "program": "move(100, 0, 0)\nwhile shaken() == 0:\n    wait(20)\nstop()\nmove(-60, 0, 0)\nwait(800)\nstop()\n",
+  "examples": [
+   "bonk the wall and back off flat out thx",
+   "Aww bonk my shoe then back up flat out!",
+   "please hit that box and reverse flat out",
+   "ram the wall and back off flat out please",
+   "Oh no, hit the wall and reverse full speed",
+   "oi, ram the wall and back off at speed 100",
+   "How about you bonk the wall and back off full speed thx",
+   "hey robot, bonk the wall then back up as fast as you can go!",
+   "so, hit the cupboard and reverse as fast as you can plz",
+   "aww crash into something then back up as fast as you can lol",
+   "could you ram the wall and back off full speed if you can",
+   "pretty please hit the wall then back it up flat out little guy"
+  ]
+ },
+ {
+  "id": 38,
+  "family": "dance",
+  "n": 1937,
+  "program": "for i in range(3):\n    move(0, 0, 80)\n    wait(300)\n    move(0, 0, -80)\n    wait(300)\nstop()\n",
+  "examples": [
+   "dance",
+   "wiggle",
+   "GROOVE",
+   "Wiggle",
+   "groove",
+   "WIGGLE",
+   "hey hey, wiggle thx",
+   "phew, shake it right now",
+   "ooh wiggle!!!",
+   "Can you maybe groove buddy",
+   "boogie for the captain please and thank you",
+   "Alright car, wiggle plz"
+  ]
+ },
+ {
+  "id": 39,
+  "family": "dance",
+  "n": 1481,
+  "program": "for i in range(2):\n    move(40, 0, 70)\n    wait(400)\n    move(40, 0, -70)\n    wait(400)\nmove(0, 0, 90)\nwait(2800)\nstop()\n",
+  "examples": [
+   "dance number 2.",
+   "groove number 2",
+   "boogie number 2.",
+   "groove number 2!!",
+   "Shake it number 2",
+   "boogie number 2!!",
+   "Right, show off a little number 2 right now",
+   "little car, party time number 2",
+   "robot, show off a little number 2 if you agree :d",
+   "little car, dance for me number 2 if you understand please",
+   "let's see you show me a dance number 2 pls",
+   "go ahead and show off a little number 2"
+  ]
+ },
+ {
+  "id": 40,
+  "family": "dance",
+  "n": 1441,
+  "program": "for i in range(4):\n    move(60, 0, 0)\n    wait(200)\n    move(-60, 0, 0)\n    wait(200)\nmove(0, 0, 90)\nwait(1400)\nstop()\n",
+  "examples": [
+   "Dance number 3",
+   "shake it number 3",
+   "groove number 3 <3",
+   "celebrate number 3",
+   "groove number 3 :)",
+   "DANCE NUMBER 3 NOW",
+   "dude, show me a dance number 3?",
+   "would you shake it number 3 for the captain",
+   "You know what, party time number 3 because why not now",
+   "just dance number 3!!!",
+   "Come on, show off a little number 3!!",
+   "alright car, do a little dance number 3 like a crazy person <3"
+  ]
+ },
+ {
+  "id": 41,
+  "family": "drive",
+  "n": 314,
+  "program": "move(60, 0, 0)\nwait(1000)\nstop()\n",
+  "examples": [
+   "Now go ahead 1s",
+   "YO HEAD FORWARD 1S",
+   "Ha, head forward 1s",
+   "go forward 1 second",
+   "oi, go forward 1s!!!",
+   "drive straight 1s :D",
+   "LET'S SEE YOU MOVE FORWARD 1 SECOND PLEASE AND THANK YOU",
+   "OK LITTLE GUY, GO AHEAD FOR A SECOND OK?",
+   "okay scoot forward for a sec <3",
+   "time to zoom forward for a second <3",
+   "phew, go ahead 1 second pls",
+   "so, go ahead for a sec"
+  ]
+ },
+ {
+  "id": 42,
+  "family": "drive",
+  "n": 311,
+  "program": "move(60, 0, 0)\nwait(2000)\nstop()\n",
+  "examples": [
+   "go forward 2s",
+   "DRIVE AHEAD 2S",
+   "go forward 2s!",
+   "Zoom forward 2s!",
+   "drive ahead 2s <3",
+   "drive ahead 2s :D",
+   "ha, scoot forward 2s already",
+   "you know what, move forward for 2 sec, the cat is watching lol",
+   "zoom forward 2s!!!",
+   "Would you zoom forward for 2 seconds like a crazy person :)",
+   "time to move forward for 2 sec for me",
+   "aww go straight for 2 seconds"
+  ]
+ },
+ {
+  "id": 43,
+  "family": "drive",
+  "n": 200,
+  "program": "move(60, 0, 0)\nwait(500)\nstop()\n",
+  "examples": [
+   "go forward for a bit",
+   "Drive ahead a bit :D",
+   "go straight for a bit",
+   "head forward a little",
+   "Right, go ahead a bit",
+   "yo head forward a bit",
+   "how about you move forward for a bit for me",
+   "let's see you go forward a bit plz",
+   "hmm, move forward a little",
+   "okay go ahead a little little guy",
+   "ROLL FORWARD A LITTLE BIT RIGHT NOW",
+   "okay go ahead a little :D"
+  ]
+ },
+ {
+  "id": 44,
+  "family": "drive",
+  "n": 184,
+  "program": "move(-60, 0, 0)\nwait(2000)\nstop()\n",
+  "examples": [
+   "um, back up 2s",
+   "just go back 2s.",
+   "ok so roll back 2s",
+   "buddy, go back 2s!",
+   "OK OK BACK UP 2S :)",
+   "back it up for 2 sec",
+   "Yo buddy, drive backwards 2 seconds my friend",
+   "Just drive backwards two seconds <3",
+   "would you scoot back two seconds now",
+   "Hey car, go backwards for 2 seconds, come on please",
+   "could you drive back two seconds lol",
+   "come on, reverse 2 seconds right now"
+  ]
+ },
+ {
+  "id": 45,
+  "family": "drive",
+  "n": 181,
+  "program": "move(60, 0, 0)\nwait(5000)\nstop()\n",
+  "examples": [
+   "yay go forward 5s",
+   "Yo go forward 5s.",
+   "go ahead for 5 sec",
+   "wanna go ahead 5s :)",
+   "robot, drive ahead 5s",
+   "PHEW, ZOOM FORWARD 5S",
+   "listen, drive straight 5s haha",
+   "so, go ahead for 5 sec",
+   "Scoot forward for 5 sec buddy",
+   "BUDDY, GO FORWARD 5 SECONDS FOR ME",
+   "alright car, go forward for five seconds at normal speed like a race car, will ya?",
+   "ok so roll forward for 5 seconds!"
+  ]
+ },
+ {
+  "id": 46,
+  "family": "drive",
+  "n": 177,
+  "program": "move(-60, 0, 0)\nwait(1000)\nstop()\n",
+  "examples": [
+   "reverse 1s now",
+   "roll back 1s mate",
+   "meh, drive back 1s",
+   "whoa, roll back 1s",
+   "reverse for a second",
+   "aww back up 1 second",
+   "yikes, go backwards 1s!",
+   "hmm, move back for a sec.",
+   "just drive back 1s, i'm filming if you can",
+   "could you back up for a second",
+   "Yo roll back 1 second ok?",
+   "oh no, back up for a second."
+  ]
+ },
+ {
+  "id": 47,
+  "family": "drive",
+  "n": 176,
+  "program": "move(60, 0, 0)\nwait(3000)\nstop()\n",
+  "examples": [
+   "roll ahead 3s",
+   "drive ahead 3s",
+   "move forward 3s",
+   "Right, go forward 3s",
+   "drive ahead 3s thanks",
+   "cruise forward 3s pls",
+   "hey car, zoom forward for 3 sec pls",
+   "car, drive ahead for 3 sec",
+   "Go forward for 3 seconds at 60 percent if you hear me <3",
+   "Yo go ahead 3 seconds like a crazy person right now",
+   "how about you go ahead 3s, my boss is watching.",
+   "would you zoom forward for 3 seconds, my boss is watching :)"
+  ]
+ },
+ {
+  "id": 48,
+  "family": "drive",
+  "n": 173,
+  "program": "move(60, 0, 0)\nwait(300)\nstop()\n",
+  "examples": [
+   "yo go ahead a tiny bit",
+   "Roll forward a tiny bit",
+   "yo roll forward a tiny bit",
+   "just go ahead a tiny bit go!",
+   "please go ahead a few inches",
+   "Oh no, go forward a tiny bit",
+   "Can you maybe cruise forward a few inches if you agree now",
+   "car, move it forward just a tiny bit at normal speed please",
+   "Yay move forward a few inches like a maniac now",
+   "wanna go straight a few inches",
+   "ok little guy, go forward just a tiny bit!!!",
+   "alright car, drive straight a few inches, will ya?"
+  ]
+ },
+ {
+  "id": 49,
+  "family": "drive",
+  "n": 167,
+  "program": "move(60, 0, 0)\nwait(4000)\nstop()\n",
+  "examples": [
+   "ugh, go ahead 4s!!",
+   "aww go straight 4s",
+   "Meh, go forward 4s?",
+   "so, go forward 4s!!",
+   "okay drive forward 4s",
+   "just go forward 4s plz",
+   "meh, drive straight for 4 seconds please and thank you",
+   "oh no, move forward 4 seconds thanks",
+   "ugh, go ahead 4s if you understand right now",
+   "i want you to roll forward 4 seconds",
+   "Time to drive forward 4 seconds",
+   "car, drive straight for 4 sec if you dare buddy"
+  ]
+ },
+ {
+  "id": 50,
+  "family": "ears",
+  "n": 1867,
+  "program": "while 1:\n    if sound() > 70:\n        eyes(\"surprised\")\n        move(-60, 0, 0)\n        wait(500)\n        stop()\n        eyes(\"open\")\n    wait(20)\n",
+  "examples": [
+   "BE SCARED OF CLAPS",
+   "Be scared of claps",
+   "be scared of claps",
+   "be scared of claps!!",
+   "jump back if i shout",
+   "yo be scared of claps",
+   "Alright car, get scared of loud noises!!",
+   "wheee jump back if i shout if you dare plz",
+   "right, be scared when it's loud",
+   "um, be scared when it's loud, the cat is watching, will ya?",
+   "Yikes, be scared of claps :)",
+   "robot, be scared when it's loud, show them my friend"
+  ]
+ },
+ {
+  "id": 51,
+  "family": "ears",
+  "n": 1785,
+  "program": "while 1:\n    if sound() > 60:\n        move(60, 0, 0)\n        wait(1000)\n        stop()\n    wait(20)\n",
+  "examples": [
+   "come when i clap",
+   "come when i clap!",
+   "yo come when i clap",
+   "COME WHEN I CLAP :D",
+   "come when i clap <3",
+   "clap and come to me",
+   "hey buddy, come to me if i clap!",
+   "Could you clap and come to me thanks",
+   "Whoa, drive forward when i clap for the video",
+   "Okay when i clap, come here ok!!",
+   "drive forward when i clap for me, ok?",
+   "just come to me if i clap for fun <3"
+  ]
+ },
+ {
+  "id": 52,
+  "family": "ears",
+  "n": 1783,
+  "program": "while 1:\n    clear()\n    text(52, 28, str(sound()))\n    wait(100)\n",
+  "examples": [
+   "How loud is it",
+   "how loud is it",
+   "how loud is it.",
+   "be a noise meter",
+   "be a noise meter!",
+   "how loud is it :D",
+   "hmm, be a noise meter <3",
+   "show the noise level",
+   "Meh, show the noise level haha",
+   "my little car, how loud is it!!!",
+   "Dude, show me how loud it is :)",
+   "OOH SHOW ME HOW LOUD IT IS FOR ME"
+  ]
+ },
+ {
+  "id": 53,
+  "family": "ears",
+  "n": 1766,
+  "program": "while 1:\n    if sound() > 40:\n        move(0, 0, 80)\n        wait(250)\n        move(0, 0, -80)\n        wait(250)\n    else:\n        stop()\n        wait(20)\n",
+  "examples": [
+   "dance if it's loud",
+   "Dance to the music",
+   "dance to the music",
+   "dance if it's loud!",
+   "dance to the music?",
+   "Dance if it's loud?",
+   "Come on, dance when i play music for grandma if you can",
+   "oh no, dance if it's loud now",
+   "Hey car, dance when i play music",
+   "phew, dance to the music!!!",
+   "wanna dance when i play music :)",
+   "you know what, dance when i play music if you can"
+  ]
+ },
+ {
+  "id": 54,
+  "family": "ears",
+  "n": 1755,
+  "program": "while 1:\n    if sound() > 70:\n        beep(200)\n    wait(50)\n",
+  "examples": [
+   "shh detector",
+   "Shh detector",
+   "shh detector.",
+   "Shh detector?",
+   "shh detector!",
+   "shh detector!!",
+   "hey robot, warn me when it's noisy plz",
+   "WARN ME WHEN IT'S NOISY FOR ME",
+   "Buddy, beep if it gets too loud already!!!",
+   "yo buddy, be a quiet please sign thx",
+   "pretty please beep if it gets too loud please and thank you",
+   "um, shh detector :D"
+  ]
+ },
+ {
+  "id": 55,
+  "family": "ears",
+  "n": 903,
+  "program": "while sound() < 60:\n    wait(20)\nmove(60, 0, 0)\n",
+  "examples": [
+   "clap to start",
+   "clap to start.",
+   "clap to start!!",
+   "clap to start :)",
+   "clap to start <3",
+   "Clap to start!!!",
+   "Oi, go when you hear a clap",
+   "Yay go when you hear a clap thx",
+   "my little car, start when i clap you little rascal?",
+   "hey buddy, wait for a clap then go you little rascal right now",
+   "Alright car, go when you hear a clap <3",
+   "ooh go when you hear a clap ok?"
+  ]
+ },
+ {
+  "id": 56,
+  "family": "ears",
+  "n": 860,
+  "program": "eyes(\"sleepy\")\nwhile sound() < 60:\n    wait(20)\neyes(\"open\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n",
+  "examples": [
+   "sleep until i clap",
+   "sleep until i clap <3",
+   "sleep until i clap :)",
+   "Yo sleep until i clap",
+   "yo sleep until i clap",
+   "sleep until i clap lol",
+   "HEY BUDDY, WAKE UP WHEN YOU HEAR ME LIKE A CHAMP PLEASE AND THANK YOU",
+   "Hey hey, wake up when you hear me",
+   "i want you to sleep until i clap ok!!!",
+   "oh no, sleep until i clap <3",
+   "go ahead and sleep until i clap!!!",
+   "hey hey, nap and wake up when i clap buddy"
+  ]
+ },
+ {
+  "id": 57,
+  "family": "edge",
+  "n": 5989,
+  "program": "while 1:\n    move(40, 0, 0)\n    if track() == 3:\n        stop()\n        move(-50, 0, 0)\n        wait(500)\n        move(0, 0, 60)\n        wait(700)\n    wait(20)\n",
+  "examples": [
+   "Stay on the table",
+   "stay on the table",
+   "Explore the table",
+   "explore the table",
+   "Explore the table?",
+   "STAY ON THE TABLE!",
+   "Explore the table :)",
+   "drive around but don't fall off just for me lol",
+   "how about you don't drive off the edge.",
+   "LISTEN, DON'T FALL OFF THE TABLE HAHA",
+   "listen, drive around but don't fall off if you understand thx",
+   "don't drive off the edge thanks"
+  ]
+ },
+ {
+  "id": 58,
+  "family": "eyes",
+  "n": 1440,
+  "program": "eyes(\"angry\")\ntone(200, 400)\n",
+  "examples": [
+   "Get mad",
+   "get mad",
+   "get mad?",
+   "be angry",
+   "Be grumpy",
+   "be angry?",
+   "ha, show me your angry face little guy",
+   "Can you angry eyes ok now",
+   "Oi, show me your angry face for the video please",
+   "Yo buddy, be angry one more time if you can",
+   "phew, show me your angry face",
+   "SO, GET MAD GO!"
+  ]
+ },
+ {
+  "id": 59,
+  "family": "eyes",
+  "n": 1392,
+  "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n",
+  "examples": [
+   "heart eyes",
+   "heart eyes!",
+   "heart eyes?",
+   "heart eyes!!",
+   "fall in love",
+   "look in love",
+   "Yo fall in love now",
+   "come on, make heart eyes pls",
+   "Fall in love, show them plz",
+   "come on, look in love!",
+   "would you show me heart eyes plz",
+   "Let's see you make heart eyes right now"
+  ]
+ },
+ {
+  "id": 60,
+  "family": "eyes",
+  "n": 1372,
+  "program": "eyes(\"dizzy\")\nlook(-40)\nwait(200)\nlook(40)\nwait(200)\nlook(0)\n",
+  "examples": [
+   "act dizzy",
+   "dizzy eyes",
+   "look dizzy",
+   "look dizzy!",
+   "be confused",
+   "look dizzy?",
+   "okay roll your eyes pls",
+   "yay be confused go!",
+   "Act dizzy ok?",
+   "Just be confused please and thank you",
+   "look confused!!!",
+   "car, look confused if you hear me please"
+  ]
+ },
+ {
+  "id": 61,
+  "family": "eyes",
+  "n": 1338,
+  "program": "eyes(\"sleepy\")\ntone(400, 300)\ntone(300, 500)\n",
+  "examples": [
+   "yawn",
+   "Yawn",
+   "yawn?",
+   "yawn!",
+   "Yawn?",
+   "YO YAWN",
+   "JUST YAWN NOW",
+   "ok ok act sleepy for me, ok?",
+   "Go ahead and yawn pls",
+   "yikes, sleepy eyes for fun",
+   "ok so look sleepy",
+   "hey robot, act sleepy"
+  ]
+ },
+ {
+  "id": 62,
+  "family": "eyes",
+  "n": 1327,
+  "program": "eyes(\"wink\")\nwait(400)\neyes(\"open\")\n",
+  "examples": [
+   "wink",
+   "Wink.",
+   "Wink?",
+   "wink :)",
+   "yo wink",
+   "ooh wink",
+   "wanna wink at me like a crazy person <3",
+   "can you wink for the captain?",
+   "Hey robot, wink at me if you agree please",
+   "dude, do a wink lol",
+   "Alright alright, wink at me mate",
+   "um, do a wink :)"
+  ]
+ },
+ {
+  "id": 63,
+  "family": "eyes",
+  "n": 1325,
+  "program": "eyes(\"surprised\")\ntone(1500, 100)\nnod(20)\nwait(400)\nnod(0)\n",
+  "examples": [
+   "wow face",
+   "be shocked",
+   "look amazed",
+   "BE SHOCKED.",
+   "Look amazed",
+   "be shocked?",
+   "ok ok act surprised, come on.",
+   "yo buddy, act surprised!!!",
+   "my little car, surprised eyes haha",
+   "Can you maybe act surprised please",
+   "ha, be shocked",
+   "little car, look amazed now"
+  ]
+ },
+ {
+  "id": 64,
+  "family": "eyes",
+  "n": 1321,
+  "program": "eyes(\"sad\")\nnod(20)\ntone(900, 200)\ntone(1100, 300)\n",
+  "examples": [
+   "beg",
+   "Beg",
+   "beg!",
+   "beg?",
+   "Beg!!",
+   "Beg :d",
+   "Pretty please make puppy eyes like a race car pls",
+   "Phew, make puppy eyes right now",
+   "Yay beg for a treat thanks",
+   "so, beg <3",
+   "pretty please beg <3",
+   "Can you beg little guy"
+  ]
+ },
+ {
+  "id": 65,
+  "family": "eyes",
+  "n": 1313,
+  "program": "nod(40)\neyes(\"up\")\n",
+  "examples": [
+   "look up",
+   "Head up",
+   "head up",
+   "HEAD UP",
+   "head up?",
+   "look up.",
+   "i want you to look up there",
+   "How about you head up, i believe in you!!",
+   "oi, look up there!!",
+   "Oi, head up if you agree!!!",
+   "Ha, head up because why not plz",
+   "hey buddy, head up now"
+  ]
+ },
+ {
+  "id": 66,
+  "family": "eyes",
+  "n": 1312,
+  "program": "nod(-40)\neyes(\"down\")\n",
+  "examples": [
+   "LOOK DOWN",
+   "Head down",
+   "look down",
+   "head down",
+   "look down!",
+   "Head down.",
+   "go ahead and look down thx",
+   "look at your feet!!!",
+   "yo buddy, look at your feet go!",
+   "wanna look at your feet, show them thanks",
+   "time to look down for me, ok?",
+   "yo look at the floor one more time buddy"
+  ]
+ },
+ {
+  "id": 67,
+  "family": "eyes",
+  "n": 1303,
+  "program": "for i in range(2):\n    eyes(\"closed\")\n    wait(150)\n    eyes(\"open\")\n    wait(300)\n",
+  "examples": [
+   "Blink",
+   "blink",
+   "blink?",
+   "blink!",
+   "Blink?",
+   "blink.",
+   "oh no, blink at me?",
+   "now blink your eyes!",
+   "Ha, blink at me mate",
+   "so, blink twice because why not for me",
+   "alright car, blink go!",
+   "Right, blink at me ok :)"
+  ]
+ },
+ {
+  "id": 68,
+  "family": "eyes",
+  "n": 1260,
+  "program": "eyes(\"open\")\n",
+  "examples": [
+   "eyes open",
+   "eyes open!",
+   "Look normal",
+   "Normal eyes",
+   "normal eyes",
+   "look normal",
+   "phew, normal eyes if you can",
+   "Time to normal eyes!",
+   "Normal eyes like a champ <3",
+   "Robot, normal eyes buddy",
+   "Robot, eyes open like a race car lol",
+   "oi, eyes open thanks"
+  ]
+ },
+ {
+  "id": 69,
+  "family": "eyes",
+  "n": 1232,
+  "program": "eyes(\"closed\")\n",
+  "examples": [
+   "don't look",
+   "Don't look",
+   "Don't look.",
+   "don't look?",
+   "eyes closed",
+   "eyes closed?",
+   "Can you maybe close your eyes, the cat is watching thanks",
+   "oh no, shut your eyes, i believe in you thanks",
+   "whoa, don't look now",
+   "Wanna eyes closed if you can",
+   "close your eyes!!",
+   "shut your eyes if you hear me!!"
+  ]
+ },
+ {
+  "id": 70,
+  "family": "face",
+  "n": 3922,
+  "program": "eyes(\"happy\")\nclear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\n",
+  "examples": [
+   "smile",
+   "Smile",
+   "Smile!",
+   "smile?",
+   "smile.",
+   "SMILE?",
+   "time to look happy if you agree for me",
+   "hey car, happy face pls thx",
+   "right, make a happy face thx",
+   "hey buddy, be happy if you can",
+   "yo be happy my friend",
+   "So, look happy right now"
+  ]
+ },
+ {
+  "id": 71,
+  "family": "face",
+  "n": 3263,
+  "program": "eyes(\"sad\")\nclear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 48, 56, 44)\nline(56, 44, 72, 44)\nline(72, 44, 76, 48)\n",
+  "examples": [
+   "Frown",
+   "frown",
+   "BE SAD",
+   "be sad",
+   "frown!",
+   "Frown.",
+   "Come on, sad face pls, come on go!",
+   "Now make a sad face for grandma if you can",
+   "right, make a sad face",
+   "okay look sad!!!",
+   "Buddy, be sad, the cat is watching little guy",
+   "so, make a sad face thx"
+  ]
+ },
+ {
+  "id": 72,
+  "family": "follow_hand",
+  "n": 7589,
+  "program": "while 1:\n    d = distance()\n    move((d - 20) * 3, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "follow me",
+   "COME HERE",
+   "Follow me",
+   "Come here",
+   "come here",
+   "follow me.",
+   "Let's see you come closer but not too close, my boss is watching mate",
+   "My little car, keep 20 cm from my hand for me, ok?",
+   "my little car, come here go!",
+   "hmm, follow my hand already :)",
+   "car, follow my hand around my friend",
+   "Aww come closer but not too close little guy"
+  ]
+ },
+ {
+  "id": 73,
+  "family": "follow_hand",
+  "n": 640,
+  "program": "while 1:\n    d = distance()\n    move((d - 30) * 3, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "keep 30 cm from my hand",
+   "stay 30 cm away from me",
+   "Keep 30 cm from my hand",
+   "Stay 30 cm away from me",
+   "stay 30 cm away from me?",
+   "stay 30 cm away from me!",
+   "little car, keep 30 cm from my hand thx",
+   "yo buddy, keep 30 cm from my hand",
+   "yo buddy, keep 30 cm from my hand :d",
+   "go ahead and stay 30 cm away from me right now",
+   "Now keep 30 cm from my hand",
+   "Can you stay 30 cm away from me little guy"
+  ]
+ },
+ {
+  "id": 74,
+  "family": "follow_hand",
+  "n": 626,
+  "program": "while 1:\n    d = distance()\n    move((d - 10) * 3, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "Keep 10 cm from my hand",
+   "Stay 10 cm away from me",
+   "stay 10 cm away from me",
+   "keep 10 cm from my hand",
+   "stay 10 cm away from me!",
+   "keep 10 cm from my hand :d",
+   "ok so stay 10 cm away from me :D",
+   "listen, stay 10 cm away from me?",
+   "dude, keep 10 cm from my hand for me",
+   "Go ahead and stay 10 cm away from me?",
+   "Little car, keep 10 cm from my hand for me",
+   "go ahead and keep 10 cm from my hand because why not haha"
+  ]
+ },
+ {
+  "id": 75,
+  "family": "go",
+  "n": 3423,
+  "program": "move(60, 0, 0)\n",
+  "examples": [
+   "Drive",
+   "move!",
+   "Go on",
+   "go on",
+   "ONWARD",
+   "onward",
+   "ooh drive?",
+   "vroom vroom for grandma?",
+   "Listen, get moving right now",
+   "can you start driving little guy",
+   "ooh get moving.",
+   "Yo go just for me"
+  ]
+ },
+ {
+  "id": 76,
+  "family": "go",
+  "n": 1199,
+  "program": "move(100, 0, 0)\n",
+  "examples": [
+   "Zoom zoom",
+   "zoom zoom",
+   "zoom zoom.",
+   "max speed?",
+   "max speed.",
+   "Max speed!!",
+   "Please go full speed",
+   "hey robot, zoom zoom thanks",
+   "phew, zoom zoom, come on for me",
+   "Can you max speed little guy",
+   "alright alright, zoom zoom, my boss is watching my friend",
+   "pretty please go full speed for fun right now"
+  ]
+ },
+ {
+  "id": 77,
+  "family": "go",
+  "n": 850,
+  "program": "move(-50, 0, 0)\n",
+  "examples": [
+   "go backwards.",
+   "Back back back!",
+   "yo go backwards",
+   "back back back?",
+   "Back back back.",
+   "Back back back?",
+   "Yo go backwards haha",
+   "robot, drive backwards, i believe in you thx",
+   "yo back back back :)",
+   "Um, back back back",
+   "Whoa, reverse and keep going, will ya?",
+   "now go backwards"
+  ]
+ },
+ {
+  "id": 78,
+  "family": "go",
+  "n": 516,
+  "program": "move(80, 0, 0)\n",
+  "examples": [
+   "faster",
+   "Faster.",
+   "quicker",
+   "faster?",
+   "Quicker",
+   "Speed up",
+   "buddy, more speed!",
+   "little car, quicker go!",
+   "can you maybe speed up <3",
+   "yo buddy, go faster if you agree for me",
+   "car, go faster, show them now",
+   "ok little guy, more speed, show them now"
+  ]
+ },
+ {
+  "id": 79,
+  "family": "go",
+  "n": 409,
+  "program": "move(35, 0, 0)\n",
+  "examples": [
+   "slow down",
+   "Slower :)",
+   "slow down!",
+   "Now slower",
+   "Slow down?",
+   "Go slower!!",
+   "let's see you slow down, show them ok?",
+   "my little car, slow it down, my boss is watching",
+   "right, go slower little guy",
+   "just slow down if you agree go!",
+   "SLOW IT DOWN LOL",
+   "okay easy, slower"
+  ]
+ },
+ {
+  "id": 80,
+  "family": "go",
+  "n": 350,
+  "program": "move(30, 0, 0)\n",
+  "examples": [
+   "yo go slow",
+   "Gently now?",
+   "aww go slow",
+   "oi, go slow",
+   "meh, go slow",
+   "take it easy",
+   "My little car, gently now ok?",
+   "ugh, move slowly haha",
+   "right, take it easy.",
+   "car, move gently now",
+   "You know what, go slow",
+   "Can you maybe take it easy buddy"
+  ]
+ },
+ {
+  "id": 81,
+  "family": "go",
+  "n": 341,
+  "program": "move(90, 0, 0)\n",
+  "examples": [
+   "FASTER",
+   "FASTER!",
+   "step on it",
+   "FASTER plz",
+   "Ooh FASTER!",
+   "um, FASTER.",
+   "just FASTER.",
+   "robot, FASTER",
+   "um, keep going at power 90 like a champ go!",
+   "hey hey, keep going fast one more time :D",
+   "okay faster faster!!!",
+   "YIKES, STEP ON IT HAHA"
+  ]
+ },
+ {
+  "id": 82,
+  "family": "go",
+  "n": 274,
+  "program": "move(45, 0, 0)\n",
+  "examples": [
+   "a bit slower.",
+   "Not so fast :)",
+   "not so fast :)",
+   "not so fast lol",
+   "yo a bit slower",
+   "aww not so fast",
+   "could you a little slower for the video please",
+   "Right, a little slower",
+   "Ok ok a bit slower if you agree ok?",
+   "listen, a bit slower if you dare <3",
+   "HEY BUDDY, A BIT SLOWER :D",
+   "Not so fast :)"
+  ]
+ },
+ {
+  "id": 83,
+  "family": "go",
+  "n": 207,
+  "program": "move(70, 0, 0)\n",
+  "examples": [
+   "a bit faster",
+   "A BIT FASTER!!",
+   "a bit faster!!!",
+   "A bit faster go!",
+   "a bit faster plz",
+   "Now a bit faster?",
+   "phew, a bit faster, my boss is watching",
+   "ok so a little faster!!!",
+   "yay a little faster",
+   "hey robot, a little faster, will ya?",
+   "you know what, a bit faster if you agree please and thank you",
+   "come on, a little faster ok, will ya?"
+  ]
+ },
+ {
+  "id": 84,
+  "family": "guard",
+  "n": 2706,
+  "program": "while 1:\n    if tilt() > 30:\n        stop()\n    wait(20)\n",
+  "examples": [
+   "stop if you get lifted",
+   "STOP IF YOU GET LIFTED",
+   "stop when I pick you up",
+   "stop if you get lifted!",
+   "stop if you get lifted?",
+   "stop when i pick you up",
+   "Little car, stop if you get lifted for me, ok?",
+   "alright alright, stop if you get lifted!!",
+   "i want you to stop if you get lifted my friend",
+   "omg stop if you get lifted please",
+   "Um, stop when i pick you up right now",
+   "right, stop if you get lifted for me"
+  ]
+ },
+ {
+  "id": 85,
+  "family": "guard",
+  "n": 2327,
+  "program": "move(60, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(60, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive, back up when you hit something",
+   "Drive, back up when you hit something",
+   "drive, back up when you hit something.",
+   "Drive, back up when you hit something?",
+   "drive, back up when you hit something?",
+   "drive, back up when you hit something!!",
+   "oi, drive, and if you bump into something, back off and turn",
+   "could you drive forward and back off when you bump into something you little rascal pls",
+   "meh, drive, and if you bump into something, back off and turn for me, ok?",
+   "can you maybe drive, and if you bump into something, back off and turn!!",
+   "yo buddy, drive, and if you bump into something, back off and turn if you dare mate",
+   "Ooh drive, back up when you hit something ok?"
+  ]
+ },
+ {
+  "id": 86,
+  "family": "guard",
+  "n": 773,
+  "program": "move(60, 0, 0)\nwhile 1:\n    if tilt() > 30:\n        stop()\n    wait(20)\n",
+  "examples": [
+   "Drive forward and stop if someone picks you up",
+   "DRIVE FORWARD AND STOP IF SOMEONE PICKS YOU UP",
+   "drive forward and stop if someone picks you up",
+   "drive forward and stop if someone picks you up.",
+   "drive forward and stop if someone picks you up!",
+   "Drive forward and stop if someone picks you up!",
+   "just drive forward and stop if someone picks you up now",
+   "so, drive forward and stop if someone picks you up.",
+   "ok little guy, drive forward and stop if someone picks you up for the video right now",
+   "robot, drive forward and stop if someone picks you up if you agree right now",
+   "Hey robot, drive forward and stop if someone picks you up",
+   "Hey hey, drive forward and stop if someone picks you up <3"
+  ]
+ },
+ {
+  "id": 87,
+  "family": "guard",
+  "n": 262,
+  "program": "move(90, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(90, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "DRIVE QUICKLY, BACK UP WHEN YOU HIT SOMETHING",
+   "aww drive fast, back up when you hit something",
+   "drive quickly, back up when you hit something now",
+   "Oi, drive fast, back up when you hit something go!",
+   "car, drive fast, back up when you hit something ok?",
+   "phew, drive quickly, back up when you hit something",
+   "hey buddy, drive fast, and if you bump into something, back off and turn just for me!",
+   "Could you drive forward quickly and back off when you bump into something ok?",
+   "hey car, drive fast, back up when you hit something like a crazy person",
+   "i want you to drive quickly, back up when you hit something?",
+   "phew, drive quickly, back up when you hit something",
+   "LISTEN, DRIVE SUPER FAST, AND IF YOU BUMP INTO SOMETHING, BACK OFF AND TURN FOR ME"
+  ]
+ },
+ {
+  "id": 88,
+  "family": "guard",
+  "n": 257,
+  "program": "move(100, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(100, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive flat out, back up when you hit something go!",
+   "Ha, drive flat out, back up when you hit something",
+   "Drive full speed, back up when you hit something :d",
+   "okay drive flat out, back up when you hit something",
+   "drive full speed, back up when you hit something lol",
+   "okay drive full speed, back up when you hit something",
+   "listen, drive at full speed, and if you bump into something, back off and turn!",
+   "oi, drive as fast as you can, back up when you hit something",
+   "time to drive as fast as you can, and if you bump into something, back off and turn go!",
+   "can you drive forward as fast as you can and back off when you bump into something",
+   "hey hey, drive full speed, and if you bump into something, back off and turn",
+   "wheee drive at full speed, back up when you hit something"
+  ]
+ },
+ {
+  "id": 89,
+  "family": "guard",
+  "n": 218,
+  "program": "move(30, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(30, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive slowly, back up when you hit something :D",
+   "yo drive gently, back up when you hit something",
+   "Omg drive slowly, back up when you hit something",
+   "hmm, drive gently, back up when you hit something",
+   "phew, drive gently, back up when you hit something",
+   "Meh, drive gently, back up when you hit something.",
+   "time to drive nice and slow, back up when you hit something pls",
+   "yo drive forward slowly and back off when you bump into something <3",
+   "dude, drive gently, back up when you hit something, i'm filming mate",
+   "How about you drive forward nice and slow and back off when you bump into something, show them for me, ok?",
+   "robot, drive gently, and if you bump into something, back off and turn",
+   "Ok so drive nice and slow, and if you bump into something, back off and turn"
+  ]
+ },
+ {
+  "id": 90,
+  "family": "guard",
+  "n": 210,
+  "program": "move(20, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(20, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive real slow, back up when you hit something",
+   "Drive real slow, back up when you hit something!!",
+   "DRIVE LIKE A SNAIL, BACK UP WHEN YOU HIT SOMETHING",
+   "drive real slow, back up when you hit something pls",
+   "drive real slow, back up when you hit something go!",
+   "drive like a snail, back up when you hit something!!!",
+   "little car, drive at 20 percent, and if you bump into something, back off and turn, show them :)",
+   "Ok ok drive real slow, and if you bump into something, back off and turn!",
+   "listen, drive like a snail, and if you bump into something, back off and turn just for me",
+   "listen, drive like a snail, back up when you hit something if you can",
+   "ok ok drive real slow, and if you bump into something, back off and turn like a champ plz",
+   "Listen, drive forward very slowly and back off when you bump into something now"
+  ]
+ },
+ {
+  "id": 91,
+  "family": "guard",
+  "n": 187,
+  "program": "move(10, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(10, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive at 10%, back up when you hit something mate",
+   "drive at a crawl, back up when you hit something!!",
+   "Drive barely moving, back up when you hit something",
+   "so, drive speed 10, back up when you hit something!!",
+   "um, drive at a crawl, back up when you hit something",
+   "yay drive at a crawl, back up when you hit something?",
+   "ok ok drive barely moving, back up when you hit something",
+   "whoa, drive speed 10, and if you bump into something, back off and turn for me, ok?",
+   "wanna drive forward at a crawl and back off when you bump into something?",
+   "Ok so drive forward at power 10 and back off when you bump into something if you dare",
+   "alright alright, drive barely moving, back up when you hit something if you dare :)",
+   "Um, drive speed 10, and if you bump into something, back off and turn my friend"
+  ]
+ },
+ {
+  "id": 92,
+  "family": "guard",
+  "n": 169,
+  "program": "move(45, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(45, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive at power 45, back up when you hit something",
+   "right, drive at 45%, back up when you hit something pls",
+   "um, drive not too fast, back up when you hit something?",
+   "drive at a relaxed pace, back up when you hit something :d",
+   "so, drive at a relaxed pace, back up when you hit something",
+   "yikes, drive not too fast, back up when you hit something :D",
+   "hmm, drive not too fast, and if you bump into something, back off and turn if you understand",
+   "ok little guy, drive at a relaxed pace, and if you bump into something, back off and turn if you understand :D",
+   "aww drive at a relaxed pace, and if you bump into something, back off and turn please and thank you",
+   "yo buddy, drive 45 percent speed, and if you bump into something, back off and turn already?",
+   "Wanna drive forward at a relaxed pace and back off when you bump into something.",
+   "come on, drive not too fast, and if you bump into something, back off and turn little guy"
+  ]
+ },
+ {
+  "id": 93,
+  "family": "guard",
+  "n": 160,
+  "program": "move(70, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(70, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive briskly, back up when you hit something",
+   "drive briskly, back up when you hit something :d",
+   "car, drive at 70%, back up when you hit something",
+   "ooh drive briskly, back up when you hit something",
+   "Meh, drive briskly, back up when you hit something?",
+   "OK OK DRIVE BRISKLY, BACK UP WHEN YOU HIT SOMETHING",
+   "Ha, drive briskly, back up when you hit something because why not?",
+   "would you drive a bit fast, and if you bump into something, back off and turn please and thank you",
+   "can you drive forward a bit fast and back off when you bump into something!",
+   "Yo buddy, drive forward a bit fast and back off when you bump into something mate",
+   "okay drive forward a bit fast and back off when you bump into something!!",
+   "robot, drive a bit fast, and if you bump into something, back off and turn like a race car"
+  ]
+ },
+ {
+  "id": 94,
+  "family": "guard",
+  "n": 159,
+  "program": "move(50, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(50, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "right, drive speed 50, back up when you hit something!",
+   "aww drive at half speed, back up when you hit something",
+   "little car, drive at 50%, back up when you hit something",
+   "omg drive at power 50, back up when you hit something pls",
+   "Right, drive at speed 50, back up when you hit something?",
+   "Okay drive at half speed, back up when you hit something?",
+   "time to drive at speed 50, and if you bump into something, back off and turn.",
+   "drive forward at 50 percent and back off when you bump into something please and thank you",
+   "so, drive at half speed, and if you bump into something, back off and turn, will ya?",
+   "Alright car, drive forward at half speed and back off when you bump into something <3",
+   "come on, drive at medium speed, back up when you hit something for fun",
+   "just drive at half speed, back up when you hit something my friend"
+  ]
+ },
+ {
+  "id": 95,
+  "family": "guard",
+  "n": 155,
+  "program": "move(40, 0, 0)\nwhile 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        move(0, 0, 60)\n        wait(700)\n        move(40, 0, 0)\n    wait(20)\n",
+  "examples": [
+   "drive slowish, back up when you hit something",
+   "now drive slowish, back up when you hit something :)",
+   "dude, drive slowish, back up when you hit something?",
+   "Ooh drive speed 40, back up when you hit something pls",
+   "DRIVE A BIT SLOW, BACK UP WHEN YOU HIT SOMETHING BUDDY",
+   "Just drive slowish, back up when you hit something now",
+   "yo buddy, drive slowish, and if you bump into something, back off and turn one more time please",
+   "go ahead and drive forward a bit slow and back off when you bump into something go!",
+   "Wanna drive slowish, and if you bump into something, back off and turn my friend",
+   "Buddy, drive slowish, back up when you hit something, will ya?",
+   "ugh, drive at 40%, and if you bump into something, back off and turn",
+   "pretty please drive slowish, back up when you hit something you little rascal please and thank you"
+  ]
+ },
+ {
+  "id": 96,
+  "family": "heart",
+  "n": 425,
+  "program": "clear()\ncircle(51, 26, 13)\ncircle(77, 26, 13)\nline(38, 26, 64, 58)\nline(90, 26, 64, 58)\n",
+  "examples": [
+   "put a big heart",
+   "show a big heart",
+   "draw a big heart",
+   "Make a huge heart",
+   "paint a big heart",
+   "show a huge heart",
+   "show a huge heart in the center on the screen",
+   "sketch a huge heart in the centre",
+   "display a huge heart shape in the centre",
+   "Draw a big love heart in the center",
+   "Show me a large love heart",
+   "hey buddy, sketch a large heart in the centre"
+  ]
+ },
+ {
+  "id": 97,
+  "family": "heart",
+  "n": 279,
+  "program": "clear()\ncircle(55, 28, 9)\ncircle(73, 28, 9)\nline(46, 28, 64, 50)\nline(82, 28, 64, 50)\n",
+  "examples": [
+   "make a heart",
+   "show a heart",
+   "draw a heart",
+   "draw a heart!",
+   "Paint a heart",
+   "paint a heart",
+   "could you draw a love heart in the centre",
+   "Display a heart shape in the center",
+   "display a love heart on the screen",
+   "ok little guy, paint a love heart in the middle pls",
+   "Would you sketch a heart in the centre.",
+   "can you draw a heart in the centre!"
+  ]
+ },
+ {
+  "id": 98,
+  "family": "heart",
+  "n": 268,
+  "program": "clear()\ncircle(59, 30, 5)\ncircle(69, 30, 5)\nline(54, 30, 64, 42)\nline(74, 30, 64, 42)\n",
+  "examples": [
+   "put a small heart",
+   "put a little heart",
+   "Put a little heart",
+   "draw a small heart",
+   "make a small heart",
+   "draw a little heart",
+   "paint a small love heart in the middle on the screen",
+   "i want a small heart in the center now",
+   "Draw a little heart in the center thanks",
+   "Draw a little heart",
+   "car, display a small heart in the middle pls",
+   "hey, draw a small heart shape thx"
+  ]
+ },
+ {
+  "id": 99,
+  "family": "heart",
+  "n": 154,
+  "program": "clear()\ncircle(14, 21, 13)\ncircle(40, 21, 13)\nline(1, 21, 27, 53)\nline(53, 21, 27, 53)\n",
+  "examples": [
+   "put a huge heart in the corner",
+   "make a huge heart in the corner",
+   "put a large heart in the corner",
+   "draw a large heart in the corner",
+   "Sketch a big heart in the corner",
+   "give me a big heart in the corner",
+   "can you draw a big heart shape in the corner pls",
+   "show me a huge love heart in the corner",
+   "Can you make a big heart shape in the corner",
+   "Display a large heart in the top left corner",
+   "dude draw a huge love heart in the corner",
+   "make a large love heart in the corner on the screen"
+  ]
+ },
+ {
+  "id": 100,
+  "family": "honk",
+  "n": 2516,
+  "program": "beep(250)\n",
+  "examples": [
+   "Honk",
+   "honk",
+   "Honk!",
+   "honk?",
+   "Honk!!",
+   "honk!!",
+   "let's see you honk at them if you hear me right now",
+   "wheee make some noise for the captain",
+   "okay honk 1 times you little rascal :d",
+   "oi, use your horn for grandma!!",
+   "little car, use your horn like a crazy person buddy",
+   "Oh no, honk :d"
+  ]
+ },
+ {
+  "id": 101,
+  "family": "honk",
+  "n": 1559,
+  "program": "for i in range(2):\n    beep(250)\n    wait(150)\n",
+  "examples": [
+   "honk honk",
+   "Toot toot",
+   "toot toot",
+   "beep beep",
+   "Honk honk",
+   "toot toot.",
+   "Ugh, honk honk plz",
+   "i want you to honk honk go!",
+   "How about you beep beep please and thank you",
+   "My little car, honk honk haha",
+   "my little car, toot toot if you agree!!!",
+   "honk honk for the video <3"
+  ]
+ },
+ {
+  "id": 102,
+  "family": "honk",
+  "n": 252,
+  "program": "for i in range(4):\n    beep(250)\n    wait(150)\n",
+  "examples": [
+   "Honk 4 times",
+   "toot 4 times",
+   "Toot 4 times",
+   "toot 4 times!",
+   "toot 4 times!!",
+   "toot four times",
+   "hmm, toot four times for me",
+   "right, toot four times my friend",
+   "little car, toot four times if you understand mate",
+   "So, toot 4 times lol",
+   "Hey hey, toot four times please",
+   "hmm, honk 4 times?"
+  ]
+ },
+ {
+  "id": 103,
+  "family": "honk",
+  "n": 234,
+  "program": "for i in range(3):\n    beep(250)\n    wait(150)\n",
+  "examples": [
+   "Toot thrice",
+   "honk thrice",
+   "Honk thrice",
+   "Honk 3 times",
+   "toot 3 times",
+   "toot thrice :d",
+   "yo buddy, honk 3 times?",
+   "BUDDY, TOOT 3 TIMES?",
+   "toot 3 times go!",
+   "alright car, honk 3 times for me",
+   "hey hey, toot 3 times if you dare thx",
+   "just honk thrice plz"
+  ]
+ },
+ {
+  "id": 104,
+  "family": "house",
+  "n": 527,
+  "program": "clear()\nrect(34, 32, 60, 30)\nline(34, 32, 64, 2)\nline(64, 2, 94, 32)\nrect(58, 47, 10, 15)\n",
+  "examples": [
+   "put a big hut",
+   "Put a big hut",
+   "Show a big hut",
+   "put a huge hut",
+   "draw a huge hut",
+   "make a big home",
+   "show a large house in the middle",
+   "sketch a large house in the middle.",
+   "go ahead and sketch a large house at the bottom",
+   "alright, make a large house in the middle pls",
+   "Put a large house in the middle.",
+   "Car, sketch a huge hut at the bottom thx"
+  ]
+ },
+ {
+  "id": 105,
+  "family": "house",
+  "n": 286,
+  "program": "clear()\nrect(54, 32, 20, 10)\nline(54, 32, 64, 22)\nline(64, 22, 74, 32)\nrect(62, 37, 3, 5)\n",
+  "examples": [
+   "make a small hut",
+   "show a small hut",
+   "Paint a small hut",
+   "show a little hut",
+   "Put a small house",
+   "put a small house",
+   "give me a small house",
+   "little car, make a small house in the centre!",
+   "hey, display a small hut in the middle",
+   "display a small house in the centre",
+   "i want a small house in the centre thanks",
+   "hey buddy, put a little hut in the center thx"
+  ]
+ },
+ {
+  "id": 106,
+  "family": "house",
+  "n": 273,
+  "program": "clear()\nrect(44, 32, 40, 20)\nline(44, 32, 64, 12)\nline(64, 12, 84, 32)\nrect(60, 42, 6, 10)\n",
+  "examples": [
+   "put a hut",
+   "put a home",
+   "Show a hut",
+   "make a home",
+   "Show a home",
+   "paint a hut",
+   "give me a home in the middle",
+   "could you sketch a little house in the center",
+   "sketch a house on the oled",
+   "now paint a little house on the display",
+   "Dude display a little house in the center thx",
+   "could you draw a house in the center"
+  ]
+ },
+ {
+  "id": 107,
+  "family": "house",
+  "n": 182,
+  "program": "clear()\nrect(66, 32, 60, 30)\nline(66, 32, 96, 2)\nline(96, 2, 126, 32)\nrect(90, 47, 10, 15)\n",
+  "examples": [
+   "Put a big hut on the right",
+   "show a big hut on the right",
+   "draw a big home on the right",
+   "Show a big home on the right",
+   "Make a big home on the right",
+   "Draw a big house on the right",
+   "Draw a big house in the bottom right corner",
+   "pls i want a big house in the bottom right corner",
+   "Show me a large house in the bottom right corner please",
+   "sketch a large hut in the bottom right corner",
+   "please make a huge house on the right on the screen",
+   "car, show a big hut in the bottom right corner thx"
+  ]
+ },
+ {
+  "id": 108,
+  "family": "lights",
+  "n": 1673,
+  "program": "while 1:\n    rgb(255, 0, 0)\n    tone(900, 300)\n    rgb(0, 0, 255)\n    tone(600, 300)\n",
+  "examples": [
+   "sirens",
+   "sirens!",
+   "Cop car",
+   "sirens?",
+   "cop car",
+   "Cop mode",
+   "ooh police lights haha",
+   "cop mode go!",
+   "Time to be a police car lol",
+   "Okay be a cop car!!",
+   "now cop mode!",
+   "HOW ABOUT YOU BE THE POLICE, THE CAT IS WATCHING LOL"
+  ]
+ },
+ {
+  "id": 109,
+  "family": "lights",
+  "n": 1083,
+  "program": "rgb(255, 255, 255)\n",
+  "examples": [
+   "lights on",
+   "yo go white",
+   "yo lights on",
+   "eyes white :)",
+   "yay lights on",
+   "light the way",
+   "yay lights on, i believe in you plz",
+   "dude, lights on go!",
+   "um, white eyes go!",
+   "Whoa, lights on",
+   "omg make your headlights white lol",
+   "Come on, turn on your headlights <3"
+  ]
+ },
+ {
+  "id": 110,
+  "family": "lights",
+  "n": 817,
+  "program": "for i in range(2):\n    rgb(255, 0, 0)\n    wait(300)\n    rgb(255, 80, 0)\n    wait(300)\n    rgb(255, 180, 0)\n    wait(300)\n    rgb(0, 255, 0)\n    wait(300)\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(160, 0, 255)\n    wait(300)\nrgb(0, 0, 0)\n",
+  "examples": [
+   "be colorful",
+   "Be colorful",
+   "Be colourful",
+   "party lights",
+   "Do a rainbow",
+   "do a rainbow",
+   "how about you rainbow lights buddy",
+   "hey buddy, disco lights already if you can",
+   "hey car, do a rainbow!",
+   "Ok so christmas lights",
+   "come on, light up like a christmas tree, the cat is watching, will ya?",
+   "Whoa, disco lights lol"
+  ]
+ },
+ {
+  "id": 111,
+  "family": "lights",
+  "n": 787,
+  "program": "rgb(0, 0, 0)\n",
+  "examples": [
+   "No lights",
+   "dark mode",
+   "Lights out",
+   "no lights!",
+   "no lights :)",
+   "no lights :D",
+   "Hey buddy, turn the leds off, i'm filming thanks",
+   "okay dark mode",
+   "let's see you lights out.",
+   "Could you turn the lights off my friend",
+   "Buddy, dark mode like a race car little guy",
+   "pretty please lights out, will ya?"
+  ]
+ },
+ {
+  "id": 112,
+  "family": "lights",
+  "n": 633,
+  "program": "for i in range(5):\n    rgb(255, 80, 0)\n    wait(400)\n    rgb(0, 0, 0)\n    wait(400)\n",
+  "examples": [
+   "hazard lights",
+   "Hazard lights",
+   "hazard lights!",
+   "HAZARD LIGHTS :)",
+   "yo hazard lights",
+   "hazard lights thx",
+   "ugh, flash your hazards because why not for me, ok?",
+   "Aww hazard lights!!",
+   "okay hazard lights plz",
+   "yay turn on your hazards my friend",
+   "i want you to flash your hazards like a maniac thanks",
+   "so, flash your hazards plz"
+  ]
+ },
+ {
+  "id": 113,
+  "family": "lights",
+  "n": 254,
+  "program": "rgb(255, 80, 0)\n",
+  "examples": [
+   "Go orange",
+   "glow orange",
+   "lights orange",
+   "whoa, go orange",
+   "ok so be orange.",
+   "right, go orange",
+   "Right, be orange if you dare",
+   "Car, eyes orange thx",
+   "go ahead and lights orange little guy",
+   "Make the leds orange if you can",
+   "right, go orange",
+   "yay i want orange eyes"
+  ]
+ },
+ {
+  "id": 114,
+  "family": "lights",
+  "n": 250,
+  "program": "rgb(255, 60, 120)\n",
+  "examples": [
+   "pink eyes",
+   "pink lights",
+   "just go pink",
+   "Just go pink",
+   "yay go pink!!",
+   "lights pink <3",
+   "time to eyes pink haha",
+   "little car, turn your eyes pink",
+   "aww make the leds pink",
+   "Um, make your headlights pink please and thank you",
+   "go ahead and lights pink?",
+   "Aww go pink for grandma"
+  ]
+ },
+ {
+  "id": 115,
+  "family": "lights",
+  "n": 247,
+  "program": "rgb(160, 0, 255)\n",
+  "examples": [
+   "glow purple",
+   "go purple :d",
+   "be purple!!!",
+   "Um, be purple",
+   "just go purple",
+   "hmm, be purple",
+   "now purple lights?",
+   "ok so lights purple",
+   "YIKES, TURN THE LIGHTS PURPLE LITTLE GUY",
+   "how about you turn your eyes purple, will ya?",
+   "let's see you switch your lights to purple if you dare",
+   "yay set your lights to purple go!"
+  ]
+ },
+ {
+  "id": 116,
+  "family": "lights",
+  "n": 244,
+  "program": "rgb(0, 255, 0)\n",
+  "examples": [
+   "Go green <3",
+   "yo be green",
+   "yo be green!",
+   "green lights",
+   "Ooh be green",
+   "Ugh, go green",
+   "Buddy, green eyes please for me, ok?",
+   "JUST SET YOUR LEDS TO GREEN.",
+   "Dude, give me green eyes please",
+   "ok little guy, i want green eyes",
+   "i want green eyes for the video!!",
+   "time to set your headlights to green ok?"
+  ]
+ },
+ {
+  "id": 117,
+  "family": "lights",
+  "n": 239,
+  "program": "rgb(255, 180, 0)\n",
+  "examples": [
+   "ugh, go yellow",
+   "ugh, be yellow",
+   "dude, be yellow",
+   "Glow yellow go!",
+   "yo glow yellow!",
+   "yo eyes yellow?",
+   "BUDDY, I WANT YELLOW EYES",
+   "Time to yellow eyes please :)",
+   "Ok so set your lights to yellow :)",
+   "Hey robot, lights yellow mate",
+   "Dude, lights yellow :D",
+   "wanna set the leds to yellow :)"
+  ]
+ },
+ {
+  "id": 118,
+  "family": "lights",
+  "n": 238,
+  "program": "rgb(255, 0, 0)\n",
+  "examples": [
+   "be red",
+   "go red?",
+   "Be red :D",
+   "Go red go!",
+   "go red lol",
+   "Yo eyes red",
+   "Robot, glow red you little rascal my friend",
+   "so, turn your eyes red",
+   "Ha, turn your headlights red please and thank you",
+   "Buddy, turn your leds red right now",
+   "i want red eyes little guy",
+   "Yo buddy, set your headlights to red :)"
+  ]
+ },
+ {
+  "id": 119,
+  "family": "lights",
+  "n": 238,
+  "program": "rgb(0, 255, 255)\n",
+  "examples": [
+   "be cyan",
+   "Be cyan?",
+   "be cyan lol",
+   "Oi, be cyan",
+   "eyes cyan!!",
+   "GLOW CYAN!!",
+   "whoa, be cyan if you can",
+   "could you cyan lights lol",
+   "alright car, cyan eyes for me, ok?",
+   "alright car, turn the lights cyan plz",
+   "aww cyan eyes please lol",
+   "alright car, eyes cyan like a race car thanks"
+  ]
+ },
+ {
+  "id": 120,
+  "family": "lights",
+  "n": 217,
+  "program": "rgb(255, 0, 255)\n",
+  "examples": [
+   "Glow magenta",
+   "Magenta lights",
+   "Yo magenta eyes",
+   "Ooh be magenta?",
+   "Aww glow magenta",
+   "Phew, be magenta",
+   "Whoa, magenta lights.",
+   "Ugh, be magenta :)",
+   "Ooh be magenta?",
+   "right, set your headlights to magenta, i'm filming my friend",
+   "Magenta lights",
+   "aww set the lights to magenta buddy"
+  ]
+ },
+ {
+  "id": 121,
+  "family": "lights",
+  "n": 211,
+  "program": "rgb(0, 0, 255)\n",
+  "examples": [
+   "go blue",
+   "eyes blue",
+   "Go blue :d",
+   "LIGHTS BLUE",
+   "um, glow blue",
+   "blue lights now",
+   "robot, go blue haha",
+   "ok so blue eyes thanks",
+   "oi, blue lights",
+   "Yo buddy, blue lights if you dare?",
+   "CAR, MAKE YOUR LEDS BLUE JUST FOR ME OK?",
+   "Yikes, eyes blue ok?"
+  ]
+ },
+ {
+  "id": 122,
+  "family": "line_follow",
+  "n": 8514,
+  "program": "while 1:\n    l = track()\n    if l == 3:\n        move(40, 0, 0)\n    elif l == 1:\n        move(20, 0, -40)\n    elif l == 2:\n        move(20, 0, 40)\n    else:\n        move(0, 0, 40)\n    wait(20)\n",
+  "examples": [
+   "Ride the line",
+   "RIDE THE LINE",
+   "ride the line",
+   "Ride the line.",
+   "ride the line.",
+   "track the line",
+   "Would you stay on the line, i'm filming right now",
+   "yo ride the line for the captain for me",
+   "robot, stick to the line buddy",
+   "ha, drive along the line!",
+   "i want you to follow the black line already little guy",
+   "follow the line buddy"
+  ]
+ },
+ {
+  "id": 123,
+  "family": "line_stop",
+  "n": 3890,
+  "program": "move(50, 0, 0)\nwhile track() == 0:\n    wait(20)\nstop()\n",
+  "examples": [
+   "go forward and stop at the line",
+   "Go forward and stop at the line",
+   "go forward and stop at the line.",
+   "Go forward and stop at the line!",
+   "Go forward and stop at the line.",
+   "go forward and stop at the line!",
+   "right, drive until you reach the black line?",
+   "drive until you reach the black line because why not pls",
+   "robot, drive forward until you see a line :D",
+   "hey car, drive forward until you see a line like a maniac <3",
+   "Car, drive forward until you see a line right now",
+   "ooh drive until you reach the black line mate"
+  ]
+ },
+ {
+  "id": 124,
+  "family": "look",
+  "n": 1226,
+  "program": "look(0)\nnod(0)\neyes(\"open\")\n",
+  "examples": [
+   "look ahead",
+   "look at me?",
+   "look ahead!!",
+   "yo look ahead",
+   "look straight",
+   "eyes forward!",
+   "car, look at me lol",
+   "Little car, look straight buddy",
+   "now look at me thanks",
+   "phew, eyes forward!!!",
+   "Hey robot, eyes on the road!!",
+   "look straight please"
+  ]
+ },
+ {
+  "id": 125,
+  "family": "look",
+  "n": 1130,
+  "program": "look(-90)\nwait(500)\nlook(90)\nwait(500)\nlook(0)\n",
+  "examples": [
+   "look around",
+   "look around!",
+   "look around?",
+   "look around!!",
+   "Scan the room",
+   "look both ways",
+   "scan the room ok?",
+   "Scan the room pls",
+   "scan the room, will ya?",
+   "ok little guy, look both ways if you can",
+   "Ha, look left and right!!",
+   "okay scan the room!!"
+  ]
+ },
+ {
+  "id": 126,
+  "family": "look",
+  "n": 1037,
+  "program": "for i in range(3):\n    look(-40)\n    wait(250)\n    look(40)\n    wait(250)\nlook(0)\n",
+  "examples": [
+   "say no",
+   "Say no!!",
+   "say no!!",
+   "yo say no",
+   "nope nope",
+   "Say no <3",
+   "yikes, shake your head pls",
+   "um, shake your head buddy",
+   "go ahead and say no now",
+   "Oh no, shake your head :)",
+   "wanna nope nope",
+   "time to say no!"
+  ]
+ },
+ {
+  "id": 127,
+  "family": "look",
+  "n": 467,
+  "program": "look(-60)\neyes(\"left\")\n",
+  "examples": [
+   "peek left",
+   "look left :)",
+   "yay look left",
+   "now peek left",
+   "now look left",
+   "um, look left",
+   "You know what, what's on your left, will ya?",
+   "Go ahead and turn your head left?",
+   "can you check what's on your left pls",
+   "omg turn your head left just for me please and thank you",
+   "my little car, look left plz",
+   "Hey car, look left ok?"
+  ]
+ },
+ {
+  "id": 128,
+  "family": "look",
+  "n": 457,
+  "program": "look(60)\neyes(\"right\")\n",
+  "examples": [
+   "look right?",
+   "peek right!!!",
+   "yo peek right",
+   "Check right!!",
+   "AWW LOOK RIGHT!",
+   "check right lol",
+   "okay look to the right like a champ",
+   "can you maybe look to the right, i'm filming :D",
+   "alright alright, turn your head right for me, ok?",
+   "ha, look right real quick.",
+   "Please turn your head right <3",
+   "ok so look right real quick :)"
+  ]
+ },
+ {
+  "id": 129,
+  "family": "look",
+  "n": 163,
+  "program": "for a in range(0, 70, 10):\n    look(a)\n    wait(120)\neyes(\"right\")\n",
+  "examples": [
+   "so, look right slowly",
+   "slowly look right ok?",
+   "just slowly look right",
+   "just look right slowly",
+   "phew, look right slowly",
+   "aww look right slowly!!",
+   "now look to the right nice and slow thanks",
+   "wanna turn your head right slowly ok?",
+   "phew, look right slowly",
+   "Ha, slowly look right thanks",
+   "slowly look right ok?",
+   "i want you to turn your head right slowly."
+  ]
+ },
+ {
+  "id": 130,
+  "family": "look",
+  "n": 160,
+  "program": "for a in range(0, -70, -10):\n    look(a)\n    wait(120)\neyes(\"left\")\n",
+  "examples": [
+   "slowly look left?",
+   "look left slowly!!",
+   "SLOWLY LOOK LEFT <3",
+   "Yay look left slowly",
+   "yay look left slowly",
+   "ooh look left slowly",
+   "Now look to the left nice and slow already",
+   "yay slowly look left thanks",
+   "yay look left slowly",
+   "turn your head left slowly pls",
+   "Time to look left slowly right now",
+   "Can you look left slowly like a maniac!!"
+  ]
+ },
+ {
+  "id": 131,
+  "family": "nod_arm",
+  "n": 1014,
+  "program": "for i in range(2):\n    nod(30)\n    wait(250)\n    nod(-15)\n    wait(250)\nnod(0)\n",
+  "examples": [
+   "Yes?",
+   "nod yes",
+   "nod plz",
+   "omg nod",
+   "yes? :)",
+   "Yes? plz",
+   "i want you to nod if you understand, will ya?",
+   "you know what, yes? :)",
+   "you know what, nod your head twice, i believe in you if you can",
+   "buddy, nod your head two times",
+   "phew, nod if you agree now",
+   "hey hey, yes? <3"
+  ]
+ },
+ {
+  "id": 132,
+  "family": "nod_arm",
+  "n": 1001,
+  "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n",
+  "examples": [
+   "Wave",
+   "wave",
+   "ooh wave",
+   "aww wave",
+   "Ooh wave",
+   "NOW WAVE",
+   "ok so say bye with your hand!",
+   "wave your arm two times please and thank you",
+   "you know what, wave your arm buddy",
+   "omg say bye with your hand?",
+   "Let's see you wave your hand mate",
+   "robot, wave hi, will ya?"
+  ]
+ },
+ {
+  "id": 133,
+  "family": "nod_arm",
+  "n": 835,
+  "program": "arm(170)\neyes(\"happy\")\nwait(1000)\narm(0)\n",
+  "examples": [
+   "Five!",
+   "five!",
+   "omg five!",
+   "Five! thx",
+   "High five",
+   "ooh five!",
+   "Give me a high five :D",
+   "my little car, give me five like a maniac!!!",
+   "let's see you give me five like a race car please and thank you",
+   "Ugh, slap me five thanks",
+   "just give me a high five lol",
+   "alright alright, high five!?"
+  ]
+ },
+ {
+  "id": 134,
+  "family": "nod_arm",
+  "n": 832,
+  "program": "arm(120)\nnod(10)\nwait(1000)\narm(0)\nnod(0)\n",
+  "examples": [
+   "yes sir",
+   "Salute?",
+   "yo salute",
+   "SALUTE :D",
+   "so, salute",
+   "salute pls",
+   "wanna yes sir buddy",
+   "Ugh, salute me!!!",
+   "ha, salute like a soldier ok now",
+   "ok little guy, attention! you little rascal thanks",
+   "ooh salute like a soldier!",
+   "hmm, yes sir lol"
+  ]
+ },
+ {
+  "id": 135,
+  "family": "nod_arm",
+  "n": 794,
+  "program": "arm(0)\n",
+  "examples": [
+   "arm down",
+   "Hand down",
+   "hand down",
+   "hand down!",
+   "hand down?",
+   "arm down <3",
+   "Can you put your arm down right now",
+   "okay arm down if you can",
+   "put your arm down!!",
+   "yo put your arm down!",
+   "um, lower your arm.",
+   "Can you lower your arm if you can"
+  ]
+ },
+ {
+  "id": 136,
+  "family": "nod_arm",
+  "n": 735,
+  "program": "arm(180)\n",
+  "examples": [
+   "Hand up",
+   "hand up.",
+   "arm up!!",
+   "yo arm up",
+   "Yo arm up",
+   "HA, ARM UP",
+   "So, raise your arm",
+   "how about you hand in the air please and thank you",
+   "come on, hand in the air please",
+   "Wanna raise your hand right now",
+   "OMG REACH FOR THE SKY, SHOW THEM PLZ",
+   "just raise your hand plz"
+  ]
+ },
+ {
+  "id": 137,
+  "family": "nod_arm",
+  "n": 222,
+  "program": "for i in range(4):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n",
+  "examples": [
+   "wave 4 times",
+   "wave 4 times!!!",
+   "wave 4 times :D",
+   "wave four times",
+   "Um, wave 4 times",
+   "now wave 4 times",
+   "WAVE 4 TIMES THANKS",
+   "time to wave your arm 4 times, the cat is watching <3",
+   "ooh wave 4 times please and thank you",
+   "now wave 4 times",
+   "meh, wave your arm 4 times please and thank you",
+   "So, wave 4 times my friend"
+  ]
+ },
+ {
+  "id": 138,
+  "family": "nod_arm",
+  "n": 221,
+  "program": "for i in range(3):\n    nod(30)\n    wait(250)\n    nod(-15)\n    wait(250)\nnod(0)\n",
+  "examples": [
+   "nod thrice!",
+   "NOD 3 TIMES!",
+   "NOW NOD THRICE",
+   "nod 3 times <3",
+   "Ugh, nod thrice",
+   "oi, nod 3 times",
+   "omg nod your head 3 times for the video now",
+   "ugh, nod 3 times",
+   "ok so nod your head three times go!",
+   "nod 3 times, show them please and thank you",
+   "so, nod your head three times please",
+   "little car, nod your head thrice like a race car right now"
+  ]
+ },
+ {
+  "id": 139,
+  "family": "nod_arm",
+  "n": 214,
+  "program": "for i in range(5):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n",
+  "examples": [
+   "so, wave 5 times",
+   "wave 5 times ok?",
+   "Oi, wave 5 times",
+   "now wave 5 times",
+   "Aww wave 5 times",
+   "Oi, wave 5 times?",
+   "Wave your arm 5 times!!",
+   "yikes, wave your arm five times just for me mate",
+   "COME ON, WAVE YOUR ARM FIVE TIMES PLEASE",
+   "Yo buddy, wave 5 times?",
+   "i want you to wave your arm five times, i believe in you if you can",
+   "um, wave 5 times!!"
+  ]
+ },
+ {
+  "id": 140,
+  "family": "nod_arm",
+  "n": 213,
+  "program": "for i in range(4):\n    nod(30)\n    wait(250)\n    nod(-15)\n    wait(250)\nnod(0)\n",
+  "examples": [
+   "nod 4 times :D",
+   "nod 4 times <3",
+   "YO NOD 4 TIMES",
+   "nod 4 times thx",
+   "NOD FOUR TIMES.",
+   "ha, nod 4 times",
+   "nod 4 times thx",
+   "okay nod 4 times if you agree",
+   "listen, nod four times",
+   "robot, nod your head four times right now",
+   "I WANT YOU TO NOD FOUR TIMES THANKS",
+   "omg nod four times"
+  ]
+ },
+ {
+  "id": 141,
+  "family": "nod_arm",
+  "n": 203,
+  "program": "for i in range(3):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n",
+  "examples": [
+   "wave 3 times!",
+   "Wave 3 times!!!",
+   "wave thrice pls",
+   "Wave three times",
+   "Ooh wave 3 times",
+   "wave three times.",
+   "Wave your arm thrice thanks",
+   "Hey car, wave your arm thrice for me",
+   "Wheee wave thrice!!",
+   "Dude, wave 3 times!",
+   "phew, wave your arm 3 times one more time :)",
+   "Oh no, wave 3 times thx"
+  ]
+ },
+ {
+  "id": 142,
+  "family": "nod_arm",
+  "n": 195,
+  "program": "for i in range(5):\n    nod(30)\n    wait(250)\n    nod(-15)\n    wait(250)\nnod(0)\n",
+  "examples": [
+   "nod 5 times",
+   "nod 5 times!",
+   "nod 5 times ok?",
+   "nod 5 times now",
+   "NOW NOD 5 TIMES?",
+   "Just nod 5 times",
+   "dude, nod your head five times my friend",
+   "Phew, nod 5 times",
+   "how about you nod five times <3",
+   "pretty please nod five times, show them please and thank you",
+   "Hey car, nod 5 times mate",
+   "nod your head five times!!!"
+  ]
+ },
+ {
+  "id": 143,
+  "family": "parking",
+  "n": 5646,
+  "program": "while 1:\n    d = distance()\n    if d < 60:\n        beep(50)\n        wait(d * 5)\n    else:\n        wait(50)\n",
+  "examples": [
+   "parking sensor",
+   "Parking sensor",
+   "PARKING SENSOR",
+   "parking sensor?",
+   "parking sensor.",
+   "Parking sensor.",
+   "Car, parking sensor if you agree buddy",
+   "Yay parking sensor lol",
+   "Yo parking sensor now",
+   "Dude, parking sensor!",
+   "Hey car, beep faster when something gets closer, my boss is watching plz",
+   "pretty please be a parking sensor please and thank you"
+  ]
+ },
+ {
+  "id": 144,
+  "family": "parking",
+  "n": 1862,
+  "program": "while 1:\n    if distance() < 20:\n        beep(100)\n    wait(20)\n",
+  "examples": [
+   "beep when something is close",
+   "BEEP WHEN SOMETHING IS CLOSE",
+   "beep when something is close.",
+   "beep when something is close!",
+   "beep when something is close?",
+   "beep when something is close!!",
+   "ugh, beep when something is close buddy",
+   "whoa, beep when something is close mate",
+   "Oi, beep when something is close lol",
+   "okay beep when something is close, my boss is watching haha",
+   "can you maybe beep when something is close for me",
+   "okay beep when something is close plz"
+  ]
+ },
+ {
+  "id": 145,
+  "family": "react",
+  "n": 615,
+  "program": "while 1:\n    if shaken():\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "Honk if i tap you!",
+   "honk if i shake you",
+   "yo honk if i tap you",
+   "When i tap you, beep",
+   "BEEP WHEN I TAP YOU.",
+   "beep when i shake you",
+   "alright alright, warn me when i tap you now",
+   "Make noise if someone bumps you :)",
+   "ok ok when i tap you, beep ok?",
+   "meh, when i tap you, beep if you can",
+   "alright alright, when someone bumps you, beep mate",
+   "honk if i tap you now"
+  ]
+ },
+ {
+  "id": 146,
+  "family": "react",
+  "n": 567,
+  "program": "while 1:\n    if shaken():\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "run away if i shake you",
+   "back up if i tap you thx",
+   "run away if i shake you?",
+   "aww run away if i tap you",
+   "car, back up if i tap you",
+   "run away if i tap you pls",
+   "Wanna run away if i tap you my friend",
+   "aww when someone bumps you, reverse a bit one more time right now",
+   "yo when i tap you, reverse a bit little guy",
+   "come on, back up if i shake you if you understand, will ya?",
+   "now run away if i shake you you little rascal buddy",
+   "can you maybe back off when i shake you"
+  ]
+ },
+ {
+  "id": 147,
+  "family": "react",
+  "n": 398,
+  "program": "while 1:\n    if distance() < 20:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "Run away if something is close!!",
+   "run away if something gets close",
+   "Back up if something is close ok?",
+   "Back off when something gets close",
+   "back up if something is close mate",
+   "ooh back up if something is close.",
+   "my little car, run away if something gets close my friend",
+   "could you run away if something gets close right now",
+   "alright alright, when something is close, reverse a bit",
+   "Wanna back off when something is close, come on",
+   "ooh run away if something gets close thx",
+   "when something gets close, reverse a bit"
+  ]
+ },
+ {
+  "id": 148,
+  "family": "react",
+  "n": 394,
+  "program": "while 1:\n    if humidity() > 70:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if the air is damp",
+   "When it gets humid, beep",
+   "when it gets humid, beep!",
+   "Just honk if it gets humid",
+   "make noise if it gets humid",
+   "aww honk if the air is damp",
+   "Meh, honk if it gets humid, will ya?",
+   "alright alright, when it gets humid, beep?",
+   "wanna warn me when the air is damp.",
+   "okay warn me when it gets humid if you dare mate",
+   "wanna when it gets humid, beep, my boss is watching my friend",
+   "Ha, honk if the air is damp!!"
+  ]
+ },
+ {
+  "id": 149,
+  "family": "react",
+  "n": 383,
+  "program": "while 1:\n    if humidity() > 70:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "back up if the air is damp",
+   "Run away if the air is damp",
+   "back up if it gets humid thx",
+   "ha, back up if it gets humid",
+   "back up if it gets humid lol",
+   "BACK OFF WHEN THE AIR IS DAMP",
+   "whoa, back up if the air is damp for me, ok?",
+   "i want you to when the air is damp, reverse a bit",
+   "car, back up if the air is damp buddy",
+   "hey robot, when the air is damp, reverse a bit mate",
+   "back off when it gets humid thx",
+   "alright car, back off when it gets humid right now"
+  ]
+ },
+ {
+  "id": 150,
+  "family": "react",
+  "n": 355,
+  "program": "while 1:\n    if distance() < 20:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if something is close!",
+   "honk if something is close!!!",
+   "Honk if something is close!!!",
+   "Honk if something is close plz",
+   "um, honk if something is close",
+   "beep when something gets close",
+   "phew, honk if something is close for me, ok?",
+   "let's see you when something is close, beep haha",
+   "ok so when something gets close, beep?",
+   "Hey car, when something gets close, beep if you agree please",
+   "Yo honk if something is close please and thank you",
+   "Now honk if something is close right now"
+  ]
+ },
+ {
+  "id": 151,
+  "family": "react",
+  "n": 333,
+  "program": "while 1:\n    clear()\n    if shaken():\n        circle(64, 32, 24)\n        fill(53, 23, 4, 4)\n        fill(71, 23, 4, 4)\n        line(52, 44, 56, 48)\n        line(56, 48, 72, 48)\n        line(72, 48, 76, 44)\n    wait(50)\n",
+  "examples": [
+   "Smile if i tap you",
+   "aww smile if i tap you",
+   "smile if i tap you pls",
+   "ugh, smile if i tap you",
+   "um, smile if i tap you!!",
+   "smile if i shake you plz",
+   "um, make a happy face when i tap you haha",
+   "BUDDY, WHEN I SHAKE YOU, LOOK HAPPY <3",
+   "whoa, smile if someone bumps you if you can",
+   "listen, when i shake you, look happy",
+   "Alright car, make a happy face when i tap you if you can",
+   "listen, when i shake you, look happy now"
+  ]
+ },
+ {
+  "id": 152,
+  "family": "react",
+  "n": 323,
+  "program": "while 1:\n    clear()\n    if shaken():\n        circle(64, 32, 24)\n        fill(53, 23, 4, 4)\n        fill(71, 23, 4, 4)\n        line(52, 48, 56, 44)\n        line(56, 44, 72, 44)\n        line(72, 44, 76, 48)\n    wait(50)\n",
+  "examples": [
+   "FROWN IF I SHAKE YOU",
+   "ooh frown if i tap you",
+   "frown if i shake you!!",
+   "so, frown if i tap you",
+   "omg frown if i shake you",
+   "so, frown if i shake you",
+   "yay when i shake you, look sad right now",
+   "could you when someone bumps you, look sad",
+   "yay make a sad face when someone bumps you if you agree buddy",
+   "aww make a sad face when i shake you lol",
+   "OKAY MAKE A SAD FACE WHEN I SHAKE YOU FOR ME, OK?",
+   "ha, when someone bumps you, look sad"
+  ]
+ },
+ {
+  "id": 153,
+  "family": "react",
+  "n": 242,
+  "program": "move(60, 0, 0)\nwhile not (shaken()):\n    wait(20)\nstop()\n",
+  "examples": [
+   "drive until i tap you",
+   "so, go until i tap you",
+   "Drive until i shake you",
+   "drive until i shake you",
+   "Meh, go until i tap you",
+   "YAY GO UNTIL I TAP YOU!",
+   "go until i shake you thanks",
+   "drive until someone bumps you buddy",
+   "omg keep going until i tap you my friend",
+   "Meh, keep going until i shake you like a race car thx",
+   "ok so drive forward and stop when someone bumps you haha",
+   "Wheee drive forward and stop when i shake you my friend"
+  ]
+ },
+ {
+  "id": 154,
+  "family": "react",
+  "n": 214,
+  "program": "while 1:\n    if temp() > 28:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "back up if it gets hot",
+   "run away if it gets hot",
+   "back up if it gets hot!",
+   "back up if it gets hot!!",
+   "Run away if it gets hot?",
+   "back up if it gets hot :D",
+   "hey buddy, back up if it gets hot ok?",
+   "Go ahead and back up if it gets hot plz",
+   "Oh no, when it gets hot, reverse a bit thanks",
+   "Um, back off when it gets hot please",
+   "YIKES, RUN AWAY IF IT GETS HOT <3",
+   "hey buddy, run away if it gets hot haha"
+  ]
+ },
+ {
+  "id": 155,
+  "family": "react",
+  "n": 213,
+  "program": "while 1:\n    clear()\n    if humidity() > 70:\n        circle(64, 32, 24)\n        fill(53, 23, 4, 4)\n        fill(71, 23, 4, 4)\n        line(52, 44, 56, 48)\n        line(56, 48, 72, 48)\n        line(72, 48, 76, 44)\n    wait(50)\n",
+  "examples": [
+   "Smile if it gets humid",
+   "smile if it gets humid",
+   "smile if the air is damp!",
+   "yo smile if it gets humid",
+   "Smile if it gets humid thx",
+   "Smile if the air is damp <3",
+   "Oh no, make a happy face when it gets humid buddy",
+   "Um, make a happy face when it gets humid plz",
+   "wheee when it gets humid, look happy pls",
+   "when the air is damp, look happy :d",
+   "car, smile if the air is damp <3",
+   "Hey hey, when it gets humid, look happy please"
+  ]
+ },
+ {
+  "id": 156,
+  "family": "react",
+  "n": 205,
+  "program": "while 1:\n    if temp() > 25:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if it's warmer than 25 degrees!",
+   "oi, honk if it's warmer than 25 degrees",
+   "beep when it's warmer than 25 degrees :d",
+   "yay honk if it's warmer than 25 degrees!",
+   "beep when it's warmer than 25 degrees <3",
+   "um, beep when it's warmer than 25 degrees",
+   "let's see you when it's warmer than 25 degrees, beep please",
+   "Dude, when it's warmer than 25 degrees, beep ok?",
+   "ok ok make noise if it's warmer than 25 degrees you little rascal mate",
+   "Dude, honk if it's warmer than 25 degrees if you agree",
+   "can you warn me when it's warmer than 25 degrees for the captain!",
+   "now when it's warmer than 25 degrees, beep."
+  ]
+ },
+ {
+  "id": 157,
+  "family": "react",
+  "n": 204,
+  "program": "move(60, 0, 0)\nwhile not (humidity() > 70):\n    wait(20)\nstop()\n",
+  "examples": [
+   "okay go until it gets humid",
+   "drive until the air is damp",
+   "go until it gets humid mate",
+   "ugh, go until it gets humid",
+   "Meh, go until it gets humid",
+   "hmm, go until it gets humid",
+   "Alright car, drive forward and stop when it gets humid little guy",
+   "Just keep going until it gets humid thx",
+   "wheee drive forward and stop when the air is damp if you dare, will ya?",
+   "come on, drive forward and stop when the air is damp mate",
+   "would you drive forward and stop when it gets humid for grandma go!",
+   "yikes, keep going until it gets humid if you hear me please and thank you"
+  ]
+ },
+ {
+  "id": 158,
+  "family": "react",
+  "n": 202,
+  "program": "while 1:\n    if track() > 0:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if you see a line",
+   "Honk if you see a line",
+   "Ooh honk if you see a line",
+   "Now honk if you see a line",
+   "Warn me when you see a line",
+   "So, honk if you see a line?",
+   "omg beep when you see a line if you dare plz",
+   "ugh, beep when you see a line like a champ",
+   "Alright alright, when you see a line, beep?",
+   "MAKE NOISE IF YOU SEE A LINE, WILL YA?",
+   "Hmm, when you see a line, beep.",
+   "right, beep when you see a line buddy"
+  ]
+ },
+ {
+  "id": 159,
+  "family": "react",
+  "n": 200,
+  "program": "while 1:\n    if distance() < 10:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "run away if anything is closer than 10 cm",
+   "Back off when anything is closer than 10 cm",
+   "YO BACK UP IF ANYTHING IS CLOSER THAN 10 CM",
+   "run away if anything is closer than 10 cm!!",
+   "oi, back up if anything is closer than 10 cm",
+   "yay back up if anything is closer than 10 cm",
+   "WHEN ANYTHING IS CLOSER THAN 10 CM, REVERSE A BIT?",
+   "okay when anything is closer than 10 cm, reverse a bit mate",
+   "i want you to back off when anything is closer than 10 cm if you understand",
+   "would you back up if anything is closer than 10 cm my friend",
+   "run away if anything is closer than 10 cm go!",
+   "yay when anything is closer than 10 cm, reverse a bit if you hear me if you can"
+  ]
+ },
+ {
+  "id": 160,
+  "family": "react",
+  "n": 198,
+  "program": "while 1:\n    if track() > 0:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "Aww back up if you see a line",
+   "So, back up if you see a line",
+   "run away if you see a line :)",
+   "back off when you see a line!",
+   "yay run away if you see a line",
+   "run away if you see a line mate",
+   "pretty please back off when you see a line",
+   "ok so run away if you see a line",
+   "Car, back off when you see a line if you can",
+   "hmm, back up if you see a line <3",
+   "Just run away if you see a line, my boss is watching little guy",
+   "alright car, back up if you see a line!!!"
+  ]
+ },
+ {
+  "id": 161,
+  "family": "react",
+  "n": 198,
+  "program": "while 1:\n    if temp() > 28:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "when it gets hot, beep",
+   "yo honk if it gets hot!",
+   "Okay honk if it gets hot",
+   "beep when it gets hot :D",
+   "Warn me when it gets hot",
+   "beep when it gets hot go!",
+   "warn me when it gets hot my friend",
+   "ooh warn me when it gets hot like a crazy person right now",
+   "okay beep when it gets hot :D",
+   "So, warn me when it gets hot now",
+   "hey robot, warn me when it gets hot",
+   "Hmm, honk if it gets hot haha"
+  ]
+ },
+ {
+  "id": 162,
+  "family": "react",
+  "n": 196,
+  "program": "while 1:\n    if tilt() > 20:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "Back up if you tilt",
+   "Run away if you tilt!",
+   "back off when you tilt",
+   "Ha, back up if you tilt",
+   "run away if you tilt :)",
+   "Yay back up if you tilt",
+   "ok little guy, back off when you tilt please",
+   "Run away if you tilt right now",
+   "Hey hey, back off when you tilt lol",
+   "buddy, when you tilt, reverse a bit",
+   "Hey car, when you tilt, reverse a bit now",
+   "now back up if you tilt like a maniac"
+  ]
+ },
+ {
+  "id": 163,
+  "family": "react",
+  "n": 195,
+  "program": "while 1:\n    if distance() < 30:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "run away if someone comes near",
+   "back up if someone comes near.",
+   "back off when someone comes near",
+   "run away if someone comes near :D",
+   "back up if someone comes near now",
+   "Run away if someone comes near :)",
+   "ok ok run away if someone comes near my friend",
+   "wheee when someone comes near, reverse a bit plz",
+   "come on, back up if someone comes near if you hear me",
+   "go ahead and back off when someone comes near",
+   "can you run away if someone comes near",
+   "Can you maybe back up if someone comes near ok!!"
+  ]
+ },
+ {
+  "id": 164,
+  "family": "react",
+  "n": 195,
+  "program": "while 1:\n    if tilt() > 30:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if someone picks you up!",
+   "beep when someone picks you up?",
+   "um, honk if someone picks you up",
+   "when someone picks you up, beep!",
+   "honk if someone picks you up mate",
+   "when someone picks you up, beep!!",
+   "hey car, warn me when someone picks you up go!",
+   "dude, honk if someone picks you up now",
+   "OK SO HONK IF SOMEONE PICKS YOU UP FOR FUN IF YOU CAN",
+   "Ugh, honk if someone picks you up <3",
+   "Ha, beep when someone picks you up.",
+   "yo buddy, warn me when someone picks you up!"
+  ]
+ },
+ {
+  "id": 165,
+  "family": "react",
+  "n": 192,
+  "program": "while 1:\n    if temp() > 25:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "back up if it's warmer than 25 degrees",
+   "back up if it's warmer than 25 degrees.",
+   "back up if it's warmer than 25 degrees <3",
+   "BACK UP IF IT'S WARMER THAN 25 DEGREES!!!",
+   "back off when it's warmer than 25 degrees",
+   "Yay back up if it's warmer than 25 degrees",
+   "now when it's warmer than 25 degrees, reverse a bit one more time!!!",
+   "Phew, when it's warmer than 25 degrees, reverse a bit, will ya?",
+   "dude, back up if it's warmer than 25 degrees, will ya?",
+   "ugh, back off when it's warmer than 25 degrees, come on :d",
+   "hey buddy, back up if it's warmer than 25 degrees thx",
+   "Time to back off when it's warmer than 25 degrees mate"
+  ]
+ },
+ {
+  "id": 166,
+  "family": "react",
+  "n": 191,
+  "program": "while 1:\n    clear()\n    if distance() < 20:\n        circle(64, 32, 24)\n        fill(53, 23, 4, 4)\n        fill(71, 23, 4, 4)\n        line(52, 44, 56, 48)\n        line(56, 48, 72, 48)\n        line(72, 48, 76, 44)\n    wait(50)\n",
+  "examples": [
+   "Yo smile if something is close",
+   "SMILE IF SOMETHING IS CLOSE :)",
+   "smile if something gets close!!",
+   "SMILE IF SOMETHING GETS CLOSE OK?",
+   "smile if something gets close now",
+   "smile if something gets close ok?",
+   "i want you to smile if something gets close buddy",
+   "ROBOT, SMILE IF SOMETHING IS CLOSE JUST FOR ME.",
+   "Ok ok make a happy face when something gets close",
+   "meh, smile if something gets close, show them if you can",
+   "Oh no, make a happy face when something is close thanks",
+   "smile if something gets close!!"
+  ]
+ },
+ {
+  "id": 167,
+  "family": "react",
+  "n": 188,
+  "program": "while 1:\n    if temp() < 20:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if it gets cold",
+   "beep when it gets cold",
+   "beep when it gets cold?",
+   "YO HONK IF IT GETS COLD",
+   "beep when it gets cold!!",
+   "ooh honk if it gets cold",
+   "yo honk if it gets cold you little rascal <3",
+   "So, warn me when it gets cold!!",
+   "ok ok beep when it gets cold pls",
+   "Come on, warn me when it gets cold.",
+   "Wheee warn me when it gets cold haha",
+   "wanna honk if it gets cold, i believe in you!!"
+  ]
+ },
+ {
+  "id": 168,
+  "family": "react",
+  "n": 187,
+  "program": "while 1:\n    if temp() < 20:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "Um, back up if it gets cold",
+   "back up if it gets cold lol",
+   "Hmm, back up if it gets cold",
+   "hmm, back up if it gets cold",
+   "wanna back up if it gets cold",
+   "Just run away if it gets cold",
+   "pretty please back off when it gets cold ok!",
+   "Please back up if it gets cold ok?",
+   "hey hey, back up if it gets cold please and thank you",
+   "hmm, back off when it gets cold.",
+   "Um, when it gets cold, reverse a bit",
+   "back off when it gets cold now"
+  ]
+ },
+ {
+  "id": 169,
+  "family": "react",
+  "n": 186,
+  "program": "while 1:\n    if distance() < 10:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if anything is closer than 10 cm!",
+   "beep when anything is closer than 10 cm",
+   "beep when anything is closer than 10 cm!",
+   "when anything is closer than 10 cm, beep",
+   "honk if anything is closer than 10 cm <3",
+   "honk if anything is closer than 10 cm go!",
+   "let's see you honk if anything is closer than 10 cm, come on!",
+   "Oh no, honk if anything is closer than 10 cm if you dare pls",
+   "my little car, warn me when anything is closer than 10 cm for me",
+   "Listen, beep when anything is closer than 10 cm mate",
+   "ooh honk if anything is closer than 10 cm my friend",
+   "can you maybe when anything is closer than 10 cm, beep, i believe in you for me, ok?"
+  ]
+ },
+ {
+  "id": 170,
+  "family": "react",
+  "n": 178,
+  "program": "while 1:\n    clear()\n    if humidity() > 70:\n        circle(64, 32, 24)\n        fill(53, 23, 4, 4)\n        fill(71, 23, 4, 4)\n        line(52, 48, 56, 44)\n        line(56, 44, 72, 44)\n        line(72, 44, 76, 48)\n    wait(50)\n",
+  "examples": [
+   "frown if the air is damp",
+   "Frown if the air is damp",
+   "ha, frown if it gets humid",
+   "aww frown if it gets humid.",
+   "frown if it gets humid haha",
+   "Now frown if it gets humid.",
+   "please when it gets humid, look sad, the cat is watching",
+   "hey car, frown if it gets humid plz",
+   "okay frown if it gets humid please",
+   "Aww frown if the air is damp right now",
+   "alright car, when the air is damp, look sad ok?",
+   "Hey buddy, make a sad face when it gets humid, come on thanks"
+  ]
+ },
+ {
+  "id": 171,
+  "family": "react",
+  "n": 175,
+  "program": "while 1:\n    if distance() < 30:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if someone comes near?",
+   "beep when someone comes near!",
+   "ha, honk if someone comes near",
+   "So, honk if someone comes near",
+   "now honk if someone comes near!",
+   "Oi, honk if someone comes near!",
+   "alright alright, beep when someone comes near <3",
+   "Oi, honk if someone comes near!",
+   "yikes, when someone comes near, beep like a champ, will ya?",
+   "yo buddy, warn me when someone comes near plz",
+   "My little car, honk if someone comes near, come on",
+   "Ok ok make noise if someone comes near :)"
+  ]
+ },
+ {
+  "id": 172,
+  "family": "react",
+  "n": 174,
+  "program": "while 1:\n    if tilt() > 20:\n        beep(150)\n    wait(50)\n",
+  "examples": [
+   "honk if you tilt",
+   "honk if you tilt!!",
+   "beep when you tilt",
+   "now honk if you tilt",
+   "car, honk if you tilt",
+   "beep when you tilt now",
+   "hey buddy, beep when you tilt, will ya?",
+   "Could you make noise if you tilt!!",
+   "yikes, warn me when you tilt for grandma mate",
+   "Right, make noise if you tilt",
+   "OOH HONK IF YOU TILT PLEASE AND THANK YOU",
+   "dude, when you tilt, beep"
+  ]
+ },
+ {
+  "id": 173,
+  "family": "react",
+  "n": 173,
+  "program": "while 1:\n    clear()\n    if distance() < 20:\n        circle(64, 32, 24)\n        fill(53, 23, 4, 4)\n        fill(71, 23, 4, 4)\n        line(52, 48, 56, 44)\n        line(56, 44, 72, 44)\n        line(72, 44, 76, 48)\n    wait(50)\n",
+  "examples": [
+   "frown if something is close",
+   "frown if something is close!",
+   "FROWN IF SOMETHING GETS CLOSE THX",
+   "omg frown if something gets close?",
+   "Okay frown if something gets close",
+   "when something gets close, look sad.",
+   "go ahead and make a sad face when something gets close haha",
+   "wanna make a sad face when something gets close my friend",
+   "hey buddy, frown if something is close!",
+   "Hey buddy, make a sad face when something is close :D",
+   "ok little guy, when something gets close, look sad for the captain",
+   "i want you to make a sad face when something gets close :)"
+  ]
+ },
+ {
+  "id": 174,
+  "family": "react",
+  "n": 162,
+  "program": "while 1:\n    if tilt() > 30:\n        move(-60, 0, 0)\n        wait(800)\n        stop()\n    wait(50)\n",
+  "examples": [
+   "back up if someone picks you up",
+   "run away if someone picks you up",
+   "run away if someone picks you up.",
+   "run away if someone picks you up?",
+   "so, back up if someone picks you up",
+   "omg back up if someone picks you up",
+   "aww when someone picks you up, reverse a bit thx",
+   "right, run away if someone picks you up for grandma ok?",
+   "NOW WHEN SOMEONE PICKS YOU UP, REVERSE A BIT PLS",
+   "Yo buddy, when someone picks you up, reverse a bit!",
+   "car, when someone picks you up, reverse a bit little guy",
+   "when someone picks you up, reverse a bit right now"
+  ]
+ },
+ {
+  "id": 175,
+  "family": "react",
+  "n": 157,
+  "program": "move(60, 0, 0)\nwhile not (distance() < 20):\n    wait(20)\nstop()\n",
+  "examples": [
+   "Go until something is close",
+   "go until something is close.",
+   "Just go until something is close",
+   "Drive until something is close :)",
+   "go until something gets close ok?",
+   "drive until something is close now",
+   "Go until something is close",
+   "keep going until something gets close!",
+   "hey buddy, drive forward and stop when something is close",
+   "ok so go until something is close <3",
+   "hey robot, keep going until something is close please and thank you",
+   "little car, go until something gets close <3"
+  ]
+ },
+ {
+  "id": 176,
+  "family": "shape",
+  "n": 798,
+  "program": "move(60, 0, 30)\nwait(4000)\nmove(60, 0, -30)\nwait(4000)\nstop()\n",
+  "examples": [
+   "make a figure 8",
+   "Make a figure 8",
+   "make a figure 8?",
+   "MAKE A FIGURE 8.",
+   "Make a figure 8.",
+   "Drive in an eight",
+   "whoa, drive a figure eight",
+   "can you maybe drive in an eight",
+   "wanna drive a figure eight thx",
+   "wheee make a figure 8 pls",
+   "My little car, make a figure 8 please and thank you",
+   "Drive in an eight because why not now"
+  ]
+ },
+ {
+  "id": 177,
+  "family": "shape",
+  "n": 775,
+  "program": "move(60, 0, 30)\nwait(4000)\nstop()\n",
+  "examples": [
+   "Do a lap",
+   "do a loop",
+   "do a lap!!",
+   "um, do a lap",
+   "ha, do a lap",
+   "do a lap thx",
+   "Drive in a circle to the right if you hear me buddy",
+   "meh, do a lap around me!!",
+   "Would you do a lap please",
+   "ok ok do a lap around me pls",
+   "You know what, drive around me pls",
+   "alright alright, do a lap around me <3"
+  ]
+ },
+ {
+  "id": 178,
+  "family": "shape",
+  "n": 217,
+  "program": "for n in range(3):\n    move(60, 0, 0)\n    wait(1000)\n    move(0, 0, 60)\n    wait(933)\nstop()\n",
+  "examples": [
+   "Make a triangle",
+   "Drive a triangle",
+   "yo make a triangle",
+   "ha, make a triangle",
+   "yo make a triangle.",
+   "Aww make a triangle",
+   "Time to make a triangle go!",
+   "i want you to make a triangle",
+   "alright car, drive a triangle thx",
+   "Hey hey, drive a triangle already thx",
+   "just drive in a triangle",
+   "um, drive in a triangle!!!"
+  ]
+ },
+ {
+  "id": 179,
+  "family": "shape",
+  "n": 206,
+  "program": "for k in range(3):\n    move(60, 0, 0)\n    wait(1000)\n    move(0, 0, 60)\n    wait(933)\nstop()\n",
+  "examples": [
+   "make a triangle",
+   "make a triangle!!!",
+   "Make a triangle pls",
+   "um, make a triangle",
+   "ugh, make a triangle",
+   "Car, make a triangle",
+   "wheee make a triangle ok?",
+   "ugh, drive in a triangle buddy",
+   "Oh no, drive in a triangle for me",
+   "Hey car, drive in a triangle if you can",
+   "Can you make a triangle if you dare right now",
+   "Yikes, drive in a triangle little guy"
+  ]
+ },
+ {
+  "id": 180,
+  "family": "shape",
+  "n": 204,
+  "program": "for i in range(3):\n    move(60, 0, 0)\n    wait(1000)\n    move(0, 0, 60)\n    wait(933)\nstop()\n",
+  "examples": [
+   "make a triangle",
+   "Drive a triangle",
+   "drive a triangle",
+   "drive a triangle :)",
+   "yay make a triangle",
+   "ooh make a triangle",
+   "ugh, drive a triangle",
+   "Now drive a triangle thanks",
+   "come on, drive a triangle",
+   "yo make a triangle now",
+   "just make a triangle ok?",
+   "hmm, make a triangle"
+  ]
+ },
+ {
+  "id": 181,
+  "family": "shape",
+  "n": 201,
+  "program": "for x in range(3):\n    move(60, 0, 0)\n    wait(1000)\n    move(0, 0, 60)\n    wait(933)\nstop()\n",
+  "examples": [
+   "Make a triangle!",
+   "drive a triangle",
+   "Make a triangle!!",
+   "Make a triangle :D",
+   "yay make a triangle",
+   "drive in a triangle",
+   "drive a triangle plz",
+   "yikes, drive a triangle?",
+   "meh, drive a triangle just for me?",
+   "Drive in a triangle!",
+   "Oh no, drive in a triangle buddy",
+   "how about you drive a triangle for me, ok?"
+  ]
+ },
+ {
+  "id": 182,
+  "family": "shape",
+  "n": 158,
+  "program": "for x in range(3):\n    move(60, 0, 40)\n    wait(600)\n    move(60, 0, -40)\n    wait(600)\nstop()\n",
+  "examples": [
+   "Zigzag",
+   "zigzag",
+   "zigzag :D",
+   "Ooh zigzag",
+   "zigzag plz",
+   "so, zigzag",
+   "DRIVE IN A ZIGZAG :)",
+   "ok so zigzag if you can",
+   "aww zigzag thrice lol",
+   "Car, drive in a zigzag!!",
+   "zigzag haha",
+   "zigzag 3 times plz"
+  ]
+ },
+ {
+  "id": 183,
+  "family": "show_sensor",
+  "n": 2380,
+  "program": "while 1:\n    clear()\n    text(40, 28, str(tilt()) + \" deg\")\n    wait(200)\n",
+  "examples": [
+   "are you level",
+   "show the tilt",
+   "show the tilt!",
+   "are you level!!!",
+   "Are you level <3",
+   "what is the tilt",
+   "Ok little guy, show the tilt on your screen mate",
+   "show the tilt on the screen buddy",
+   "let's see you how much are you leaning lol",
+   "come on, are you level one more time please",
+   "show the tilt on your screen!!",
+   "Yo show the tilt on the screen my friend"
+  ]
+ },
+ {
+  "id": 184,
+  "family": "show_sensor",
+  "n": 2374,
+  "program": "while 1:\n    clear()\n    text(40, 28, str(distance()) + \" cm\")\n    wait(200)\n",
+  "examples": [
+   "how far is it",
+   "How far is it",
+   "How far is it?",
+   "how far is it!!!",
+   "ooh how far is it",
+   "Now how far is it",
+   "my little car, put the distance on your face if you agree pls",
+   "dude, show the distance on your screen thx",
+   "omg what is the distance :D",
+   "alright alright, how far is the wall my friend",
+   "How about you show the distance please and thank you",
+   "would you how far is the wall"
+  ]
+ },
+ {
+  "id": 185,
+  "family": "show_sensor",
+  "n": 2263,
+  "program": "while 1:\n    clear()\n    text(40, 28, str(temp()) + \" C\")\n    wait(200)\n",
+  "examples": [
+   "how hot is it",
+   "is it chilly!",
+   "How cold is it",
+   "how cold is it!",
+   "yo how hot is it",
+   "how hot is it <3",
+   "oh no, show the temperature like a champ right now",
+   "Now how hot is it buddy",
+   "Show the temperature on your screen ok",
+   "You know what, what is the temperature mate",
+   "show the temperature, will ya?",
+   "ok ok display the temperature."
+  ]
+ },
+ {
+  "id": 186,
+  "family": "show_sensor",
+  "n": 2077,
+  "program": "while 1:\n    clear()\n    text(40, 28, str(humidity()) + \" %\")\n    wait(200)\n",
+  "examples": [
+   "how humid is it",
+   "how humid is it!",
+   "show the humidity",
+   "yo how humid is it",
+   "Show the humidity.",
+   "how humid is it :)",
+   "Hey robot, what is the humidity ok pls",
+   "yay how damp is it in here lol",
+   "Alright alright, show the humidity on the screen you little rascal go!",
+   "ugh, how humid is it",
+   "My little car, put the humidity on your face :)",
+   "wheee display the humidity :)"
+  ]
+ },
+ {
+  "id": 187,
+  "family": "smiley",
+  "n": 280,
+  "program": "clear()\ncircle(64, 32, 14)\nfill(57, 27, 4, 4)\nfill(67, 27, 4, 4)\nline(57, 39, 61, 43)\nline(61, 43, 67, 43)\nline(67, 43, 71, 39)\n",
+  "examples": [
+   "put a small face",
+   "Put a small face",
+   "make a small face",
+   "show a small face",
+   "Put a small face.",
+   "draw a small face",
+   "Give me a small face in the center thanks",
+   "would you give me a small smiling face in the middle!",
+   "yo draw a small smile in the middle thx",
+   "put a small face",
+   "pls give me a little smiley",
+   "Hey, show me a little smile in the centre pls"
+  ]
+ },
+ {
+  "id": 188,
+  "family": "smiley",
+  "n": 269,
+  "program": "clear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\n",
+  "examples": [
+   "put a smile",
+   "draw a face",
+   "show a face",
+   "Put a smile",
+   "Draw a face",
+   "make a smile",
+   "draw a face",
+   "Hey, display a smiley in the center thx",
+   "Ok little guy, draw a smile in the center",
+   "little car, put a face in the middle pls",
+   "display a smiling face in the middle",
+   "make a smiling face"
+  ]
+ },
+ {
+  "id": 189,
+  "family": "smiley",
+  "n": 175,
+  "program": "clear()\ncircle(64, 32, 30)\nfill(50, 20, 4, 4)\nfill(74, 20, 4, 4)\nline(49, 47, 53, 51)\nline(53, 51, 75, 51)\nline(75, 51, 79, 47)\n",
+  "examples": [
+   "put a big face",
+   "draw a big face",
+   "Draw a big face",
+   "make a big face",
+   "show a big face",
+   "make a big smile",
+   "paint a big smile in the center",
+   "Go ahead and draw a big smiley",
+   "Show a big smiley in the center on the display",
+   "Car, i want a big happy face in the centre",
+   "ok little guy, put a big smiley",
+   "Give me a big happy face in the centre"
+  ]
+ },
+ {
+  "id": 190,
+  "family": "square",
+  "n": 198,
+  "program": "clear()\nrect(36, 4, 56, 56)\n",
+  "examples": [
+   "draw a huge box",
+   "put a large box",
+   "draw a large box",
+   "show a large box",
+   "Put a huge square",
+   "Draw a big square",
+   "Give me a huge square in the centre on the oled",
+   "give me a huge box in the center",
+   "Draw a huge hollow box",
+   "alright, sketch a large hollow square",
+   "show a big hollow square for me",
+   "draw a huge hollow square on the screen"
+  ]
+ },
+ {
+  "id": 191,
+  "family": "square",
+  "n": 172,
+  "program": "clear()\nrect(56, 24, 16, 16)\n",
+  "examples": [
+   "show a small box",
+   "make a small box",
+   "show a little box",
+   "sketch a small box",
+   "Draw a small square",
+   "put a little square",
+   "make a small box",
+   "Hey, draw a little hollow square",
+   "hey, put a little square in the center",
+   "Would you display a small empty square in the middle!",
+   "Little car, show a little square in the middle",
+   "show me a little empty box."
+  ]
+ },
+ {
+  "id": 192,
+  "family": "star",
+  "n": 469,
+  "program": "clear()\nline(64, 2, 82, 56)\nline(82, 56, 35, 23)\nline(35, 23, 93, 23)\nline(93, 23, 46, 56)\nline(46, 56, 64, 2)\n",
+  "examples": [
+   "put a big star",
+   "put a huge star",
+   "Put a huge star",
+   "Draw a big star",
+   "Show a big star",
+   "draw a big star",
+   "draw a huge star in the center for me",
+   "hey buddy, put a big star thx",
+   "pls give me a big star at the bottom!",
+   "please give me a large star",
+   "ok put a huge star",
+   "display a huge star"
+  ]
+ },
+ {
+  "id": 193,
+  "family": "star",
+  "n": 237,
+  "program": "clear()\nline(64, 12, 76, 48)\nline(76, 48, 45, 26)\nline(45, 26, 83, 26)\nline(83, 26, 52, 48)\nline(52, 48, 64, 12)\n",
+  "examples": [
+   "Put a star",
+   "put a star",
+   "show a star",
+   "draw a star",
+   "Show a star",
+   "put a star.",
+   "pls show me a star in the middle",
+   "make a star",
+   "would you show me a star in the middle",
+   "i want you to display a star in the center",
+   "i want a star in the middle on the oled",
+   "sketch a star in the centre now"
+  ]
+ },
+ {
+  "id": 194,
+  "family": "star",
+  "n": 232,
+  "program": "clear()\nline(64, 23, 69, 39)\nline(69, 39, 55, 29)\nline(55, 29, 73, 29)\nline(73, 29, 59, 39)\nline(59, 39, 64, 23)\n",
+  "examples": [
+   "put a small star",
+   "Put a small star",
+   "make a small star",
+   "draw a small star",
+   "show a small star",
+   "Draw a small star",
+   "Car, sketch a small star in the center",
+   "show a small star on the screen",
+   "Give me a small star in the middle",
+   "yo paint a little star in the center",
+   "dude sketch a little star",
+   "i want a small star now"
+  ]
+ },
+ {
+  "id": 195,
+  "family": "star",
+  "n": 166,
+  "program": "clear()\nline(31, 1, 49, 55)\nline(49, 55, 2, 22)\nline(2, 22, 60, 22)\nline(60, 22, 13, 55)\nline(13, 55, 31, 1)\n",
+  "examples": [
+   "Put a big star in the corner",
+   "put a huge star in the corner",
+   "Put a huge star in the corner",
+   "Draw a big star in the corner",
+   "draw a big star in the corner",
+   "show a big star in the corner",
+   "please draw a big star in the top left corner",
+   "hey, i want a large star in the top left corner pls",
+   "please put a big star in the corner",
+   "Can you draw a large star in the top left corner",
+   "Yo draw a huge star in the corner pls",
+   "Paint a big star in the top left corner"
+  ]
+ },
+ {
+  "id": 196,
+  "family": "star",
+  "n": 162,
+  "program": "clear()\nline(96, 2, 114, 56)\nline(114, 56, 67, 23)\nline(67, 23, 125, 23)\nline(125, 23, 78, 56)\nline(78, 56, 96, 2)\n",
+  "examples": [
+   "Put a big star on the right",
+   "Make a big star on the right",
+   "Draw a big star on the right",
+   "draw a big star on the right",
+   "Put a big star on the right!",
+   "show a big star on the right",
+   "sketch a large star in the bottom right corner",
+   "pls paint a huge star in the bottom right corner",
+   "pls draw a huge star on the right",
+   "Draw a huge star in the bottom right corner for me",
+   "show a large star in the bottom right corner",
+   "draw a big star on the right for me"
+  ]
+ },
+ {
+  "id": 197,
+  "family": "stop",
+  "n": 4802,
+  "program": "stop()\n",
+  "examples": [
+   "sit?",
+   "sit!",
+   "park",
+   "Whoa",
+   "rest",
+   "stay",
+   "ha, park",
+   "so, relax please and thank you",
+   "right, park, will ya?",
+   "WOULD YOU PARK IT FOR THE CAPTAIN",
+   "Park for me",
+   "dude, stop moving thx"
+  ]
+ },
+ {
+  "id": 198,
+  "family": "sun",
+  "n": 387,
+  "program": "clear()\ncircle(64, 32, 14)\nline(81, 32, 87, 32)\nline(76, 44, 80, 48)\nline(64, 49, 64, 55)\nline(52, 44, 48, 48)\nline(47, 32, 41, 32)\nline(52, 20, 48, 16)\nline(64, 15, 64, 9)\nline(76, 20, 80, 16)\n",
+  "examples": [
+   "put a big sun!",
+   "make a big sun",
+   "draw a big sun",
+   "Make a big sun",
+   "Draw a huge sun",
+   "make a huge sun",
+   "draw a big sun in the centre on the oled",
+   "display a large shining sun in the middle thanks",
+   "yo make a large sun in the middle pls",
+   "dude display a large sun with rays in the center thx",
+   "would you draw a big shining sun in the centre",
+   "Let's draw a huge sun in the centre"
+  ]
+ },
+ {
+  "id": 199,
+  "family": "sun",
+  "n": 257,
+  "program": "clear()\ncircle(64, 32, 10)\nline(77, 32, 83, 32)\nline(73, 41, 77, 45)\nline(64, 45, 64, 51)\nline(55, 41, 51, 45)\nline(51, 32, 45, 32)\nline(55, 23, 51, 19)\nline(64, 19, 64, 13)\nline(73, 23, 77, 19)\n",
+  "examples": [
+   "put a sun",
+   "Draw a sun",
+   "make a sun",
+   "draw a sun",
+   "make a sun!",
+   "i want a sun",
+   "show a shining sun in the middle",
+   "draw a shining sun in the centre thanks",
+   "give me a sun in the centre for me",
+   "ok little guy, draw a sun",
+   "can you paint a sun with rays in the middle",
+   "Car, paint a sun in the middle!"
+  ]
+ },
+ {
+  "id": 200,
+  "family": "sun",
+  "n": 252,
+  "program": "clear()\ncircle(64, 32, 5)\nline(72, 32, 78, 32)\nline(70, 38, 74, 42)\nline(64, 40, 64, 46)\nline(58, 38, 54, 42)\nline(56, 32, 50, 32)\nline(58, 26, 54, 22)\nline(64, 24, 64, 18)\nline(70, 26, 74, 22)\n",
+  "examples": [
+   "put a small sun",
+   "draw a small sun",
+   "Paint a small sun",
+   "make a little sun",
+   "Make a little sun",
+   "paint a small sun",
+   "display a small sun in the centre",
+   "i want a small shining sun in the center",
+   "car, give me a small sun in the centre thx",
+   "give me a little sun with rays",
+   "draw a small sun with rays in the middle",
+   "draw a little sun in the centre"
+  ]
+ },
+ {
+  "id": 201,
+  "family": "sun",
+  "n": 174,
+  "program": "clear()\ncircle(24, 24, 14)\nline(41, 24, 47, 24)\nline(36, 36, 40, 40)\nline(24, 41, 24, 47)\nline(12, 36, 8, 40)\nline(7, 24, 1, 24)\nline(12, 12, 8, 8)\nline(24, 7, 24, 1)\nline(36, 12, 40, 8)\n",
+  "examples": [
+   "draw a big sun in the corner",
+   "make a big sun in the corner",
+   "Draw a huge sun in the corner",
+   "make a huge sun in the corner",
+   "draw a huge sun in the corner",
+   "sketch a big sun in the corner",
+   "ok show a huge sun in the top left corner",
+   "car, make a large shining sun in the corner pls",
+   "alright, i want a huge sun in the corner",
+   "Draw a huge sun in the corner",
+   "i want a large sun with rays in the top left corner",
+   "dude sketch a large sun in the top left corner"
+  ]
+ },
+ {
+  "id": 202,
+  "family": "triangle",
+  "n": 377,
+  "program": "clear()\nline(64, 4, 36, 60)\nline(36, 60, 92, 60)\nline(92, 60, 64, 4)\n",
+  "examples": [
+   "Put a big triangle",
+   "put a big triangle",
+   "show a big triangle",
+   "Make a big triangle",
+   "Draw a big triangle",
+   "make a big triangle",
+   "hey, put a big triangle!",
+   "Paint a big triangle in the center",
+   "i want you to show a big triangle in the centre",
+   "Now i want a big triangle",
+   "put a large triangle in the middle",
+   "ok draw a huge triangle"
+  ]
+ },
+ {
+  "id": 203,
+  "family": "triangle",
+  "n": 271,
+  "program": "clear()\nline(64, 24, 56, 40)\nline(56, 40, 72, 40)\nline(72, 40, 64, 24)\n",
+  "examples": [
+   "put a small triangle",
+   "Put a small triangle",
+   "draw a small triangle",
+   "Draw a small triangle",
+   "put a little triangle",
+   "make a small triangle",
+   "dude put a small triangle in the middle!",
+   "put a little triangle in the middle",
+   "alright, put a little triangle in the centre pls",
+   "make a little triangle in the centre",
+   "Draw a small triangle in the middle thanks",
+   "can you give me a little triangle in the centre on the display"
+  ]
+ },
+ {
+  "id": 204,
+  "family": "triangle",
+  "n": 234,
+  "program": "clear()\nline(64, 14, 46, 50)\nline(46, 50, 82, 50)\nline(82, 50, 64, 14)\n",
+  "examples": [
+   "Put a triangle",
+   "put a triangle",
+   "Show a triangle",
+   "draw a triangle",
+   "Draw a triangle",
+   "make a triangle",
+   "go ahead and display a triangle in the center",
+   "yo paint a triangle in the middle thx",
+   "show me a triangle in the center",
+   "Can you give me a triangle in the middle on the screen",
+   "can you show me a triangle in the middle",
+   "Hey, i want a triangle"
+  ]
+ },
+ {
+  "id": 205,
+  "family": "triangle",
+  "n": 157,
+  "program": "clear()\nline(29, 1, 1, 57)\nline(1, 57, 57, 57)\nline(57, 57, 29, 1)\n",
+  "examples": [
+   "put a big triangle in the corner",
+   "Draw a big triangle in the corner",
+   "make a big triangle in the corner",
+   "Put a huge triangle in the corner",
+   "draw a big triangle in the corner",
+   "draw a huge triangle in the corner",
+   "show a large triangle in the top left corner",
+   "pls paint a big triangle in the corner thx",
+   "can you draw a huge triangle in the top left corner",
+   "give me a large triangle in the corner",
+   "now make a large triangle in the top left corner",
+   "Pls i want a large triangle in the corner!"
+  ]
+ },
+ {
+  "id": 206,
+  "family": "turn",
+  "n": 1392,
+  "program": "move(0, 0, -60)\nwait(700)\nstop()\n",
+  "examples": [
+   "Go left",
+   "go left",
+   "go left.",
+   "face left",
+   "turn left",
+   "Turn left",
+   "Listen, pivot left please",
+   "dude, head left plz",
+   "omg take a left please",
+   "Yo steer left!!",
+   "how about you face left :)",
+   "OK SO ROTATE LEFT"
+  ]
+ },
+ {
+  "id": 207,
+  "family": "turn",
+  "n": 1347,
+  "program": "move(0, 0, 60)\nwait(1400)\nstop()\n",
+  "examples": [
+   "Do a 180",
+   "do a 180",
+   "turn back",
+   "About face",
+   "turn back?",
+   "turn back.",
+   "Can you about face haha",
+   "Yay do a u-turn if you hear me little guy",
+   "Ooh do a u-turn for the captain!!!",
+   "would you flip around",
+   "phew, turn right 180 degrees please and thank you",
+   "Hey hey, turn back around for me, ok?"
+  ]
+ },
+ {
+  "id": 208,
+  "family": "turn",
+  "n": 1310,
+  "program": "move(0, 0, 60)\nwait(700)\nstop()\n",
+  "examples": [
+   "FACE RIGHT",
+   "Steer right",
+   "face right!",
+   "yo go right",
+   "swing right.",
+   "Take a right",
+   "okay head right please and thank you",
+   "car, turn right one more time if you can",
+   "ooh make a right turn ok?",
+   "Ha, swing right!!",
+   "hang a right go!",
+   "listen, turn right"
+  ]
+ },
+ {
+  "id": 209,
+  "family": "turn",
+  "n": 679,
+  "program": "move(0, 0, 60)\nwait(2800)\nstop()\n",
+  "examples": [
+   "spin!",
+   "TWIRL!",
+   "Spin! now",
+   "do a spin",
+   "do a spin.",
+   "do a spin?",
+   "Right, go round and round to the right please",
+   "oi, turn in a full circle 1 times <3",
+   "um, turn in a full circle one times, will ya?",
+   "can you spin spin spin one more time!!",
+   "Oi, twirl!!!",
+   "how about you go round and round!!!"
+  ]
+ },
+ {
+  "id": 210,
+  "family": "turn",
+  "n": 206,
+  "program": "move(0, 0, 60)\nwait(8400)\nstop()\n",
+  "examples": [
+   "do 3 donuts",
+   "spin thrice!!",
+   "Twirl thrice?",
+   "omg do 3 donuts",
+   "robot, do 3 360s",
+   "yo do 3 donuts!!",
+   "ugh, spin like crazy 3 times like a race car ok?",
+   "so, spin around thrice to the right please",
+   "hmm, do 3 donuts pls",
+   "turn in a full circle 3 times buddy",
+   "Yikes, spin around 3 times one more time :)",
+   "Wheee turn in a full circle thrice go!"
+  ]
+ },
+ {
+  "id": 211,
+  "family": "turn",
+  "n": 176,
+  "program": "move(0, 0, -60)\nwait(2800)\nstop()\n",
+  "examples": [
+   "twirl! to the left!",
+   "spin! to the left mate",
+   "Ok so spin! to the left",
+   "phew, spin! to the left!",
+   "do a spin to the left :D",
+   "spin! to the left please",
+   "Robot, spin! to the left thx",
+   "car, spin! to the left buddy",
+   "hmm, spin spin spin to the left haha",
+   "hey robot, spin like a top to the left one more time my friend",
+   "hey car, twirl! to the left for me",
+   "ugh, do a spin to the left please and thank you"
+  ]
+ },
+ {
+  "id": 212,
+  "family": "turn",
+  "n": 166,
+  "program": "move(0, 0, 60)\nwait(5600)\nstop()\n",
+  "examples": [
+   "Spin twice.",
+   "yo do 2 360s!",
+   "do 2 360s ok?",
+   "just do 2 360s",
+   "spin twice mate",
+   "ok ok spin twice",
+   "do 2 360s ok?",
+   "ok so spin like crazy 2 times little guy",
+   "Oi, turn in a full circle two times to the right pls",
+   "dude, twirl 2 times",
+   "my little car, spin around twice mate",
+   "hey car, spin like crazy twice, will ya?"
+  ]
+ },
+ {
+  "id": 213,
+  "family": "until_close",
+  "n": 2026,
+  "program": "move(60, 0, 0)\nwhile distance() > 20:\n    wait(20)\nstop()\n",
+  "examples": [
+   "Go to the box",
+   "Go to the couch!",
+   "go to the sofa!!",
+   "drive to the sofa",
+   "Aww go to the bin.",
+   "now go to my shoe!",
+   "yay drive and stop near that box because why not",
+   "come on, go up to that wall and stop lol",
+   "can you drive and stop near the table leg right now",
+   "little car, drive up to the bin and stop?",
+   "yay drive up to the wall like a race car haha",
+   "omg go to the fridge for the video plz"
+  ]
+ },
+ {
+  "id": 214,
+  "family": "until_close",
+  "n": 212,
+  "program": "move(60, 0, 0)\nwhile distance() > 15:\n    wait(20)\nstop()\n",
+  "examples": [
+   "yo go forward and stop 15 cm before the wall",
+   "go forward and stop 15 cm before the wall!!!",
+   "oi, go forward and stop 15 cm before the wall",
+   "wheee go forward and stop 15 cm before the wall",
+   "Ooh go forward and stop 15 cm before the wall!!",
+   "move forward until you see something 15 cm away",
+   "HEY BUDDY, MOVE FORWARD UNTIL YOU SEE SOMETHING 15 CM AWAY BECAUSE WHY NOT MATE",
+   "meh, move forward until you see something 15 cm away?",
+   "wanna go forward and stop 15 cm before the wall?",
+   "come on, move forward until you see something 15 cm away now",
+   "ugh, go forward and stop 15 cm before the wall for me",
+   "my little car, move forward until you see something 15 cm away mate"
+  ]
+ },
+ {
+  "id": 215,
+  "family": "until_close",
+  "n": 196,
+  "program": "move(60, 0, 0)\nwhile distance() > 10:\n    wait(20)\nstop()\n",
+  "examples": [
+   "go forward and stop 10 cm before the wall",
+   "omg go forward and stop 10 cm before the wall",
+   "aww go forward and stop 10 cm before the wall",
+   "oi, go forward and stop 10 cm before the wall",
+   "Omg go forward and stop 10 cm before the wall",
+   "ugh, go forward and stop 10 cm before the wall",
+   "you know what, drive forward until something is closer than 10 cm if you can",
+   "um, drive forward until something is closer than 10 cm?",
+   "just go forward and stop 10 cm before the wall, will ya?",
+   "go ahead and drive forward until something is closer than 10 cm right now",
+   "hey buddy, move forward until you see something 10 cm away, the cat is watching thx",
+   "Hey buddy, drive forward until something is closer than 10 cm if you understand :)"
+  ]
+ },
+ {
+  "id": 216,
+  "family": "until_close",
+  "n": 171,
+  "program": "move(60, 0, 0)\nwhile distance() > 50:\n    wait(20)\nstop()\n",
+  "examples": [
+   "go forward and stop 50 cm before the wall pls",
+   "ha, go forward and stop 50 cm before the wall",
+   "go forward and stop 50 cm before the wall plz",
+   "go forward and stop 50 cm before the wall lol",
+   "Okay go forward and stop 50 cm before the wall",
+   "move forward until you see something 50 cm away",
+   "yo buddy, drive forward until something is closer than 50 cm if you can",
+   "How about you go forward and stop 50 cm before the wall.",
+   "time to move forward until you see something 50 cm away now",
+   "Can you go forward and stop 50 cm before the wall you little rascal for me, ok?",
+   "Buddy, drive forward until something is closer than 50 cm right now",
+   "ok ok drive forward until something is closer than 50 cm"
+  ]
+ },
+ {
+  "id": 217,
+  "family": "until_close",
+  "n": 169,
+  "program": "move(60, 0, 0)\nwhile distance() > 30:\n    wait(20)\nstop()\n",
+  "examples": [
+   "go forward and stop 30 cm before the wall!",
+   "go forward and stop 30 cm before the wall!!!",
+   "just go forward and stop 30 cm before the wall",
+   "ok ok go forward and stop 30 cm before the wall",
+   "yay go forward and stop 30 cm before the wall ok?",
+   "JUST GO FORWARD AND STOP 30 CM BEFORE THE WALL PLS",
+   "you know what, go forward and stop 30 cm before the wall plz",
+   "yo buddy, drive forward until something is closer than 30 cm <3",
+   "now move forward until you see something 30 cm away, show them right now",
+   "time to drive forward until something is closer than 30 cm like a maniac please and thank you",
+   "hey buddy, go forward and stop 30 cm before the wall right now",
+   "So, drive forward until something is closer than 30 cm right now"
+  ]
+ },
+ {
+  "id": 218,
+  "family": "voice",
+  "n": 1008,
+  "program": "tone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n",
+  "examples": [
+   "sing",
+   "sing lol",
+   "ooh sing!",
+   "Wanna sing",
+   "wanna sing",
+   "wanna sing!",
+   "hey car, play a song go!",
+   "ha, music please ok pls",
+   "yay sing me a song please and thank you",
+   "Can you maybe music please for me",
+   "buddy, play a song you little rascal <3",
+   "phew, play something fun, show them for me, ok?"
+  ]
+ },
+ {
+  "id": 219,
+  "family": "voice",
+  "n": 966,
+  "program": "eyes(\"sad\")\ntone(784, 250)\ntone(659, 250)\ntone(523, 250)\ntone(392, 500)\n",
+  "examples": [
+   "Sound sad",
+   "Womp womp",
+   "sad music",
+   "sound sad!",
+   "a sad song",
+   "a sad song?",
+   "so, sad music my friend",
+   "ugh, sad music thanks",
+   "Right, sad trombone my friend",
+   "hey car, sound sad :)",
+   "okay womp womp my friend",
+   "hey robot, a sad song"
+  ]
+ },
+ {
+  "id": 220,
+  "family": "voice",
+  "n": 934,
+  "program": "tone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n",
+  "examples": [
+   "boop",
+   "Chirp",
+   "Speak",
+   "Chirp.",
+   "boop!!",
+   "boop :)",
+   "speak, show them :d",
+   "ugh, make robot noises.",
+   "phew, speak :)",
+   "alright alright, speak you little rascal.",
+   "TIME TO SPEAK FOR FUN",
+   "Wanna chirp!!!"
+  ]
+ },
+ {
+  "id": 221,
+  "family": "voice",
+  "n": 931,
+  "program": "eyes(\"angry\")\nrgb(255, 0, 0)\nfor i in range(4):\n    tone(1500, 150)\n    tone(0, 100)\nrgb(0, 0, 0)\n",
+  "examples": [
+   "alarm",
+   "alarm!!",
+   "danger!",
+   "alarm!!!",
+   "Danger!!",
+   "danger!?",
+   "ooh sound the alarm like a maniac plz",
+   "i want you to alarm mate",
+   "time to alarm?",
+   "Alright car, sound the alarm <3",
+   "Oh no, red alert for me, ok?",
+   "YO DANGER! PLEASE AND THANK YOU"
+  ]
+ },
+ {
+  "id": 222,
+  "family": "voice",
+  "n": 913,
+  "program": "for i in range(3):\n    tone(700, 300)\n    tone(1000, 300)\n",
+  "examples": [
+   "siren!",
+   "siren.",
+   "Siren!!!",
+   "siren :)",
+   "yo siren",
+   "Yo siren",
+   "you know what, siren ok?",
+   "um, nee naw sound pls",
+   "make a siren sound please",
+   "Time to ambulance buddy",
+   "yay siren pls",
+   "just ambulance, will ya?"
+  ]
+ },
+ {
+  "id": 223,
+  "family": "voice",
+  "n": 891,
+  "program": "eyes(\"angry\")\ntone(200, 400)\ntone(190, 400)\ntone(150, 700)\n",
+  "examples": [
+   "SPOOKY MUSIC",
+   "spooky music?",
+   "A SCARY SOUND",
+   "Spooky music <3",
+   "yo spooky music",
+   "spooky music!!!",
+   "Yo something creepy thanks",
+   "phew, make a spooky noise :)",
+   "Ok ok spooky music <3",
+   "so, play something scary my friend",
+   "LITTLE CAR, A SCARY SOUND FOR ME, OK?",
+   "i want you to play something scary?"
+  ]
+ },
+ {
+  "id": 224,
+  "family": "voice",
+  "n": 888,
+  "program": "tone(523, 200)\ntone(587, 200)\ntone(659, 200)\ntone(698, 200)\ntone(784, 200)\ntone(880, 200)\ntone(988, 200)\ntone(1047, 200)\n",
+  "examples": [
+   "Do re mi",
+   "do re mi :)",
+   "do re mi ok?",
+   "sing a scale",
+   "omg do re mi",
+   "Ha, do re mi",
+   "My little car, sing a scale like a race car haha",
+   "could you play do re mi ok for me",
+   "OH NO, DO RE MI :)",
+   "Play a scale right now",
+   "hmm, play do re mi :)",
+   "so, do re mi!!"
+  ]
+ }
+]

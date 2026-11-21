@@ -1,0 +1,362 @@
+[
+ {
+  "id": 1000,
+  "key": "no_clock",
+  "meaning": "asks the time, the date, a timer or an alarm: the robot has no clock",
+  "program": "eyes(\"sad\")\nclear()\ntext(19, 28, \"I have no clock\")\n",
+  "examples": [
+   "what time is it",
+   "set a timer for ten minutes",
+   "what day is it today"
+  ]
+ },
+ {
+  "id": 1001,
+  "key": "no_camera",
+  "meaning": "asks it to see, photograph, recognise or read something: it has no camera",
+  "program": "eyes(\"sad\")\nclear()\ntext(16, 28, \"I have no camera\")\n",
+  "examples": [
+   "take a picture of me",
+   "what colour is my shirt",
+   "do you recognize me"
+  ]
+ },
+ {
+  "id": 1002,
+  "key": "no_voice",
+  "meaning": "asks it to say something aloud, speak, read out or sing words: it has a buzzer, no voice",
+  "program": "eyes(\"sad\")\nclear()\ntext(25, 28, \"I can't speak\")\n",
+  "examples": [
+   "say my name out loud",
+   "talk to me with your voice",
+   "read this aloud"
+  ]
+ },
+ {
+  "id": 1003,
+  "key": "no_ears",
+  "meaning": "asks whether it heard or understood spoken words, or to listen to speech or name a song: its microphone only measures loudness",
+  "program": "eyes(\"sad\")\nclear()\ntext(13, 28, \"I only hear noise\")\n",
+  "examples": [
+   "did you hear what i said",
+   "what language am i speaking",
+   "listen to me talking"
+  ]
+ },
+ {
+  "id": 1004,
+  "key": "no_net",
+  "meaning": "asks for weather, news, search, calls, messages, music streaming, anything from the internet or a phone",
+  "program": "eyes(\"sad\")\nclear()\ntext(16, 28, \"no internet here\")\n",
+  "examples": [
+   "what's the weather tomorrow",
+   "google that for me",
+   "call my mom",
+   "play despacito"
+  ]
+ },
+ {
+  "id": 1005,
+  "key": "no_memory",
+  "meaning": "asks about earlier requests, to repeat what it did before, or to remember something for later",
+  "program": "eyes(\"sad\")\nclear()\ntext(7, 28, \"I forget everything\")\n",
+  "examples": [
+   "what did i ask you before",
+   "remember my name",
+   "do the same as yesterday"
+  ]
+ },
+ {
+  "id": 1006,
+  "key": "no_hands",
+  "meaning": "asks it to fetch, bring, grab, carry, open, press or hold a thing: it has no hands to grip with",
+  "program": "eyes(\"sad\")\nclear()\ntext(19, 28, \"I have no hands\")\n",
+  "examples": [
+   "bring me a coffee",
+   "grab that pen",
+   "open the window"
+  ]
+ },
+ {
+  "id": 1007,
+  "key": "no_wings",
+  "meaning": "asks it to fly, jump, climb, swim or slide sideways: it has four ordinary wheels",
+  "program": "eyes(\"sad\")\nclear()\ntext(10, 28, \"wheels only, sorry\")\n",
+  "examples": [
+   "fly to the ceiling",
+   "jump over this",
+   "slide sideways",
+   "climb the stairs"
+  ]
+ },
+ {
+  "id": 1008,
+  "key": "no_brain",
+  "meaning": "asks for maths, facts, trivia, a poem, an essay, a translation, advice: far beyond a tiny model",
+  "program": "eyes(\"dizzy\")\nclear()\ntext(28, 20, \"too hard for\")\ntext(28, 36, \"a tiny brain\")\n",
+  "examples": [
+   "what's two plus two",
+   "who is the president",
+   "write me a poem",
+   "translate this to german"
+  ]
+ },
+ {
+  "id": 1009,
+  "key": "no_body",
+  "meaning": "asks it to smell, taste, feel, weigh or measure something it has no sensor for",
+  "program": "eyes(\"sad\")\nclear()\ntext(10, 28, \"no sensor for that\")\n",
+  "examples": [
+   "smell the coffee",
+   "weigh this apple",
+   "how tall am i"
+  ]
+ },
+ {
+  "id": 1010,
+  "key": "q_blocked",
+  "meaning": "asks whether something is in front of it / in its way (yes if closer than 30 cm)",
+  "program": "while 1:\n    clear()\n    if distance() < 30:\n        text(16, 28, \"yes, right there\")\n    else:\n        text(31, 28, \"no, nothing\")\n    wait(200)\n",
+  "examples": [
+   "is something in front of you",
+   "is anything in your way",
+   "do you see an obstacle"
+  ]
+ },
+ {
+  "id": 1011,
+  "key": "q_clear",
+  "meaning": "asks whether the way ahead is clear / free to drive (yes if nothing within 30 cm)",
+  "program": "while 1:\n    clear()\n    if distance() < 30:\n        text(31, 28, \"no, blocked\")\n    else:\n        text(22, 28, \"yes, all clear\")\n    wait(200)\n",
+  "examples": [
+   "is the way clear",
+   "can you drive forward safely",
+   "is the coast clear"
+  ]
+ },
+ {
+  "id": 1012,
+  "key": "q_behind",
+  "meaning": "asks whether something is behind it (yes if closer than 30 cm at the back)",
+  "program": "while 1:\n    clear()\n    if behind() < 30:\n        text(22, 28, \"yes, behind me\")\n    else:\n        text(31, 28, \"no, nothing\")\n    wait(200)\n",
+  "examples": [
+   "is something behind you",
+   "anything at your back"
+  ]
+ },
+ {
+  "id": 1013,
+  "key": "q_button",
+  "meaning": "asks whether the button is pressed right now",
+  "program": "while 1:\n    clear()\n    if button():\n        text(28, 28, \"yes, pressed\")\n    else:\n        text(19, 28, \"no, not pressed\")\n    wait(200)\n",
+  "examples": [
+   "is the button pressed",
+   "am i pressing your button"
+  ]
+ },
+ {
+  "id": 1014,
+  "key": "q_line",
+  "meaning": "asks whether it sees a line or tape under it right now",
+  "program": "while 1:\n    clear()\n    if track() > 0:\n        text(31, 28, \"yes, a line\")\n    else:\n        text(28, 28, \"no line here\")\n    wait(200)\n",
+  "examples": [
+   "do you see a line",
+   "are you on the tape",
+   "is there a line under you"
+  ]
+ },
+ {
+  "id": 1015,
+  "key": "q_level",
+  "meaning": "asks whether it is standing level / flat (yes if tilted less than 10 degrees)",
+  "program": "while 1:\n    clear()\n    if tilt() < 10:\n        text(34, 28, \"yes, level\")\n    else:\n        text(34, 28, \"no, tilted\")\n    wait(200)\n",
+  "examples": [
+   "are you level",
+   "are you standing flat",
+   "is the floor flat"
+  ]
+ },
+ {
+  "id": 1016,
+  "key": "q_quiet",
+  "meaning": "asks whether it is quiet around it (yes if the loudness is under 40)",
+  "program": "while 1:\n    clear()\n    if sound() < 40:\n        text(34, 28, \"yes, quiet\")\n    else:\n        text(37, 28, \"no, noisy\")\n    wait(200)\n",
+  "examples": [
+   "is it quiet in here",
+   "is the room silent"
+  ]
+ },
+ {
+  "id": 1017,
+  "key": "q_hot",
+  "meaning": "asks whether it is hot / too warm in the room (yes above 26 degrees) - not asking for the number",
+  "program": "while 1:\n    clear()\n    if temp() > 26:\n        text(25, 28, \"yes, it's hot\")\n    else:\n        text(25, 28, \"no, it's fine\")\n    wait(200)\n",
+  "examples": [
+   "is it too hot in here",
+   "is it hot or is it just me"
+  ]
+ },
+ {
+  "id": 1018,
+  "key": "q_cold",
+  "meaning": "asks whether it is cold / freezing in the room (yes below 18 degrees) - not asking for the number",
+  "program": "while 1:\n    clear()\n    if temp() < 18:\n        text(22, 28, \"yes, it's cold\")\n    else:\n        text(25, 28, \"no, it's fine\")\n    wait(200)\n",
+  "examples": [
+   "is it cold in here",
+   "is it freezing or what"
+  ]
+ },
+ {
+  "id": 1019,
+  "key": "joke",
+  "meaning": "asks for a joke",
+  "program": "eyes(\"wink\")\nclear()\ntext(13, 20, \"why did the robot\")\ntext(19, 36, \"cross the road?\")\nwait(2500)\nclear()\ntext(7, 28, \"it was programmed to\")\neyes(\"happy\")\ntone(1200, 80)\ntone(1800, 80)\n",
+  "examples": [
+   "tell me a joke",
+   "make me laugh",
+   "know any jokes"
+  ]
+ },
+ {
+  "id": 1020,
+  "key": "skills",
+  "meaning": "asks what it can do, for help, or for a list of its tricks",
+  "program": "eyes(\"happy\")\nclear()\ntext(7, 12, \"drive, turn, dance\")\ntext(10, 28, \"draw, beep, sing\")\ntext(7, 44, \"sense, wave, blink\")\n",
+  "examples": [
+   "what can you do",
+   "help",
+   "what are your tricks",
+   "show me what you've got"
+  ]
+ },
+ {
+  "id": 1021,
+  "key": "age",
+  "meaning": "asks how old it is or when it was made",
+  "program": "eyes(\"happy\")\nclear()\ntext(34, 28, \"brand new!\")\n",
+  "examples": [
+   "how old are you",
+   "when were you born"
+  ]
+ },
+ {
+  "id": 1022,
+  "key": "maker",
+  "meaning": "asks who built or made it",
+  "program": "eyes(\"heart\")\nclear()\ntext(25, 20, \"built at home\")\ntext(37, 36, \"with love\")\n",
+  "examples": [
+   "who made you",
+   "who built you",
+   "who's your creator"
+  ]
+ },
+ {
+  "id": 1023,
+  "key": "home",
+  "meaning": "asks where it is from or where it lives",
+  "program": "eyes(\"happy\")\nclear()\ntext(16, 28, \"from a workbench\")\n",
+  "examples": [
+   "where are you from",
+   "where do you live"
+  ]
+ },
+ {
+  "id": 1024,
+  "key": "is_robot",
+  "meaning": "asks whether it is a robot, a car, a toy or a machine",
+  "program": "eyes(\"happy\")\nclear()\ntext(31, 20, \"a robot car\")\ntext(22, 36, \"small but real\")\n",
+  "examples": [
+   "are you a robot",
+   "what are you exactly",
+   "are you a toy"
+  ]
+ },
+ {
+  "id": 1025,
+  "key": "smart",
+  "meaning": "asks whether it is clever or how big its brain is",
+  "program": "eyes(\"wink\")\nclear()\ntext(34, 20, \"tiny brain\")\ntext(37, 36, \"big heart\")\n",
+  "examples": [
+   "are you smart",
+   "how clever are you",
+   "how big is your brain"
+  ]
+ },
+ {
+  "id": 1026,
+  "key": "likes_me",
+  "meaning": "asks whether it likes / loves the person",
+  "program": "eyes(\"heart\")\nclear()\ntext(34, 28, \"of course!\")\n",
+  "examples": [
+   "do you like me",
+   "are we friends",
+   "do you love me"
+  ]
+ },
+ {
+  "id": 1027,
+  "key": "fav_colour",
+  "meaning": "asks its favourite colour",
+  "program": "rgb(160, 0, 255)\neyes(\"happy\")\nclear()\ntext(43, 28, \"purple!\")\n",
+  "examples": [
+   "what's your favourite colour",
+   "which color do you like best"
+  ]
+ },
+ {
+  "id": 1028,
+  "key": "morning",
+  "meaning": "wishes it good morning",
+  "program": "eyes(\"open\")\nclear()\ntext(25, 28, \"good morning!\")\ntone(784, 150)\ntone(1047, 300)\n",
+  "examples": [
+   "good morning",
+   "morning little car",
+   "rise and shine"
+  ]
+ },
+ {
+  "id": 1029,
+  "key": "sorry",
+  "meaning": "the person apologises to it",
+  "program": "eyes(\"happy\")\nclear()\ntext(40, 28, \"it's ok!\")\n",
+  "examples": [
+   "sorry",
+   "my bad",
+   "i didn't mean that",
+   "forgive me"
+  ]
+ },
+ {
+  "id": 1030,
+  "key": "bored",
+  "meaning": "the person says they are bored",
+  "program": "eyes(\"happy\")\nclear()\ntext(28, 28, \"let's dance!\")\nfor i in range(3):\n    move(0, 0, 80)\n    wait(300)\n    move(0, 0, -80)\n    wait(300)\nstop()\n",
+  "examples": [
+   "i'm bored",
+   "this is boring",
+   "entertain me"
+  ]
+ },
+ {
+  "id": 1031,
+  "key": "ready",
+  "meaning": "asks whether it is ready",
+  "program": "eyes(\"happy\")\nclear()\ntext(46, 28, \"ready!\")\ntone(1200, 80)\ntone(1800, 80)\n",
+  "examples": [
+   "are you ready",
+   "ready to go?",
+   "you set?"
+  ]
+ },
+ {
+  "id": 1032,
+  "key": "hungry",
+  "meaning": "asks whether it is hungry or offers it food or a drink",
+  "program": "eyes(\"wink\")\nclear()\ntext(22, 20, \"only batteries\")\ntext(22, 36, \"for me, thanks\")\n",
+  "examples": [
+   "are you hungry",
+   "want a snack",
+   "do you want a beer"
+  ]
+ }
+]
