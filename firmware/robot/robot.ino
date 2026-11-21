@@ -103,6 +103,7 @@ static bool car_web_poll();             // car_io.h: a line typed on the phone p
 static void attn_next();                // car_io.h
 static void attn_show();
 static void attn_live();
+static bool attn_is_on();
 #endif
 static bool poll_serial_line() {
   if (pending_ready) return true;
@@ -110,7 +111,7 @@ static bool poll_serial_line() {
   {                                     // BOOT: the next attention head, without interrupting what is being written
     static bool was = false; static unsigned long at = 0;
     bool down = digitalRead(0) == LOW;
-    if (down && !was && millis() - at > 300) { at = millis(); was = true; attn_next(); }
+    if (down && !was && millis() - at > 300) { at = millis(); was = true; if (attn_is_on()) attn_next(); }
     if (!down) was = false;
   }
 #elif defined(CAR_DESK)

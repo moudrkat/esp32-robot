@@ -43,6 +43,10 @@
 #define PIN_LED    48   // the board's own RGB LED, used by led()
 // I2C (OLED 0x3C, MPU6050 0x68, SHT40 0x44) is the desk board's: OLED_SDA 18, OLED_SCL 8, in display.h.
 
+#ifndef ATTN_LAYER
+#define ATTN_LAYER 3    // model 14, measured on the chip over 352 tokens: 92 % of this head's weight is inside the last 8 tokens
+#define ATTN_HEAD 3     // ("@head 2 3" picks another, "@stat" measures them all)
+#endif
 #ifndef LINE_ACTIVE_HIGH
 #define LINE_ACTIVE_HIGH 1     // LF-2 output on black (or past a table edge); flip if it reads inverted
 #endif
@@ -297,8 +301,13 @@ static int eye_px(int x, int y) {                     // matrix pixel for (colum
 // The newest row is the chain's first eight LEDs, so the chain's last LED is a corner that is never lit
 // (on her matrix that one LED is dead).
 static bool attn_test = false;                          // a test picture stays until the next sentence or head
+#if defined(CAR_DESK)
+static bool attn_on = true;                             // on the table the square is the attention's
+#else
+static bool attn_on = false;                            // on the car it is the eyes, until "@attn" hands it over
+#endif
 static void attn_show() {
-  if (attn_test) return;
+  if (!attn_on || attn_test) return;
   static const uint8_t col[3] = {255, 110, 0};          // one colour: brightness is the only thing that speaks
   eyes_px.clear();
   for (int r = 0; r < ATTN_WIN; r++)
@@ -318,12 +327,13 @@ static void attn_head(int layer, int head) {            // out of range wraps; a
   Serial.printf("attention: layer %d head %d\n", g_attn.layer, g_attn.head);
 }
 static void attn_live() { attn_test = false; }
+static bool attn_is_on() { return attn_on; }
 static void attn_next() { attn_head(g_attn.layer, g_attn.head + 1); }
 #endif
 
 static void eyes_show() {
 #if defined(CAR_ATTN)
-  attn_show(); return;                                  // the square belongs to the attention; eyes() and rgb() wait
+  if (attn_on) { attn_show(); return; }                 // the square belongs to the attention; eyes() and rgb() wait
 #endif
   eyes_px.clear();
 #if defined(CAR_DESK)
@@ -471,8 +481,8 @@ static void car_setup() {
 #endif
   eyes_px.begin(); eyes_px.setBrightness(EYES_BRIGHTNESS);
 #if defined(CAR_ATTN)
-  eyes_px.setBrightness(40);                            // few LEDs are lit at once
-  g_attn.layer = 3; g_attn.head = 4;                    // the liveliest head whose weight stays inside the last 8 tokens (91 %)
+  if (attn_on) eyes_px.setBrightness(40);               // few LEDs are lit at once
+  g_attn.layer = ATTN_LAYER; g_attn.head = ATTN_HEAD;   // the liveliest head whose weight stays inside the last 8 tokens
 #endif
   eye_mood = 0; eyes_show();
 }
@@ -581,6 +591,13 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
     eyes_px.show(); Serial.println("all 64 LEDs on, dim white"); return;
   }
 #if defined(CAR_ATTN)
+  if (got >= 1 && !strcmp(name, "attn")) {          // "@attn": the square shows attention instead of eyes; again: eyes
+    char how[8] = {0}; sscanf(line, "%*s %7s", how);
+    attn_on = how[0] ? !strcmp(how, "on") : !attn_on;
+    eyes_px.setBrightness(attn_on ? 40 : EYES_BRIGHTNESS);
+    attn_test = false; eyes_px.clear(); eyes_px.show(); eyes_show();
+    Serial.printf("the 8x8 shows %s\n", attn_on ? "attention" : "eyes"); return;
+  }
   if (got >= 1 && !strcmp(name, "tri")) {           // "@tri": the shape attention must have, standing still: a red
     eyes_px.clear();                                // triangle, its diagonal white, the newest token's corner green
     for (int r = 0; r < ATTN_WIN; r++)
@@ -726,7 +743,8 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8
 <button onclick="say('stop')">stop</button>
 <label style="display:block;margin:8px 0"><input id=a type=checkbox> talk: send when I stop (use the keyboard's microphone)</label><p>
 <select id=m></select> <input id=s type=range min=0 max=100 value=0 oninput="v.textContent=s.value/100"> <span id=v>0</span>
-<button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button></p>
+<button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button>
+<button onclick="fetch('/input?name=attn')">eyes / attention</button></p>
 <p>what it wrote:</p><pre id=p></pre><p id=i></p>
 <script>t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
 let h;t.oninput=()=>{clearTimeout(h);if(a.checked&&t.value.trim())h=setTimeout(()=>say(t.value),1500)};

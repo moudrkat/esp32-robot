@@ -35,12 +35,11 @@ else
   rm -f "$DESKH"
 fi
 ATTNH=firmware/robot/generated/attn.h
-if [ "${ATTN:-0}" = 1 ]; then
-  printf '#define CAR_ATTN 1\n#define LLM_ATTN_VIZ 1\n' > "$ATTNH"
-  echo "Attention on the 8x8 LEDs (pin 21): BOOT or @head for the next head, @head 2 3 for layer 2 head 3"
-else
-  rm -f "$ATTNH"
-fi
+case "${ATTN:-}" in                    # remembered, like FLIP: ATTN=0 forgets it
+  1) printf '#define CAR_ATTN 1\n#define LLM_ATTN_VIZ 1\n' > "$ATTNH" ;;
+  0) rm -f "$ATTNH" ;;
+esac
+[ -f "$ATTNH" ] && echo "Attention on the 8x8 LEDs (pin 21): on the car \"@attn\" switches eyes and attention; BOOT or @head for the next head"
 WHEELS=firmware/robot/generated/wheels.h
 case "${FLIP:-}" in
   left)  echo '#define MOTOR_L_SIGN -1' > "$WHEELS" ;;
