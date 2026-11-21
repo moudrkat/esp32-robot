@@ -271,21 +271,21 @@ static Leds64 eyes_px;
 static uint8_t eye_r = 0, eye_g = 160, eye_b = 255; // rgb() recolours them; rgb(0, 0, 0) turns them off
 static int eye_mood = 0;
 // order as OL_EYES: open happy sad angry sleepy closed wink heart left right up down surprised dizzy
-static const uint8_t EYE_ROWS[OL_EYES_N][8] = {
-  {0x00, 0x66, 0xFF, 0xFF, 0xFF, 0x66, 0x00, 0x00},   // open
-  {0x00, 0x66, 0xFF, 0x99, 0x00, 0x00, 0x00, 0x00},   // happy: arcs
-  {0x00, 0x00, 0x00, 0x66, 0xFF, 0x99, 0x00, 0x00},   // sad: drooping
-  {0x00, 0x81, 0xC3, 0xE7, 0xFF, 0x66, 0x00, 0x00},   // angry: brows down to the middle
-  {0x00, 0x00, 0x00, 0x00, 0xFF, 0x66, 0x00, 0x00},   // sleepy: half shut
-  {0x00, 0x00, 0x00, 0x00, 0xE7, 0x00, 0x00, 0x00},   // closed
-  {0x00, 0x60, 0xF0, 0xF7, 0xF0, 0x60, 0x00, 0x00},   // wink: left open, right a line
-  {0x00, 0x66, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00},   // heart
-  {0x00, 0x66, 0x99, 0x99, 0x99, 0x66, 0x00, 0x00},   // left: pupils drawn by eyes_show
-  {0x00, 0x66, 0x99, 0x99, 0x99, 0x66, 0x00, 0x00},   // right
-  {0x00, 0x66, 0x99, 0x99, 0x99, 0x66, 0x00, 0x00},   // up
-  {0x00, 0x66, 0x99, 0x99, 0x99, 0x66, 0x00, 0x00},   // down
-  {0xE7, 0xA5, 0xA5, 0xA5, 0xE7, 0x00, 0x00, 0x00},   // surprised: wide rings
-  {0x00, 0xA5, 0x42, 0xA5, 0x00, 0x00, 0x00, 0x00},   // dizzy: crosses
+static const uint8_t EYE_ROWS[OL_EYES_N][8] = {   // a whole face on the 8x8: two eyes above, a mouth below
+  {0x00, 0x66, 0x66, 0x00, 0x00, 0x3C, 0x00, 0x00},   // open: eyes, a straight mouth
+  {0x00, 0x66, 0x66, 0x00, 0x42, 0x3C, 0x00, 0x00},   // happy: a smile
+  {0x00, 0x66, 0x66, 0x00, 0x00, 0x3C, 0x42, 0x00},   // sad: the corners down
+  {0xC3, 0x24, 0x66, 0x00, 0x00, 0x3C, 0x42, 0x00},   // angry: brows down to the middle, a frown
+  {0x00, 0x00, 0x66, 0x00, 0x00, 0x18, 0x00, 0x00},   // sleepy: eyes half shut, a small mouth
+  {0x00, 0x00, 0xE7, 0x00, 0x00, 0x3C, 0x00, 0x00},   // closed: two lines
+  {0x00, 0x60, 0x67, 0x00, 0x42, 0x3C, 0x00, 0x00},   // wink: left open, right a line, a smile
+  {0x00, 0x66, 0xFF, 0xFF, 0x7E, 0x3C, 0x18, 0x00},   // heart: the whole square
+  {0x00, 0xCC, 0xCC, 0x00, 0x00, 0x3C, 0x00, 0x00},   // left: both eyes moved over
+  {0x00, 0x33, 0x33, 0x00, 0x00, 0x3C, 0x00, 0x00},   // right
+  {0x66, 0x66, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x00},   // up
+  {0x00, 0x00, 0x66, 0x66, 0x00, 0x3C, 0x00, 0x00},   // down
+  {0x00, 0x66, 0x66, 0x00, 0x18, 0x24, 0x18, 0x00},   // surprised: a round mouth
+  {0xA5, 0x42, 0xA5, 0x00, 0x00, 0x2A, 0x54, 0x00},   // dizzy: crosses for eyes, a wavy mouth
 };
 static int eye_px(int x, int y) {                     // matrix pixel for (column, row), 0..7 each
   if (EYES_FLIP_X) x = 7 - x;
@@ -350,7 +350,7 @@ static void eyes_show() {
   for (int y = 0; y < 8; y++)
     for (int x = 0; x < 8; x++)
       if (EYE_ROWS[eye_mood][y] & (0x80 >> x)) eyes_px.setPixelColor(eye_px(x, y), eye_r, eye_g, eye_b);
-  if (eye_mood >= 8 && eye_mood <= 11) {               // looking somewhere: a white pupil inside each ring
+  if (false && eye_mood >= 8 && eye_mood <= 11) {      // (the ring eyes had pupils; a face moves its whole eyes instead)
     // each eye is a ring 4 wide (left eye columns 0-3, right eye 4-7), rows 1-5; its inside is columns 1-2, rows 2-4
     static const int8_t PUP[4][2][2] = {                // mood -> two pixels (x, y) of the left eye's pupil
       {{1, 3}, {1, 3}},                                 // left
@@ -741,7 +741,8 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8
 #t{width:100%;box-sizing:border-box}pre{background:#f2f2f4;padding:8px;white-space:pre-wrap}button{margin-right:6px}</style>
 <h2>robot</h2><input id=t placeholder="yo buddy, let's go" autofocus><button onclick="say(t.value)">send</button>
 <button onclick="say('stop')">stop</button>
-<label style="display:block;margin:8px 0"><input id=a type=checkbox> talk: send when I stop (use the keyboard's microphone)</label><p>
+<label style="display:block;margin:8px 0"><input id=a type=checkbox> talk: send when I stop (use the keyboard's microphone)</label>
+<label style="display:block;margin:8px 0"><input id=k type=checkbox checked> speak: read its answers aloud</label><p>
 <select id=m></select> <input id=s type=range min=0 max=100 value=0 oninput="v.textContent=s.value/100"> <span id=v>0</span>
 <button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button>
 <button onclick="fetch('/input?name=attn')">eyes / attention</button></p>
@@ -749,7 +750,9 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8
 <script>t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
 let h;t.oninput=()=>{clearTimeout(h);if(a.checked&&t.value.trim())h=setTimeout(()=>say(t.value),1500)};
 function say(x){if(x)fetch('/say?text='+encodeURIComponent(x));t.value=''}
+let was='',at=0;function speak(x){try{let u=new SpeechSynthesisUtterance(x);u.lang='en-US';speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 async function poll(){try{let j=await (await fetch('/state')).json();p.textContent=j.program;i.textContent=j.inputs;
+if(k.checked&&j.says&&j.says!=was&&Date.now()-at>1500&&/[a-z]/i.test(j.says)){was=j.says;at=Date.now();speak(j.says)}if(!j.says)was='';
 if(!m.options.length)j.names.forEach(n=>m.add(new Option(n)))}catch(e){}setTimeout(poll,800)}poll()</script>)HTML";
 static void web_setup() {
   WiFi.mode(WIFI_AP);
@@ -777,7 +780,8 @@ static void web_setup() {
     }
 #endif
     String prog = last_program; prog.replace("\\", "\\\\"); prog.replace("\"", "\\\""); prog.replace("\n", "\\n");
-    web.send(200, "application/json", "{\"program\":\"" + prog + "\",\"inputs\":\"" + inputs + "\",\"names\":[" + names + "]}");
+    String says = g_says; says.replace("\\", ""); says.replace("\"", "'");
+    web.send(200, "application/json", "{\"program\":\"" + prog + "\",\"says\":\"" + says + "\",\"inputs\":\"" + inputs + "\",\"names\":[" + names + "]}");
   });
   web.begin();
   Serial.printf("phone: join Wi-Fi \"%s\", open http://%s\n", CAR_WIFI_NAME, WiFi.softAPIP().toString().c_str());

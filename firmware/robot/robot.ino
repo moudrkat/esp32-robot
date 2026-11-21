@@ -293,8 +293,13 @@ static void emit(int tok) {
 
 #if defined(OLED_PROGRAM)
 // Drawing for the interpreter: Adafruit GFX on the panel, white on black, 6x8 text cells.
-static void g_clear(void *) { oled.clearDisplay(); }
-static void g_text(void *, int x, int y, const char *s) { oled.setTextSize(1); oled.setCursor(x, y); oled.print(s); }
+static char g_says[96];                 // the words on the screen since it was last cleared: the phone page reads them aloud
+static void g_clear(void *) { oled.clearDisplay(); g_says[0] = 0; }
+static void g_text(void *, int x, int y, const char *s) {
+  oled.setTextSize(1); oled.setCursor(x, y); oled.print(s);
+  size_t n = strlen(g_says);
+  if (n + strlen(s) + 2 < sizeof g_says) { if (n) g_says[n++] = ' '; strcpy(g_says + n, s); }
+}
 static void g_pixel(void *, int x, int y) { oled.drawPixel(x, y, OLED_WHITE); }
 static void g_line(void *, int x0, int y0, int x1, int y1) { oled.drawLine(x0, y0, x1, y1, OLED_WHITE); }
 static void g_rect(void *, int x, int y, int w, int h) { if (w > 0 && h > 0) oled.drawRect(x, y, w, h, OLED_WHITE); }
