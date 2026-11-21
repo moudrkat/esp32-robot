@@ -77,13 +77,27 @@ esac
 [ -f "$COASTH" ] && echo "Leash: a drive left running stops after $(cut -d' ' -f3 "$COASTH") ms"
 [ -f "$KICKH" ] && echo "Start kick: $(cut -d' ' -f3 "$KICKH") ms of full power"
 [ -f "$WHEELS" ] && echo "Wheels flipped: $(tr '\n' ' ' < "$WHEELS")"
+# SPEAK=cs: the Czech model (model-cs/) and its headers; SPEAK=en: back to English. Remembered, like the rest.
+LANGH=firmware/robot/generated/lang.h
+case "${SPEAK:-}" in
+  cs) [ -f model-cs/model.bin ] || { echo "no model-cs/model.bin: train it first (SPEAK=cs ./train.sh)"; exit 1; }
+      echo '#define CAR_LANG_CS 1' > "$LANGH" ;;
+  en) rm -f "$LANGH" ;;
+  "") ;;
+  *) echo "SPEAK is cs or en"; exit 1 ;;
+esac
+if [ -f "$LANGH" ]; then MODEL_DIR=model-cs; echo "Speaks Czech (model-cs/)"; else MODEL_DIR=model; fi
+if [ -n "${SPEAK:-}" ]; then               # the vocabulary and the inputs are compiled in: remake them for this model
+  PY=python3; command -v uv >/dev/null 2>&1 && PY="uv run --no-project --with tokenizers --with numpy python"
+  $PY tools/gen_headers.py "$MODEL_DIR" | tail -1
+fi
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
 [ -n "$ESPTOOL" ] || { echo "esptool not found: pip install esptool"; exit 1; }
 [ "${BUILD_ONLY:-0}" = 1 ] && { arduino-cli compile --fqbn "$FQBN" --build-property "upload.maximum_size=2097152" --build-path build firmware/robot; exit 0; }
 echo "=== build"
 arduino-cli compile --fqbn "$FQBN" --build-property "upload.maximum_size=2097152" --build-path build firmware/robot
 echo "=== model -> $PORT (partition 'model' at 0x210000)"
-"$ESPTOOL" --chip esp32s3 --port "$PORT" --baud 921600 write_flash 0x210000 model/model.bin
+"$ESPTOOL" --chip esp32s3 --port "$PORT" --baud 921600 write_flash 0x210000 "$MODEL_DIR/model.bin"
 echo "=== firmware -> $PORT"
 arduino-cli upload -p "$PORT" --fqbn "$FQBN" --input-dir build firmware/robot
 echo "done. Talk to it: python talk.py   (pip install pyserial)"

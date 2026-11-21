@@ -2,7 +2,7 @@
 robot's own headers: its inputs that are not words (cond.json) and the probes its eyes show (probes.json).
 Run after retraining; the generated files are in the repo, so flashing needs only arduino-cli.
 
-    python tools/gen_headers.py        (needs: pip install tokenizers)
+    python tools/gen_headers.py [model-cs]        (needs: pip install tokenizers)
 """
 import json
 import subprocess
@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GEN = ROOT / "firmware" / "robot" / "generated"
-MODEL = ROOT / "model"
+MODEL = ROOT / (sys.argv[1] if len(sys.argv) > 1 else "model")      # model-cs for the Czech one
 
 
 def main():

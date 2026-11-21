@@ -737,6 +737,14 @@ static WebServer web(80);
 static char web_line[200];
 static bool web_ready = false;
 static char last_program[OL_MAX_SRC];
+#if __has_include("generated/lang.h")       // flash.sh writes it for SPEAK=cs: the Czech model; the page then reads answers in Czech
+#include "generated/lang.h"
+#endif
+#if defined(CAR_LANG_CS)
+#define CAR_PAGE_LANG "let L='cs-CZ';"
+#else
+#define CAR_PAGE_LANG "let L='en-US';"
+#endif
 static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>robot</title><style>body{font:16px system-ui;margin:16px;max-width:520px}input,button,select{font:inherit;padding:8px;margin:4px 0}
 #t{width:100%;box-sizing:border-box}pre{background:#f2f2f4;padding:8px;white-space:pre-wrap}button{margin-right:6px}</style>
@@ -748,10 +756,10 @@ static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8
 <button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button>
 <button onclick="fetch('/input?name=attn')">eyes / attention</button></p>
 <p>what it wrote:</p><pre id=p></pre><p id=i></p>
-<script>t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
+<script>)HTML" CAR_PAGE_LANG R"HTML(t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
 let h;t.oninput=()=>{clearTimeout(h);if(a.checked&&t.value.trim())h=setTimeout(()=>say(t.value),1500)};
-function say(x){if(x)fetch('/say?text='+encodeURIComponent(x));t.value=''}
-let was='',at=0;function speak(x){try{let u=new SpeechSynthesisUtterance(x);u.lang='en-US';speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function say(x){x=x.normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(x)fetch('/say?text='+encodeURIComponent(x));t.value=''}
+let was='',at=0;function speak(x){try{let u=new SpeechSynthesisUtterance(x);u.lang=L;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 async function poll(){try{let j=await (await fetch('/state')).json();p.textContent=j.program;i.textContent=j.inputs;
 if(k.checked&&j.says&&j.says!=was&&Date.now()-at>1500&&/[a-z]/i.test(j.says)){was=j.says;at=Date.now();speak(j.says)}if(!j.says)was='';
 if(!m.options.length)j.names.forEach(n=>m.add(new Option(n)))}catch(e){}setTimeout(poll,800)}poll()</script>)HTML";
