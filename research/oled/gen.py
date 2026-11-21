@@ -15,6 +15,7 @@ import json
 import math
 import random
 import re
+import unicodedata
 import string
 import sys
 from pathlib import Path
@@ -2033,9 +2034,10 @@ def polite(r, prompt):
 
 
 # the frozen free-form test: no generated request may contain one of its lines, so it stays a test
-_norm = lambda t: " ".join(re.sub(r"[^a-z0-9' ]", " ", t.lower()).split())
+_ascii = lambda t: "".join(c for c in unicodedata.normalize("NFD", t) if not unicodedata.combining(c))   # Czech test lines
+_norm = lambda t: " ".join(re.sub(r"[^a-z0-9' ]", " ", _ascii(t).lower()).split())
 HELDOUT = [_norm(l) for f in ("heldout_talk.txt", "heldout2_talk.txt", "heldout3_talk.txt", "heldout4_talk.txt",
-                                    "dev5_talk.txt", "heldout5_talk.txt")
+                                    "dev5_talk.txt", "heldout5_talk.txt", "dev_cs_talk.txt", "heldout_cs_talk.txt")
            if (Path(__file__).parents[1] / "robot" / f).exists()
            for l in (Path(__file__).parents[1] / "robot" / f).read_text().splitlines() if l.strip()]
 
