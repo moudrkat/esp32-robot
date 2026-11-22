@@ -142,3 +142,11 @@
 {"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "eyes(\"sad\")\nclear()\ntext(34, 28, \"nemam ruce\")\n", "ok": false}
 {"request": "Hraj si na sanitku", "program": "eyes(\"sad\")\nclear()\ntext(16, 28, \"vsechno zapomenu\")\n", "ok": false}
 {"request": "St\u016fj a hl\u00eddej, kdyby se n\u011bkdo p\u0159ibl\u00ed\u017eil, tak zahoukej", "program": "for i in range(3):\n    tone(700, 300)\n    tone(1000, 300)\nbeep(250)\n", "ok": false}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "for a in range(0, 70, 10):\n    look(a)\n    wait(120)\neyes(\"right\")\nmove(60, 0, 0, 3000)\n", "ok": false}
+{"request": "Blikej mod\u0159e jako policajti", "program": "while 1:\n    rgb(0, 0, 255)\n    rgb(0, 0, 255)\n    wait(300)\nrgb(0, 0, 0)\n", "ok": false}
+{"request": "Zam\u00e1vej mi", "program": "eyes(\"happy\")\nclear()\ntext(49, 28, \"ahoj!\")\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": true}
+{"request": "Zvedni ruku, kdo chce zmrzlinu", "program": "arm(180)\neyes(\"sad\")\nclear()\ntext(19, 28, \"slysim jen hluk\")\n", "ok": false}
+{"request": "Je\u010f dop\u0159edu, dokud nenaraz\u00ed\u0161 na ze\u010f, a tam zastav", "program": "move(60, 0, 0)\nwhile shaken() == 0:\n    wait(20)\nstop()\nmove(-60, 0, 0, 800)\n", "ok": true}
+{"request": "Nejd\u0159\u00edv zatrub, potom popoje\u010f a nakonec se zato\u010d dokola", "program": "beep(250)\nmove(60, 0, 30, 4000)\nmove(0, 0, 60, 2800)\n", "ok": false}
+{"request": "Ty jsi ale zlobiv\u00fd robot", "program": "eyes(\"happy\")\nclear()\ntext(22, 20, \"roboticke auto\")\ntext(7, 36, \"male, ale opravdove\")\n", "ok": false}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "for i in range(2):\n    move(40, 0, 70, 400)\n    move(40, 0, -70, 400)\nmove(0, 0, 90, 2800)\n", "ok": false}

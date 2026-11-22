@@ -1196,6 +1196,7 @@ WAVE = "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(3
 CHIRP = "tone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n"
 HAPPY_TUNE = "tone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n"
 SAD_TUNE = "tone(784, 250)\ntone(659, 250)\ntone(523, 250)\ntone(392, 500)\n"
+SAD_TUNE_ASKED = 'eyes("sad")\n' + SAD_TUNE      # the fixed answer to "play something sad"
 CHAT = [
     (["hi", "hello", "hey", "hiya", "yo", "sup", "what's up", "hello there", "howdy", "hey there", "good morning",
       "morning", "hi there", "heyyy", "hello little car", "hi buddy", "yo what's up", "say hi", "say hello",
@@ -2030,7 +2031,7 @@ PROFILES = {
                            f_blink_screen, f_heart, f_star, f_house, f_square, f_triangle, f_sun, f_arrow],
 }
 PROFILES["talk"] = PROFILES["car"] + TALK_FAMILIES      # needs --bank
-CAR_WEIGHT.update({"seq": 12, "when": 10, "curve": 1, "knob": 3, "answer": 9, "show": 3, "blink2": 2, "invent": 9})
+CAR_WEIGHT.update({"seq": 16, "when": 10, "curve": 1, "knob": 3, "answer": 11, "show": 3, "blink2": 2, "invent": 9})
 TALK_WEIGHT = {"cant": 2}               # the plain "can't do that" stays as the fallback; a reason is the better answer
 POLITE_PRE = ["please ", "can you ", "could you ", "now ", "hey, ", "ok ", "i want you to ", "go ahead and ", "pls ",
               "would you ", "let's "]

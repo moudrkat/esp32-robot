@@ -602,6 +602,12 @@ VYMYSLI = {
 }
 
 
+HLASI = {"dance": ["novy tanec!", "tohle jsem vymyslel", "koukej!", "muj tanec", "tak se divej", "jdu na to!", "tanec c. 7",
+                   "tohle neznas", "pozor, tancim"],
+         "tune": ["moje pisnicka", "to jsem slozil sam", "poslouchej", "nova melodie", "tuhle neznas", "hraju!", "moje skladba"],
+         "lights": ["disko!", "svetelna show", "koukej na barvy", "a ted svetla", "show zacina", "barvy!"]}
+
+
 def _ms(base, k):
     return max(50, int(base * k) // 50 * 50)
 
@@ -644,9 +650,10 @@ def _draw(r):
     for _ in range(r.randint(2, 5)):
         x, y = r.randrange(16, 112, 4), r.randrange(12, 52, 4)
         s = pick(r, [4, 6, 8, 10, 12])
-        out += pick(r, [f"circle({x}, {y}, {s})\n", f"rect({x - s}, {y - s}, {2 * s}, {2 * s})\n", f"fill({x - s // 2}, {y - s // 2}, {s}, {s})\n",
-                        f"line({x - s}, {y}, {x + s}, {y})\n", f"line({x}, {y - s}, {x}, {y + s})\n",
+        line = pick(r, [f"line({x - s}, {y}, {x + s}, {y})\n", f"line({x}, {y - s}, {x}, {y + s})\n",
                         f"line({x - s}, {y - s}, {x + s}, {y + s})\n", f"line({r.randrange(0, 128, 8)}, 0, {x}, {y})\n"])
+        out += pick(r, [f"circle({x}, {y}, {s})\n", f"rect({x - s}, {y - s}, {2 * s}, {2 * s})\n",      # each kind as often
+                        f"fill({x - s // 2}, {y - s // 2}, {s}, {s})\n", line])
     return out
 
 
@@ -654,6 +661,12 @@ def c_invent(r):
     kind = pick(r, ["dance", "dance", "tune", "tune", "lights", "draw", "any", "any"])
     p = pick(r, VYMYSLI[kind])
     a = pick(r, list(ZPUSOB)) if "{" in p else None
+    if kind == "tune" and r.random() < 0.4:     # "play something sad" has one fixed tune in the bank: mostly a new one instead
+        a = pick(r, ["smutne", "vesele"])
+        ws = gen.BANK.get(gen.SAD_TUNE_ASKED if a == "smutne" else gen.HAPPY_TUNE, [])
+        ws = [w for w in ws if "neco" in w or "nejak" in w]
+        if ws:
+            p = _bare(pick(r, ws))
     if a is None and r.random() < 0.25 and kind in ("dance", "tune", "lights"):    # the manner hung on the end
         a = pick(r, list(ZPUSOB))
         p += pick(r, [" ", ", ale ", " a "]) + a
@@ -667,7 +680,13 @@ def c_invent(r):
         body = "".join(made[x]() for x in ks)
     else:
         body = made[kind]()
-    return p, (f'eyes("{eyes}")\n' if eyes else "") + body
+    said = ""
+    if kind != "draw" and "clear()" not in body and r.random() < 0.6:      # it says what it is about to do
+        w = pick(r, HLASI[kind if kind != "any" else ks[0]])
+        if a and r.random() < 0.6:
+            w = pick(r, [f"{a}...", f"tak {a}", f"{a}, jo?"]) if r.random() < 0.5 else w
+        said = say(w[:21])
+    return p, (f'eyes("{eyes}")\n' if eyes else "") + said + body
 
 
 c_cant.__name__ = "c_cant"
