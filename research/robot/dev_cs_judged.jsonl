@@ -150,3 +150,29 @@
 {"request": "Nejd\u0159\u00edv zatrub, potom popoje\u010f a nakonec se zato\u010d dokola", "program": "beep(250)\nmove(60, 0, 30, 4000)\nmove(0, 0, 60, 2800)\n", "ok": false}
 {"request": "Ty jsi ale zlobiv\u00fd robot", "program": "eyes(\"happy\")\nclear()\ntext(22, 20, \"roboticke auto\")\ntext(7, 36, \"male, ale opravdove\")\n", "ok": false}
 {"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "for i in range(2):\n    move(40, 0, 70, 400)\n    move(40, 0, -70, 400)\nmove(0, 0, 90, 2800)\n", "ok": false}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Ud\u011blej piruetu", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Je\u010f slalom, jako by tam byly ku\u017eely", "program": "move(60, 0, 0)\n", "ok": false}
+{"request": "Po\u010d\u00edtej od jedn\u00e9 do deseti na obrazovce", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Blikej mod\u0159e jako policajti", "program": "for i in range(3):\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(0, 0, 0)\n    wait(300)\n", "ok": true}
+{"request": "Zahraj Ko\u010dka leze d\u00edrou", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": true}
+{"request": "Pod\u00edvej se doleva a pak doprava", "program": "look(-60)\neyes(\"left\")\n", "ok": false}
+{"request": "Je\u010f dop\u0159edu, dokud nenaraz\u00ed\u0161 na ze\u010f, a tam zastav", "program": "move(60, 0, 0)\n", "ok": false}
+{"request": "Kdy\u017e t\u011b zvednu, za\u010dni p\u00edskat", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Jezdi po stole, ale nespadni mi z n\u011bj", "program": "move(60, 0, 0)\n", "ok": false}
+{"request": "Kdyby se tu oteplilo nad p\u011btadvacet, tak zap\u00edpej", "program": "beep(250)\n", "ok": false}
+{"request": "Couvej, ale dej bacha, a\u0165 do ni\u010deho nenabour\u00e1\u0161 zadkem", "program": "move(-60, 0, 0)\n", "ok": false}
+{"request": "Nastavuj barvu sv\u011btla podle toho, jak to\u010d\u00edm kole\u010dkem", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Kdy\u017e bude hluk, tva\u0159 se na\u0161tvan\u011b", "program": "while 1:\n    if sound() > 60:\n        eyes(\"angry\")\n    wait(50)\n", "ok": true}
+{"request": "Nejd\u0159\u00edv zatrub, potom popoje\u010f a nakonec se zato\u010d dokola", "program": "beep(250)\n", "ok": false}
+{"request": "Oto\u010d se doleva, uje\u010f kousek a uka\u017e srd\u00ed\u010dko", "program": "clear()\ncircle(55, 28, 9)\ncircle(73, 28, 9)\nline(46, 28, 64, 50)\nline(82, 28, 64, 50)\n", "ok": false}
+{"request": "Zamrkej, zam\u00e1vej a \u0159ekni p\u00edpnut\u00edm ahoj", "program": "eyes(\"wink\")\nwait(400)\neyes(\"open\")\n", "ok": false}
+{"request": "\u0160ikula!", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n", "ok": true}
+{"request": "Jsi unaven\u00fd?", "program": "eyes(\"happy\")\nclear()\ntext(43, 28, \"kdepak!\")\n", "ok": true}
+{"request": "M\u00e1m t\u011b r\u00e1da", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n", "ok": true}
+{"request": "Hele, mohl bys pros\u00edm zajet kousek dop\u0159edu a zase se vr\u00e1tit?", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Pros\u00edm t\u011b, uka\u017e mi, jak vypad\u00e1\u0161, kdy\u017e jsi p\u0159ekvapen\u00fd", "program": "eyes(\"surprised\")\n", "ok": true}
+{"request": "D\u011blej, \u017ee se ti to\u010d\u00ed hlava", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Hraj si na sanitku", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "St\u016fj a hl\u00eddej, kdyby se n\u011bkdo p\u0159ibl\u00ed\u017eil, tak zahoukej", "program": "beep(250)\n", "ok": false}
+{"request": "Zdrhej!", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
