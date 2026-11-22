@@ -1,0 +1,103 @@
+{"request": "Je\u010f rovn\u011b", "program": "move(60, 0, 0)\n", "ok": true}
+{"request": "Popoje\u010f kousek dozadu, a\u0165 t\u011b l\u00edp vid\u00edm", "program": "move(-60, 0, 0, 500)\n", "ok": true}
+{"request": "Rozje\u010f se naplno na dv\u011b vte\u0159iny a pak zabrzdi", "program": "move(100, 0, 0, 2000)\nstop()\n", "ok": true}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-30, 0, 0, 3000)\nmove(60, 0, 0, 3000)\n", "ok": false}
+{"request": "Oto\u010d se \u010delem vzad", "program": "move(0, 0, 60, 1400)\n", "ok": true}
+{"request": "Zato\u010d doprava o devades\u00e1t stup\u0148\u016f", "program": "move(0, 0, 60, 700)\n", "ok": true}
+{"request": "Ud\u011blej piruetu", "program": "move(0, 0, 60, 2800)\n", "ok": true}
+{"request": "Obje\u010f \u010dtverec", "program": "for k in range(4):\n    move(60, 0, 0, 1000)\n    move(0, 0, 60, 700)\n", "ok": true}
+{"request": "Zatancuj mi n\u011bco", "program": "for i in range(3):\n    move(0, 0, 80, 300)\n    move(0, 0, -80, 300)\n", "ok": true}
+{"request": "Je\u010f slalom, jako by tam byly ku\u017eely", "program": "for n in range(3):\n    move(60, 0, 40, 600)\n    move(60, 0, -40, 600)\n", "ok": true}
+{"request": "Napi\u0161 na displej Ahoj Ostravo", "program": "clear()\ntext(37, 28, \"Ahoj host\")\n", "ok": false}
+{"request": "Nakresli dome\u010dek", "program": "clear()\nrect(44, 32, 40, 20)\nline(44, 32, 64, 12)\nline(64, 12, 84, 32)\nrect(60, 42, 6, 10)\n", "ok": true}
+{"request": "Po\u010d\u00edtej od jedn\u00e9 do deseti na obrazovce", "program": "for k in range(1, 11):\n    clear()\n    text(60, 28, str(k))\n    wait(300)\n", "ok": true}
+{"request": "Uka\u017e mi na displeji smajl\u00edka", "program": "clear()\ntext(49, 28, \"37861\")\n", "ok": false}
+{"request": "Rozsvi\u0165 se na \u010derveno", "program": "rgb(255, 0, 0)\n", "ok": true}
+{"request": "Blikej mod\u0159e jako policajti", "program": "for i in range(3):\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(255, 0, 0)\n    wait(300)\nrgb(0, 0, 0)\n", "ok": true}
+{"request": "Usm\u011bj se", "program": "eyes(\"happy\")\nclear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\n", "ok": true}
+{"request": "Mrkni na m\u011b", "program": "eyes(\"wink\")\nwait(400)\neyes(\"open\")\n", "ok": true}
+{"request": "Zahraj Ko\u010dka leze d\u00edrou", "program": "eyes(\"wink\")\nclear()\ntext(19, 20, \"proc sel robot\")\ntext(22, 36, \"pres silnici?\")\nwait(2500)\nclear()\ntext(13, 28, \"mel to v programu\")\neyes(\"happy\")\ntone(1200, 80)\ntone(1800, 80)\n", "ok": false}
+{"request": "P\u00edpni t\u0159ikr\u00e1t", "program": "for i in range(3):\n    beep(250)\n    wait(150)\n", "ok": true}
+{"request": "Zak\u00fdvej hlavou, \u017ee jo", "program": "for i in range(2):\n    nod(30)\n    wait(250)\n    nod(-15)\n    wait(250)\nnod(0)\n", "ok": true}
+{"request": "Pod\u00edvej se doleva a pak doprava", "program": "look(-90)\nwait(500)\nlook(90)\nwait(500)\nlook(0)\n", "ok": true}
+{"request": "Zam\u00e1vej mi", "program": "eyes(\"happy\")\nclear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": true}
+{"request": "Zvedni ruku, kdo chce zmrzlinu", "program": "arm(180)\n", "ok": true}
+{"request": "Je\u010f dop\u0159edu, dokud nenaraz\u00ed\u0161 na ze\u010f, a tam zastav", "program": "move(60, 0, 0)\nwhile shaken() == 0:\n    wait(20)\nstop()\n", "ok": true}
+{"request": "A\u017e tlesknu, tak vyraz", "program": "while sound() < 60:\n    wait(20)\nmove(60, 0, 0)\n", "ok": true}
+{"request": "Kdy\u017e t\u011b zvednu, za\u010dni p\u00edskat", "program": "while 1:\n    if tilt() > 30:\n        stop()\n    wait(20)\n", "ok": false}
+{"request": "Sleduj \u010dernou \u010d\u00e1ru", "program": "while 1:\n    l = track()\n    if l == 3:\n        move(40, 0, 0)\n    elif l == 1:\n        move(20, 0, -40)\n    elif l == 2:\n        move(20, 0, 40)\n    else:\n        move(0, 0, 40)\n    wait(20)\n", "ok": true}
+{"request": "Jezdi po stole, ale nespadni mi z n\u011bj", "program": "while 1:\n    move(40, 0, 0)\n    if track() == 3:\n        stop()\n        move(-50, 0, 0)\n        wait(500)\n        move(0, 0, 60)\n        wait(700)\n    wait(20)\n", "ok": true}
+{"request": "A\u017e zm\u00e1\u010dknu tla\u010d\u00edtko, rozsvi\u0165 zelenou", "program": "while not (button()):\n    wait(20)\nrgb(0, 255, 0)\n", "ok": true}
+{"request": "Kdyby se tu oteplilo nad p\u011btadvacet, tak zap\u00edpej", "program": "while 1:\n    if temp() > 25:\n        beep(150)\n    wait(50)\n", "ok": true}
+{"request": "Couvej, ale dej bacha, a\u0165 do ni\u010deho nenabour\u00e1\u0161 zadkem", "program": "move(-40, 0, 0)\nwhile behind() > 15:\n    wait(20)\nstop()\n", "ok": true}
+{"request": "Nastavuj barvu sv\u011btla podle toho, jak to\u010d\u00edm kole\u010dkem", "program": "eyes(\"sad\")\nclear()\ntext(13, 28, \"na to nemam cidlo\")\n", "ok": false}
+{"request": "Kdy\u017e bude hluk, tva\u0159 se na\u0161tvan\u011b", "program": "while 1:\n    if sound() > 60:\n        eyes(\"angry\")\n        tone(200, 400)\n    wait(50)\n", "ok": true}
+{"request": "Nejd\u0159\u00edv zatrub, potom popoje\u010f a nakonec se zato\u010d dokola", "program": "beep(250)\nmove(60, 0, 0)\n", "ok": false}
+{"request": "Oto\u010d se doleva, uje\u010f kousek a uka\u017e srd\u00ed\u010dko", "program": "move(0, 0, -60, 700)\nclear()\ncircle(55, 28, 9)\ncircle(73, 28, 9)\nline(46, 28, 64, 50)\nline(82, 28, 64, 50)\n", "ok": false}
+{"request": "Zamrkej, zam\u00e1vej a \u0159ekni p\u00edpnut\u00edm ahoj", "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": false}
+{"request": "\u0160ikula!", "program": "eyes(\"surprised\")\ntone(1500, 100)\nnod(20)\nwait(400)\nnod(0)\n", "ok": false}
+{"request": "Ty jsi ale zlobiv\u00fd robot", "program": "stop()\neyes(\"sad\")\nnod(-30)\ntone(784, 250)\ntone(659, 250)\ntone(523, 250)\ntone(392, 500)\nnod(0)\n", "ok": true}
+{"request": "Jsi unaven\u00fd?", "program": "eyes(\"happy\")\nclear()\ntext(22, 20, \"roboticke auto\")\ntext(7, 36, \"male, ale opravdove\")\n", "ok": false}
+{"request": "M\u00e1m t\u011b r\u00e1da", "program": "eyes(\"happy\")\nclear()\ntext(43, 28, \"kdepak!\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n", "ok": false}
+{"request": "Dobr\u00e9 r\u00e1no, vst\u00e1vat!", "program": "eyes(\"open\")\nclear()\ntext(31, 28, \"dobre rano!\")\ntone(784, 150)\ntone(1047, 300)\n", "ok": true}
+{"request": "Kolik je tu stup\u0148\u016f?", "program": "while 1:\n    clear()\n    text(40, 28, str(temp()) + \" C\")\n    wait(200)\n", "ok": true}
+{"request": "Jak daleko je ze\u010f p\u0159ed tebou?", "program": "while 1:\n    clear()\n    text(40, 28, str(distance()) + \" cm\")\n    wait(200)\n", "ok": true}
+{"request": "Je za tebou n\u011bco?", "program": "while 1:\n    clear()\n    if behind() < 30:\n        text(28, 28, \"ano, za mnou\")\n    else:\n        text(43, 28, \"ne, nic\")\n    wait(200)\n", "ok": true}
+{"request": "Nen\u00ed tady moc sucho?", "program": "while 1:\n    clear()\n    if sound() < 40:\n        text(34, 28, \"ano, ticho\")\n    else:\n        text(40, 28, \"ne, hluk\")\n    wait(200)\n", "ok": false}
+{"request": "Stoj\u00ed\u0161 rovn\u011b, nebo jsi naklon\u011bn\u00fd?", "program": "while 1:\n    clear()\n    if tilt() < 10:\n        text(34, 28, \"ano, rovne\")\n    else:\n        text(31, 28, \"ne, nakrivo\")\n    wait(200)\n", "ok": true}
+{"request": "Jak moc je tady hlu\u010dno?", "program": "while 1:\n    clear()\n    text(52, 28, str(sound()))\n    wait(100)\n", "ok": true}
+{"request": "Vyfo\u0165 m\u011b", "program": "eyes(\"sad\")\nclear()\ntext(28, 28, \"nemam kameru\")\n", "ok": true}
+{"request": "Kolik je hodin?", "program": "eyes(\"sad\")\nclear()\ntext(28, 28, \"nemam hodiny\")\n", "ok": true}
+{"request": "Dones mi pivo z lednice", "program": "eyes(\"sad\")\nclear()\ntext(34, 28, \"nemam ruce\")\n", "ok": true}
+{"request": "Jak\u00e9 bude z\u00edtra po\u010das\u00ed?", "program": "eyes(\"sad\")\nclear()\ntext(22, 28, \"nemam internet\")\n", "ok": true}
+{"request": "\u0158ekni nahlas, jak se jmenuje\u0161", "program": "eyes(\"sad\")\nclear()\ntext(25, 28, \"neumim mluvit\")\n", "ok": true}
+{"request": "Hele, mohl bys pros\u00edm zajet kousek dop\u0159edu a zase se vr\u00e1tit?", "program": "move(60, 0, 0, 500)\nmove(60, 0, 0)\n", "ok": false}
+{"request": "Pros\u00edm t\u011b, uka\u017e mi, jak vypad\u00e1\u0161, kdy\u017e jsi p\u0159ekvapen\u00fd", "program": "while 1:\n    if tilt() > 30:\n        eyes(\"surprised\")\n        tone(1500, 100)\n        nod(20)\n        wait(400)\n        nod(0)\n    wait(50)\n", "ok": false}
+{"request": "D\u011blej, \u017ee se ti to\u010d\u00ed hlava", "program": "eyes(\"dizzy\")\nlook(-40)\nwait(200)\nlook(40)\nwait(200)\nlook(0)\n", "ok": true}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "eyes(\"sad\")\nclear()\ntext(28, 28, \"nemam hodiny\")\n", "ok": false}
+{"request": "Hraj si na sanitku", "program": "for i in range(3):\n    tone(700, 300)\n    tone(1000, 300)\n", "ok": true}
+{"request": "St\u016fj a hl\u00eddej, kdyby se n\u011bkdo p\u0159ibl\u00ed\u017eil, tak zahoukej", "program": "while not (distance() < 20):\n    wait(20)\nfor i in range(3):\n    tone(700, 300)\n    tone(1000, 300)\n", "ok": true}
+{"request": "Zdrhej!", "program": "eyes(\"happy\")\nclear()\ntext(49, 28, \"ahoj!\")\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": false}
+{"request": "Rozje\u010f se naplno na dv\u011b vte\u0159iny a pak zabrzdi", "program": "move(100, 0, 0, 2000)\neyes(\"angry\")\ntone(200, 400)\n", "ok": false}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-60, 0, 0, 800)\nmove(0, 0, 60, 8400)\n", "ok": false}
+{"request": "Napi\u0161 na displej Ahoj Ostravo", "program": "clear()\ntext(31, 28, \"Ahoj Ostravo\")\n", "ok": true}
+{"request": "Uka\u017e mi na displeji smajl\u00edka", "program": "clear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\n", "ok": true}
+{"request": "Blikej mod\u0159e jako policajti", "program": "while 1:\n    rgb(255, 0, 0)\n    tone(900, 300)\n    rgb(0, 0, 255)\n    tone(600, 300)\n", "ok": true}
+{"request": "Zahraj Ko\u010dka leze d\u00edrou", "program": "eyes(\"sad\")\nclear()\ntext(22, 28, \"nemam internet\")\n", "ok": false}
+{"request": "Pod\u00edvej se doleva a pak doprava", "program": "look(-60)\neyes(\"left\")\nlook(-90)\nwait(500)\nlook(90)\nwait(500)\nlook(0)\n", "ok": true}
+{"request": "Zam\u00e1vej mi", "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": true}
+{"request": "Kdy\u017e t\u011b zvednu, za\u010dni p\u00edskat", "program": "while 1:\n    if tilt() > 30:\n        beep(150)\n    wait(50)\n", "ok": true}
+{"request": "Nastavuj barvu sv\u011btla podle toho, jak to\u010d\u00edm kole\u010dkem", "program": "while 1:\n    k = knob() * 255 // 100\n    rgb(k, 0, 255 - k)\n    wait(50)\n", "ok": true}
+{"request": "Nejd\u0159\u00edv zatrub, potom popoje\u010f a nakonec se zato\u010d dokola", "program": "beep(250)\nmove(0, 0, 60, 2800)\nmove(0, 0, 60, 2800)\n", "ok": false}
+{"request": "Oto\u010d se doleva, uje\u010f kousek a uka\u017e srd\u00ed\u010dko", "program": "move(0, 0, -60, 700)\nmove(60, 0, 0, 500)\nclear()\ncircle(55, 28, 9)\ncircle(73, 28, 9)\nline(46, 28, 64, 50)\nline(82, 28, 64, 50)\n", "ok": true}
+{"request": "Zamrkej, zam\u00e1vej a \u0159ekni p\u00edpnut\u00edm ahoj", "program": "for i in range(2):\n    eyes(\"closed\")\n    wait(150)\n    eyes(\"open\")\n    wait(300)\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": false}
+{"request": "\u0160ikula!", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\nfor i in range(2):\n    move(0, 0, 80, 250)\n    move(0, 0, -80, 250)\n", "ok": true}
+{"request": "Jsi unaven\u00fd?", "program": "eyes(\"happy\")\nclear()\ntext(43, 28, \"kdepak!\")\ntone(1200, 80)\ntone(1800, 80)\ntone(900, 120)\n", "ok": true}
+{"request": "M\u00e1m t\u011b r\u00e1da", "program": "eyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\nfor i in range(2):\n    move(0, 0, 80, 250)\n    move(0, 0, -80, 250)\n", "ok": true}
+{"request": "Nen\u00ed tady moc sucho?", "program": "while 1:\n    clear()\n    text(40, 28, str(humidity()) + \" %\")\n    wait(200)\n", "ok": true}
+{"request": "Vyfo\u0165 m\u011b", "program": "eyes(\"sad\")\nclear()\ntext(43, 28, \"promin!\")\n", "ok": false}
+{"request": "Dones mi pivo z lednice", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": true}
+{"request": "Jak\u00e9 bude z\u00edtra po\u010das\u00ed?", "program": "while 1:\n    clear()\n    if temp() < 18:\n        text(28, 28, \"ano, je zima\")\n    else:\n        text(19, 28, \"ne, je to dobry\")\n    wait(200)\n", "ok": false}
+{"request": "Hele, mohl bys pros\u00edm zajet kousek dop\u0159edu a zase se vr\u00e1tit?", "program": "move(60, 0, 0, 500)\neyes(\"happy\")\nclear()\ncircle(64, 32, 24)\nfill(53, 23, 4, 4)\nfill(71, 23, 4, 4)\nline(52, 44, 56, 48)\nline(56, 48, 72, 48)\nline(72, 48, 76, 44)\n", "ok": false}
+{"request": "Pros\u00edm t\u011b, uka\u017e mi, jak vypad\u00e1\u0161, kdy\u017e jsi p\u0159ekvapen\u00fd", "program": "eyes(\"surprised\")\ntone(1500, 100)\nnod(20)\nwait(400)\nnod(0)\n", "ok": true}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\nfor i in range(2):\n    beep(250)\n    wait(150)\n", "ok": false}
+{"request": "Zdrhej!", "program": "move(100, 0, 0)\n", "ok": true}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-30, 0, 0, 3000)\n", "ok": true}
+{"request": "Napi\u0161 na displej Ahoj Ostravo", "program": "clear()\ntext(25, 28, \"Ahoj Ostravo\")\n", "ok": true}
+{"request": "Po\u010d\u00edtej od jedn\u00e9 do deseti na obrazovce", "program": "for x in range(1, 11):\n    clear()\n    text(60, 28, str(x))\n    wait(300)\nclear()\ntext(46, 28, \"slunce\")\n", "ok": false}
+{"request": "Blikej mod\u0159e jako policajti", "program": "while 1:\n    rgb(0, 0, 255)\n    tone(600, 300)\n", "ok": false}
+{"request": "Zahraj Ko\u010dka leze d\u00edrou", "program": "tone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n", "ok": true}
+{"request": "Zvedni ruku, kdo chce zmrzlinu", "program": "eyes(\"dizzy\")\nclear()\ntext(28, 20, \"moc tezke na\")\ntext(34, 36, \"maly mozek\")\n", "ok": false}
+{"request": "Kdy\u017e bude hluk, tva\u0159 se na\u0161tvan\u011b", "program": "while 1:\n    if sound() > 70:\n        eyes(\"surprised\")\n        move(-60, 0, 0, 500)\n        eyes(\"open\")\n    wait(20)\n", "ok": false}
+{"request": "Zamrkej, zam\u00e1vej a \u0159ekni p\u00edpnut\u00edm ahoj", "program": "for i in range(2):\n    eyes(\"closed\")\n    wait(150)\n    eyes(\"open\")\n    wait(300)\nbeep(250)\n", "ok": false}
+{"request": "Hele, mohl bys pros\u00edm zajet kousek dop\u0159edu a zase se vr\u00e1tit?", "program": "move(60, 0, 0, 500)\nmove(60, 0, 0, 500)\n", "ok": false}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "while 1:\n    if distance() < 20:\n        for i in range(2):\n            arm(150)\n            wait(300)\n            arm(90)\n            wait(300)\n        arm(0)\n    wait(50)\n", "ok": false}
+{"request": "St\u016fj a hl\u00eddej, kdyby se n\u011bkdo p\u0159ibl\u00ed\u017eil, tak zahoukej", "program": "while 1:\n    if distance() < 30:\n        beep(150)\n    wait(50)\n", "ok": true}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-60, 0, 0, 1000)\nmove(-60, 0, 0, 3000)\n", "ok": false}
+{"request": "Napi\u0161 na displej Ahoj Ostravo", "program": "clear()\ntext(28, 28, \"Ahoj Ostravo\")\n", "ok": true}
+{"request": "Zvedni ruku, kdo chce zmrzlinu", "program": "arm(180)\neyes(\"angry\")\ntone(200, 400)\n", "ok": false}
+{"request": "Kdy\u017e bude hluk, tva\u0159 se na\u0161tvan\u011b", "program": "while 1:\n    if sound() > 70:\n        eyes(\"surprised\")\n        move(-60, 0, 0, 500)\n        eyes(\"angry\")\n        tone(200, 400)\n    wait(50)\n", "ok": false}
+{"request": "Stoj\u00ed\u0161 rovn\u011b, nebo jsi naklon\u011bn\u00fd?", "program": "while 1:\n    clear()\n    text(40, 28, str(tilt()) + \" st\")\n    wait(200)\n", "ok": true}
+{"request": "Dones mi pivo z lednice", "program": "eyes(\"sad\")\nclear()\ntext(28, 28, \"nemam hodiny\")\n", "ok": false}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Hraj si na sanitku", "program": "while 1:\n    if temp() < 20:\n        for i in range(3):\n            tone(700, 300)\n            tone(1000, 300)\n    wait(50)\n", "ok": false}

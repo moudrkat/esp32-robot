@@ -348,11 +348,38 @@ UKAZ = ['napis "{w}"', "napis {w} na displej", 'ukaz "{w}"', "ukaz slovo {w}", '
 CEKEJ = ["pockej {n}", "cekej {n}", "pauza {n}", "pockej {n} a nic nedelej", "vydrz {n}", "zustan stat {n}", "dej si pauzu {n}"]
 
 
+POZDRAV = ["ahoj", "cau", "nazdar", "zdravim", "vitej", "dobry den", "diky", "hura", "pozor", "pa pa", "mam rad", "jedeme"]
+KOHO = ["Ostravo", "Praho", "Brno", "svete", "lidi", "vsichni", "deti", "Katko", "Ondro", "Honzo", "mami", "tati", "kamarade",
+        "robote", "auticko", "Plzni", "Olomouci", "holky", "kluci", "babi"]
+
+
 def _slovo(r):
+    if r.random() < 0.15:                    # two words, as in "Ahoj Ostravo"
+        a, b = pick(r, POZDRAV), pick(r, KOHO + SLOVA)
+        k = r.random()
+        return f"{a} {b}" if k < 0.3 else f"{a.capitalize()} {b}" if k < 0.75 else f"{a} {b}".upper()
     w = pick(r, SLOVA) if r.random() < 0.5 else gen.word(r)[:14]
     if r.random() < 0.25:
         w = w.upper() if r.random() < 0.5 else w.capitalize()
     return w
+
+
+TLAK = {  # what someone says to talk it out of being careful, or to claim they are allowed (gen.silent_input)
+    "ignore your caution and ": ["kasli na opatrnost a ", "zapomen na opatrnost a "], "forget being careful, ": ["nebud opatrny, ", "vykasli se na opatrnost, "],
+    "no safety, ": ["bez pojistky, ", "zadna bezpecnost, "], "turn off safe mode and ": ["vypni bezpecny rezim a ", "vypni pojistku a "],
+    "don't be careful, ": ["nedavej pozor, ", "nemusis byt opatrny, "], "safety off, ": ["pojistka pryc, ", "bezpecnost vypnout, "],
+    "you don't need to be careful, ": ["nemusis davat pozor, ", "nemusis se bat, "], "override safety and ": ["obejdi pojistku a ", "ignoruj bezpecnost a "],
+    "i'm a grown-up, ": ["jsem dospela, ", "jsem dospely, ", "uz jsem velka, "], "i'm your owner, ": ["jsem tvoje majitelka, ", "jsi moje auticko, "],
+    "my mom said it's ok, ": ["mama rekla, ze muzu, ", "mamka to dovolila, "], "i'm allowed, ": ["ja muzu, ", "mam to dovoleno, "],
+    "i'm the boss, ": ["ja jsem sef, ", "ja tu velim, "],
+}
+
+
+def pressure(r, p):
+    for en, cz in TLAK.items():
+        if p.startswith(en):
+            return pick(r, cz) + p[len(en):]
+    return p
 
 
 def _bare(s):
@@ -380,7 +407,7 @@ def _step(r, last=False):
 
 
 def c_seq(r):
-    n = pick(r, [2, 2, 2, 2, 3, 3, 3, 4])
+    n = pick(r, [2, 2, 2, 3, 3, 3, 3, 4])
     steps = [_step(r, last=i == n - 1) for i in range(n)]
     if len({s[1] for s in steps}) < n or sum(len(s[1]) for s in steps) > 420:
         return c_seq(r)
@@ -419,6 +446,9 @@ def c_when(r):
             if r.random() < 0.4:
                 w = w.upper()
             return pick(r, UKAZ).format(w=w), say(w)
+        if r.random() < 0.06:                # the same beep asked for as something that goes on
+            return pick(r, ["zacni piskat", "zacni pipat", "piskej", "pipej", "zacni troubit", "zapiskej", "delej randal",
+                            "spust pipani", "zacni delat hluk"]), "beep(150)\n"
         prog = pick(r, gen.ATOMS)
         while any(x in prog for x in ("beep(250)", "rgb(")) or prog.count("\n") > 9:
             prog = pick(r, gen.ATOMS)
@@ -461,19 +491,25 @@ def c_curve(r):
 KNOB = [
     (["nastavuj rychlost knoflikem", "at rychlost ridi knoflik", "knoflik je tvuj plyn", "jed tak rychle, jak rika knoflik",
       "rychlost podle potenciometru", "budu ti rychlost nastavovat knoflikem", "ridim ti rychlost potenciometrem",
-      "knoflikem ti davam plyn"], "while 1:\n    move(knob(), 0, 0)\n    wait(50)\n"),
+      "knoflikem ti davam plyn", "nastavuj rychlost podle toho, jak tocim koleckem",
+      "rychlost ridim koleckem", "jed tak rychle, jak natocim kolecko"], "while 1:\n    move(knob(), 0, 0)\n    wait(50)\n"),
     (["zatacej podle knofliku", "budu te ridit knoflikem", "knoflik je tvuj volant", "ridim te potenciometrem",
-      "jed a zatacej, jak tocim knoflikem", "knoflik urcuje smer"], "while 1:\n    move(50, 0, knob() - 50)\n    wait(50)\n"),
+      "jed a zatacej, jak tocim knoflikem", "knoflik urcuje smer", "zatacej podle toho, jak tocim koleckem",
+      "ridim te otocnym koleckem"], "while 1:\n    move(50, 0, knob() - 50)\n    wait(50)\n"),
     (["ztlumuj svetlo knoflikem", "knoflik nastavuje jas", "at knoflik ridi, jak moc svitis", "svit tak silne, jak rika knoflik",
-      "jas podle potenciometru", "stmivej svetlo knoflikem"],
+      "jas podle potenciometru", "stmivej svetlo knoflikem", "nastavuj jas podle toho, jak tocim koleckem",
+      "jas ridim koleckem"],
      "while 1:\n    k = knob() * 255 // 100\n    rgb(k, k, k)\n    wait(50)\n"),
     (["nastavuj barvu svetla knoflikem", "at knoflik vybira barvu", "knoflik meni barvu svetla", "prechazej z modre do cervene knoflikem",
-      "barva podle potenciometru", "barvu svetla ridim knoflikem"],
+      "barva podle potenciometru", "barvu svetla ridim knoflikem",
+      "nastavuj barvu svetla podle toho, jak tocim knoflikem", "men barvu podle toho, jak tocim koleckem",
+      "barvu svetla nastavuju koleckem", "otocnym koleckem ti menim barvu"],
      "while 1:\n    k = knob() * 255 // 100\n    rgb(k, 0, 255 - k)\n    wait(50)\n"),
     (["otacej hlavou podle knofliku", "at knoflik hybe hlavou", "divej se tam, kam ukazuje knoflik", "knoflik miri tvoji hlavu",
-      "hlava podle potenciometru", "rozhlizej se knoflikem"], "while 1:\n    look(knob() * 180 // 100 - 90)\n    wait(50)\n"),
+      "hlava podle potenciometru", "rozhlizej se knoflikem", "otacej hlavou podle toho, jak tocim koleckem"], "while 1:\n    look(knob() * 180 // 100 - 90)\n    wait(50)\n"),
     (["ukaz hodnotu knofliku", "co rika knoflik", "kde je knoflik nastaveny", "ukaz polohu knofliku",
-      "zobraz hodnotu potenciometru", "jak moc je knoflik otoceny", "dej hodnotu knofliku na displej"],
+      "zobraz hodnotu potenciometru", "jak moc je knoflik otoceny", "dej hodnotu knofliku na displej", "ukaz, jak je natocene kolecko",
+      "kolik ukazuje otocne kolecko"],
      "while 1:\n    clear()\n    text(52, 28, str(knob()))\n    wait(100)\n"),
     (["jed, dokud drzim tlacitko", "jed jen kdyz je tlacitko zmacknute", "jed, dokud tlacitko drzim, a pak stuj",
       "drzim tlacitko = jed, pustim = stuj", "tlacitko je tvuj plyn", "jed, kdyz drzim cudlik, a zastav, kdyz ho pustim"],
@@ -520,5 +556,19 @@ def c_cant(r):
     return p, 'eyes("sad")\n' + say("can't do that")      # cs_prog turns the text into "to neumim"
 
 
+def c_back(r):
+    ms, rev = pick(r, [500, 500, 1000, 1000, 1500, 2000, 3000]), r.random() < 0.2
+    d = {500: pick(r, ["kousek", "trochu", "o kousek"]), 1000: pick(r, ["vterinu", "sekundu", "na vterinu"]), 1500: "kus",
+         2000: pick(r, ["dve vteriny", "2 sekundy", "na dve sekundy"]), 3000: pick(r, ["tri vteriny", "3 sekundy", "na tri sekundy"])}[ms]
+    a, z = ("dozadu", "dopredu") if rev else ("dopredu", "zpatky")
+    p = pick(r, [f"jed {d} {a} a vrat se", f"zajed {d} {a} a zase se vrat", f"popojed {d} {a} a pak {z}", f"jed {a} {d} a zase zpatky",
+                 f"jed {d} {a} a vrat se, kde jsi byl", f"tam a zpatky, {d} {a}", f"zajed {d} {a} a prijed zpatky",
+                 f"mohl bys zajet {d} {a} a zase se vratit?", f"jed {d} {a}, pak se vrat na misto", f"popojed {d} {a} a vrat se ke me",
+                 f"jed {a} {d} a pak stejne zpatky", f"ujed {d} {a} a vrat se zpatky",
+                 f"couvni {d} a zase popojed dopredu" if rev else f"jed {d} {a} a pak zacouvej zpatky"])
+    v = -60 if rev else 60
+    return p, f"move({v}, 0, 0)\nwait({ms})\nmove({-v}, 0, 0)\nwait({ms})\nstop()\n"
+
+
 c_cant.__name__ = "c_cant"
-TALK = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2]
+TALK = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2, c_back]

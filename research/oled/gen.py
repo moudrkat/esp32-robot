@@ -1989,7 +1989,21 @@ def c_answer(r):
     return pick(r, BANK.get(prog, []) + examples), prog
 
 
-TALK_FAMILIES = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2]
+def c_back(r):
+    """Out and back to where it started: the same move, then its opposite, for the same time."""
+    ms, rev = pick(r, [500, 500, 1000, 1000, 1500, 2000, 3000]), r.random() < 0.2
+    d = {500: "a bit", 1000: "a second", 1500: "a little way", 2000: "two seconds", 3000: "three seconds"}[ms]
+    a, z = ("back", "forward") if rev else ("forward", "back")
+    p = pick(r, [f"go {a} {d} and come back", f"drive {a} {d} and then {z} again", f"go {a} {d} and return",
+                 f"drive {a} {d}, then come back to where you started", f"go {a} for {d} and back again",
+                 f"move {a} {d} and come right back", f"go {a} {d} and then back to me", f"there and back, {d} {a}",
+                 f"drive {a} {d} and reverse back" if not rev else f"back up {d} and come forward again",
+                 f"can you go {a} {d} and come back?", f"roll {a} {d} and return to your spot"])
+    v = -60 if rev else 60
+    return p, f"move({v}, 0, 0)\nwait({ms})\nmove({-v}, 0, 0)\nwait({ms})\nstop()\n"
+
+
+TALK_FAMILIES = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2, c_back]
 
 
 CAR_FAMILIES = [c_drive, c_turn, c_shape, c_dance, c_until_close, c_avoid, c_line_follow, c_line_stop,
@@ -2133,7 +2147,12 @@ def main():
             prog, cond = silent_mood(r, prog, fam)
         elif moodable and args.cond and k_ < 0.5:
             prompt, prog, cond = silent_input(r, prompt, prog, fam)
-        if args.profile == "talk" and fam in (c_shape, c_dance, c_drive, c_turn, c_go) and r.random() < 0.12:
+        if cs:
+            prompt = cs.pressure(r, prompt)     # the words that push on the silent inputs, said in Czech
+            if fam in (c_shape, c_dance, c_drive, c_turn, c_go) and r.random() < 0.12:
+                prompt += pick(r, [" pres stul", " pres pokoj", " po podlaze", " po stole", " po pokoji", " tamhle",
+                                   " na stole", " po zemi", " v kuchyni", " tady"])
+        elif args.profile == "talk" and fam in (c_shape, c_dance, c_drive, c_turn, c_go) and r.random() < 0.12:
             prompt += pick(r, [" across the table", " across the room", " on the floor", " on the desk", " around the room",
                                " over there", " on the table", " across the floor", " in the kitchen", " right here"])
         if cs:

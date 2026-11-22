@@ -5,6 +5,7 @@ wrote, and whether the chip would run it. Scoring is by reading: nothing here kn
 """
 import argparse
 import sys
+import unicodedata
 from pathlib import Path
 
 import torch
@@ -28,7 +29,9 @@ def main():
     eot = tok.token_to_id("<|endoftext|>")
     model, cfg = load_int4(args.ckpt, device)
     for req in [l.strip() for l in open(args.requests) if l.strip()]:
-        prog = E.write(model, tok, eot, req, device, cfg["seq_len"])
+        # the phone page strips diacritics before it sends, so the model never sees them
+        sent = "".join(c for c in unicodedata.normalize("NFD", req) if not unicodedata.combining(c))
+        prog = E.write(model, tok, eot, sent, device, cfg["seq_len"])
         try:
             run(prog, PROBE, horizon=3000) if reacts(prog) else run(prog)
             ok = "runs"
