@@ -35,8 +35,10 @@ def load(ckpt, device):
 
 
 @torch.no_grad()
-def write(model, tok, eot, prompt, device, seq_len, max_new=240, cond=None):
-    """cond: a list of channel strengths (the model's non-word inputs), held for the whole document."""
+def write(model, tok, eot, prompt, device, seq_len, max_new=240, cond=None, minp=None):
+    """cond: a list of channel strengths (the model's non-word inputs), held for the whole document.
+    minp: draw the next token among those at least minp times as likely as the best one. Where the model is sure
+    (an exact order) that is the best one alone; where several are about as good (a made-up dance) it picks any."""
     ids = tok.encode(f"# {prompt}\n").ids
     x = torch.tensor([ids], device=device)
     out = []
@@ -48,6 +50,10 @@ def write(model, tok, eot, prompt, device, seq_len, max_new=240, cond=None):
             c = torch.tensor(cond, dtype=torch.float32, device=device).expand(1, min(x.shape[1], seq_len), -1)
         logits, _ = model(x[:, -seq_len:], cond=c)
         nxt = int(logits[0, -1].argmax())
+        if minp:
+            pr = torch.softmax(logits[0, -1].float(), -1)
+            pr = torch.where(pr >= minp * pr.max(), pr, torch.zeros_like(pr))
+            nxt = int(torch.multinomial(pr, 1))
         if nxt == eot:
             break
         out.append(nxt)

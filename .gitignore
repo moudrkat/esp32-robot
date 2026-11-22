@@ -10,3 +10,4 @@ firmware/robot/generated/attn.h
 firmware/robot/generated/kick.h
 firmware/robot/generated/coast.h
 firmware/robot/generated/lang.h
+firmware/robot/generated/invent.h

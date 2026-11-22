@@ -27,6 +27,9 @@
 #define LLM_PROFILE_NOW() esp_timer_get_time()
 // The robot car (tools/gen_headers.py writes generated/car.h for it): CAR_ROBOT, and LLM_STEER with the pot on PIN_GAMMA,
 // so the potentiometer on the car turns the steering dose while the model writes. Must come before llm.h.
+#if __has_include("generated/invent.h")     // flash.sh writes it for INVENT=40: see CAR_INVENT in run_story
+#include "generated/invent.h"
+#endif
 #if __has_include("generated/car.h")
 #include "generated/car.h"
 #endif
@@ -567,6 +570,22 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
       }
       best = pick;
     }
+#if defined(CAR_INVENT)
+    else {
+      // Draw among the tokens at least CAR_INVENT percent as likely as the best one. An exact order leaves the
+      // best one alone above that line, so it is written as before; where several are about as good (a dance it
+      // is asked to make up) any of them may come, and the same request gives a different program each time.
+      float cut = bv + logf(CAR_INVENT / 100.0f), sum = 0.f;
+      for (int v = 0; v < model.out_vocab; v++)
+        if (s.logits[v] >= cut) sum += expf(s.logits[v] - bv);
+      float r = (esp_random() / 4294967296.0f) * sum, acc = 0.f;
+      for (int v = 0; v < model.out_vocab; v++)
+        if (s.logits[v] >= cut) {
+          acc += expf(s.logits[v] - bv);
+          if (acc >= r) { best = v; break; }
+        }
+    }
+#endif
     tok = best;
     if (tok == eot_id) break;       // the document ended; do not start another
     emit(tok);

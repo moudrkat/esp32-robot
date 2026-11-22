@@ -10,6 +10,8 @@
 #   KICK=150 ./flash.sh                        weak batteries: full power for 150 ms whenever a side starts from rest;
 #                                              remembered for the next flash, KICK=0 forgets it
 #   COAST=3000 ./flash.sh                      a drive nobody stopped ends after 3 s instead of 10 (remembered; COAST=0 forgets)
+#   INVENT=40 ./flash.sh                       where it is unsure it draws (a made-up dance differs each time); exact
+#                                              orders stay exact. Remembered; INVENT=0 forgets, and it always takes the best
 #   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
@@ -74,6 +76,14 @@ case "${COAST:-}" in
   *[!0-9]*) echo "COAST is milliseconds, like 3000"; exit 1 ;;
   *) printf '#define CAR_COAST_MS %s\n' "$COAST" > "$COASTH" ;;
 esac
+INVENTH=firmware/robot/generated/invent.h
+case "${INVENT:-}" in
+  "") ;;
+  0) rm -f "$INVENTH" ;;
+  *[!0-9]*) echo "INVENT is a percentage, like 40"; exit 1 ;;
+  *) printf '#define CAR_INVENT %s\n' "$INVENT" > "$INVENTH" ;;
+esac
+[ -f "$INVENTH" ] && echo "Makes things up: draws among tokens at least $(cut -d' ' -f3 "$INVENTH") % as likely as the best"
 [ -f "$COASTH" ] && echo "Leash: a drive left running stops after $(cut -d' ' -f3 "$COASTH") ms"
 [ -f "$KICKH" ] && echo "Start kick: $(cut -d' ' -f3 "$KICKH") ms of full power"
 [ -f "$WHEELS" ] && echo "Wheels flipped: $(tr '\n' ' ' < "$WHEELS")"
