@@ -746,23 +746,50 @@ static char last_program[OL_MAX_SRC];
 #define CAR_PAGE_LANG "let L='en-US';"
 #endif
 static const char WEB_PAGE[] PROGMEM = R"HTML(<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>robot</title><style>body{font:16px system-ui;margin:16px;max-width:520px}input,button,select{font:inherit;padding:8px;margin:4px 0}
-#t{width:100%;box-sizing:border-box}pre{background:#f2f2f4;padding:8px;white-space:pre-wrap}button{margin-right:6px}</style>
-<h2>robot</h2><input id=t placeholder="yo buddy, let's go" autofocus><button onclick="say(t.value)">send</button>
-<button onclick="say('stop')">stop</button>
-<label style="display:block;margin:8px 0"><input id=a type=checkbox> talk: send when I stop (use the keyboard's microphone)</label>
-<label style="display:block;margin:8px 0"><input id=k type=checkbox checked> speak: read its answers aloud</label><p>
-<select id=m></select> <input id=s type=range min=0 max=100 value=0 oninput="v.textContent=s.value/100"> <span id=v>0</span>
-<button onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button onclick="fetch('/input?name=off')">all off</button>
-<button onclick="fetch('/input?name=attn')">eyes / attention</button></p>
-<p>what it wrote:</p><pre id=p></pre><p id=i></p>
-<script>)HTML" CAR_PAGE_LANG R"HTML(t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
+<title>robot</title><style>
+body{font:17px "Comic Sans MS","Chalkboard SE","Comic Neue",cursive,system-ui;margin:0;background:#ffd84a;
+background-image:radial-gradient(#0002 1.5px,transparent 1.6px);background-size:12px 12px;color:#111}
+#w{max-width:520px;margin:0 auto;padding:12px 14px 150px}h2{margin:4px 0 10px;font-size:26px;letter-spacing:1px;text-shadow:2px 2px #fff}
+.b{position:relative;max-width:82%;margin:14px 0;padding:10px 14px;border:3px solid #111;border-radius:22px;box-shadow:4px 4px 0 #111;
+background:#fff;clear:both;word-wrap:break-word}
+.b:after{content:"";position:absolute;bottom:-16px;border:8px solid transparent;border-top-color:#111}
+.me{float:right;background:#7ee0ff;border-bottom-right-radius:4px}.me:after{right:14px;border-right-color:#111}
+.ro{float:left;border-bottom-left-radius:4px}.ro:after{left:14px;border-left-color:#111}
+.ro b{display:block;font-size:22px}.ro pre{font:12px ui-monospace,monospace;margin:6px 0 0;white-space:pre-wrap;color:#555;max-height:9em;overflow:auto}
+.who{font-size:12px;opacity:.6;display:block}
+#bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid #111;padding:8px 12px}
+#bar>div{max-width:520px;margin:0 auto}input,button,select{font:inherit;padding:8px;margin:3px 0}
+#t{width:100%;box-sizing:border-box;border:3px solid #111;border-radius:14px}
+button{border:3px solid #111;border-radius:12px;background:#ff5d5d;color:#fff;box-shadow:2px 2px 0 #111;margin-right:6px}
+button.q{background:#fff;color:#111}label{font-size:13px;margin-right:10px}details{font-size:13px}
+</style><div id=w><h2>ROBOT!</h2><div id=c></div></div>
+<div id=bar><div><input id=t autofocus>
+<button id=bs onclick="say(t.value)"></button><button class=q onclick="say('stop')">stop</button>
+<label><input id=a type=checkbox> <span id=la></span></label><label><input id=k type=checkbox checked> <span id=lk></span></label>
+<details><summary id=lm></summary><select id=m></select> <input id=s type=range min=0 max=100 value=0 oninput="v.textContent=s.value/100"> <span id=v>0</span>
+<button class=q onclick="fetch('/input?name='+m.value+'&s='+s.value/100)">set</button><button class=q onclick="fetch('/input?name=off')">off</button>
+<button class=q onclick="fetch('/input?name=attn')" id=le></button><p id=i></p></details></div></div>
+<script>)HTML" CAR_PAGE_LANG R"HTML(
+let cz=L=='cs-CZ',T=cz?{s:'poslat',a:'diktuju: posli, az domluvim',k:'cti odpovedi nahlas',m:'nalady a oci',e:'oci / pozornost',p:'napis nebo nadiktuj...',me:'ja',ro:'robot',w:'premyslim...'}
+:{s:'send',a:'talk: send when I stop',k:'speak answers aloud',m:'moods and eyes',e:'eyes / attention',p:"yo buddy, let's go",me:'me',ro:'robot',w:'thinking...'};
+bs.textContent=T.s;la.textContent=T.a;lk.textContent=T.k;lm.textContent=T.m;le.textContent=T.e;t.placeholder=T.p;
+t.onkeydown=e=>{if(e.key=='Enter')say(t.value)};
 let h;t.oninput=()=>{clearTimeout(h);if(a.checked&&t.value.trim())h=setTimeout(()=>say(t.value),1500)};
-function say(x){x=x.normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(x)fetch('/say?text='+encodeURIComponent(x));t.value=''}
-let was='',at=0;function speak(x){try{let u=new SpeechSynthesisUtterance(x);u.lang=L;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
-async function poll(){try{let j=await (await fetch('/state')).json();p.textContent=j.program;i.textContent=j.inputs;
+let cur=null,seq=-1,was='',at=0;
+function bub(cls,who){let d=document.createElement('div');d.className='b '+cls;let w=document.createElement('span');w.className='who';w.textContent=who;d.append(w);
+c.append(d);scrollTo(0,document.body.scrollHeight);return d}
+function say(x){x=x.trim();if(!x)return;let d=bub('me',T.me);d.append(x);cur=bub('ro',T.ro);cur.w=document.createElement('b');cur.w.textContent=T.w;cur.append(cur.w);
+cur.n=seq;fetch('/say?text='+encodeURIComponent(x.normalize('NFD').replace(/[̀-ͯ]/g,'')));t.value=''}
+function fx(p){let o=[],a=(r,w)=>{if(r.test(p))o.push(w)};a(/while /,cz?'*hlidam*':'*watching*');a(/move\(/,'VRRRM!');a(/tone\(|beep\(/,cz?'PIP!':'BEEP!');a(/eyes\("heart/,'<3');a(/eyes\("(wink|closed)/,cz?'*mrk*':'*wink*');a(/rgb\(/,cz?'*svitim*':'*glow*');a(/circle\(|line\(|rect\(|fill\(/,cz?'*kreslim*':'*drawing*');a(/arm\(/,cz?'*mavam*':'*wave*');a(/nod\(|look\(/,cz?'*kyv*':'*nod*');a(/stop\(\)/,'STOP!');return o.slice(0,3).join(' ')||'...'}
+function speak(x){try{let u=new SpeechSynthesisUtterance(x);u.lang=L;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+async function poll(){try{let j=await (await fetch('/state')).json();i.textContent=j.inputs;
+if(seq<0)seq=j.n;
+if(j.n!=seq){seq=j.n;if(!cur){cur=bub('ro',T.ro);cur.w=document.createElement('b');cur.append(cur.w)}
+cur.w.textContent=fx(j.program);if(!cur.p){cur.p=document.createElement('pre');cur.append(cur.p)}cur.p.textContent=j.program;cur.done=1;scrollTo(0,document.body.scrollHeight)}
+if(cur&&cur.done&&j.says&&/[a-z0-9]/i.test(j.says))cur.w.textContent=j.says;
 if(k.checked&&j.says&&j.says!=was&&Date.now()-at>1500&&/[a-z]/i.test(j.says)){was=j.says;at=Date.now();speak(j.says)}if(!j.says)was='';
-if(!m.options.length)j.names.forEach(n=>m.add(new Option(n)))}catch(e){}setTimeout(poll,800)}poll()</script>)HTML";
+if(!m.options.length)j.names.forEach(n=>m.add(new Option(n)))}catch(e){}setTimeout(poll,700)}poll()</script>)HTML";
+static unsigned web_seq = 0;               // one more for every program it wrote: the page knows an answer has arrived
 static void web_setup() {
 #if defined(HOME_WIFI_NAME)                              // its own network and, beside it, a guest on yours
   WiFi.mode(WIFI_AP_STA);
@@ -797,7 +824,7 @@ static void web_setup() {
 #endif
     String prog = last_program; prog.replace("\\", "\\\\"); prog.replace("\"", "\\\""); prog.replace("\n", "\\n");
     String says = g_says; says.replace("\\", ""); says.replace("\"", "'");
-    web.send(200, "application/json", "{\"program\":\"" + prog + "\",\"says\":\"" + says + "\",\"inputs\":\"" + inputs + "\",\"names\":[" + names + "]}");
+    web.send(200, "application/json", "{\"n\":" + String(web_seq) + ",\"program\":\"" + prog + "\",\"says\":\"" + says + "\",\"inputs\":\"" + inputs + "\",\"names\":[" + names + "]}");
   });
   web.begin();
   Serial.printf("phone: join Wi-Fi \"%s\", open http://%s\n", CAR_WIFI_NAME, WiFi.softAPIP().toString().c_str());
@@ -850,6 +877,7 @@ static void car_probe_show() {
 static void car_before_program() {
 #if defined(CAR_WEB)
   snprintf(last_program, sizeof last_program, "%s", program);
+  web_seq++;
 #endif
   if (dose_shown) { eye_r = keep_r; eye_g = keep_g; eye_b = keep_b; dose_shown = false; }
   eye_mood = 0; eyes_show(); car_program_running = true;
