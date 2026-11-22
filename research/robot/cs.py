@@ -570,5 +570,105 @@ def c_back(r):
     return p, f"move({v}, 0, 0)\nwait({ms})\nmove({-v}, 0, 0)\nwait({ms})\nstop()\n"
 
 
+# ---- made up on the spot: an open request has no one right program, so every draw is a different valid one. Asked
+# twice with a little sampling, the robot dances twice differently. The manner (sadly, fast, angrily) is its own word
+# and changes the eyes, the speed and the notes whatever the thing is, so manner and thing can be put together freely.
+ZPUSOB = {   # adverb: (masculine, feminine accusative, eyes, speed, time factor)
+    "smutne": ("smutny", "smutnou", "sad", 40, 1.5), "vesele": ("vesely", "veselou", "happy", 80, 1),
+    "rychle": ("rychly", "rychlou", None, 100, 0.5), "pomalu": ("pomaly", "pomalou", None, 30, 2),
+    "nastvane": ("nastvany", "nastvanou", "angry", 100, 0.75), "unavene": ("unaveny", "unavenou", "sleepy", 30, 2),
+    "zamilovane": ("zamilovany", "zamilovanou", "heart", 60, 1), "zmatene": ("zmateny", "zmatenou", "dizzy", 60, 1),
+}
+NOTY = [262, 294, 330, 349, 392, 440, 494, 523, 587, 659, 784, 880, 1047]
+VYMYSLI = {
+    "dance": (["vymysli tanec", "vymysli {m} tanec", "zatancuj {a}", "zatancuj neco noveho", "vymysli novy tanec", "zatancuj jinak",
+               "ukaz {m} tanec", "predved {m} tanec", "zatancuj mi neco {a}", "chci videt {m} tanec", "vymysli si tanecek",
+               "zatancuj neco, co jsem jeste nevidela", "jiny tanec", "zatancuj neco vlastniho", "zkus {m} tanecek",
+               "tancuj {a}", "zatanci {a}", "dalsi tanec", "vymysli tanecni kreaci", "zatancuj, jak chces"]),
+    "tune": (["vymysli melodii", "vymysli {f} melodii", "zahraj neco {a}", "zahraj {f} pisnicku", "sloz pisnicku", "sloz {f} melodii",
+              "zahraj neco vlastniho", "zahraj neco noveho", "zazpivej neco {a}", "zazpivej {f} pisnicku", "vymysli si pisnicku",
+              "zahraj jinou melodii", "zazpivej neco, co jsi vymyslel", "zabrnkej neco {a}", "zahraj, co te napadne",
+              "zpivej {a}", "dalsi pisnicku", "zahraj mi {f} melodii", "zazpivej neco sveho", "zaimprovizuj"]),
+    "lights": (["vymysli svetelnou show", "udelej {f} svetelnou show", "blikej, jak chces", "hraj si se svetlem", "udelej diskoteku",
+                "vymysli blikani", "blikej {a} ruznymi barvami", "ukaz barvy, jak te napadne", "svetelna show",
+                "udelej {a} disko", "rozsvit se nejak zajimave", "vymysli si barvy", "blikej nahodne", "predved svetla"]),
+    "draw": (["nakresli, co chces", "nakresli neco vlastniho", "vymysli obrazek", "nakresli neco noveho", "nakresli abstraktni obraz",
+              "nakresli neco sam", "vymysli si kresbu", "nakresli moderni umeni", "nakresli, co te napadne", "namaluj neco sveho",
+              "nakresli neco z hlavy", "vymysli vzor", "nakresli nejaky vzor", "dalsi obrazek", "nakresli jiny obrazek"]),
+    "any": (["prekvap me", "vymysli neco", "udelej neco, co te napadne", "udelej neco noveho", "delej, co chces", "ukaz neco sam od sebe",
+             "vymysli si neco", "bud kreativni", "improvizuj", "udelej neco neocekavaneho", "predved neco vlastniho",
+             "udelej cokoli", "neco vymysli a udelej to", "ukaz mi neco, co jsem nevidela", "udelej neco {a}", "prekvap me necim",
+             "ukaz svou fantazii", "zkus neco noveho", "co te napada? udelej to"]),
+}
+
+
+def _ms(base, k):
+    return max(50, int(base * k) // 50 * 50)
+
+
+def _dance(r, v, k):
+    w = _ms(pick(r, [200, 300, 300, 400, 500]), k)
+    moves = [f"move(0, 0, {v})", f"move(0, 0, {-v})", f"move({v}, 0, 0)", f"move({-v}, 0, 0)", f"move({v}, 0, 40)",
+             f"move({v}, 0, -40)", f"move({-v}, 0, 40)", f"move({-v}, 0, -40)"]
+    body = "".join(f"    {m}\n    wait({w})\n" for m in r.sample(moves, pick(r, [2, 2, 3, 3, 4])))
+    end = pick(r, ["", "", f"move(0, 0, {v})\nwait({_ms(1000, k)})\n", "beep(150)\n"])
+    return f"for i in range({r.randint(2, 4)}):\n{body}" + end + "stop()\n"
+
+
+def _tune(r, a, k):
+    n = r.randint(4, 7)
+    if a == "smutne":                   # falls, and stays low
+        i = r.randint(5, 8)
+        idx = [max(0, i - j - r.randint(0, 1)) for j in range(n)]
+    elif a == "vesele":                 # climbs
+        i = r.randint(3, 6)
+        idx = [min(12, i + j + r.randint(0, 1)) for j in range(n)]
+    else:
+        i, idx = r.randint(2, 10), []
+        for _ in range(n):
+            idx.append(i)
+            i = min(12, max(0, i + pick(r, [-3, -2, -1, 1, 2, 3])))
+    hz = [NOTY[j] // 2 if a == "nastvane" else NOTY[j] for j in idx]
+    return "".join(f"tone({h}, {_ms(pick(r, [100, 150, 150, 200, 300]), k)})\n" for h in hz)
+
+
+def _lights(r, k):
+    w = _ms(pick(r, [150, 200, 300, 400]), k)
+    cols = r.sample(list(COLOURS.values()), pick(r, [2, 3, 3, 4]))
+    return f"for i in range({r.randint(2, 5)}):\n" + "".join(f"    rgb({c[0]}, {c[1]}, {c[2]})\n    wait({w})\n" for c in cols) + \
+        "rgb(0, 0, 0)\n"
+
+
+def _draw(r):
+    out = "clear()\n"
+    for _ in range(r.randint(2, 5)):
+        x, y = r.randrange(16, 112, 4), r.randrange(12, 52, 4)
+        s = pick(r, [4, 6, 8, 10, 12])
+        out += pick(r, [f"circle({x}, {y}, {s})\n", f"rect({x - s}, {y - s}, {2 * s}, {2 * s})\n", f"fill({x - s // 2}, {y - s // 2}, {s}, {s})\n",
+                        f"line({x - s}, {y}, {x + s}, {y})\n", f"line({x}, {y - s}, {x}, {y + s})\n",
+                        f"line({x - s}, {y - s}, {x + s}, {y + s})\n", f"line({r.randrange(0, 128, 8)}, 0, {x}, {y})\n"])
+    return out
+
+
+def c_invent(r):
+    kind = pick(r, ["dance", "dance", "tune", "tune", "lights", "draw", "any", "any"])
+    p = pick(r, VYMYSLI[kind])
+    a = pick(r, list(ZPUSOB)) if "{" in p else None
+    if a is None and r.random() < 0.25 and kind in ("dance", "tune", "lights"):    # the manner hung on the end
+        a = pick(r, list(ZPUSOB))
+        p += pick(r, [" ", ", ale ", " a "]) + a
+    m, f, eyes, v, k = ZPUSOB[a] if a else ("", "", pick(r, [None, None, "happy", "wink"]), pick(r, [60, 80]), 1)
+    p = p.format(a=a, m=m, f=f)
+    made = {"dance": lambda: _dance(r, v, k), "tune": lambda: _tune(r, a, k), "lights": lambda: _lights(r, k), "draw": lambda: _draw(r)}
+    if kind == "any":
+        ks = r.sample(list(made), pick(r, [1, 1, 2]))
+        if a and "draw" in ks:
+            ks = ["dance"]
+        body = "".join(made[x]() for x in ks)
+    else:
+        body = made[kind]()
+    return p, (f'eyes("{eyes}")\n' if eyes else "") + body
+
+
 c_cant.__name__ = "c_cant"
-TALK = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2, c_back]
+TALK = [c_seq, c_when, c_curve, c_knob, c_answer, c_show, c_blink2, c_back, c_invent]

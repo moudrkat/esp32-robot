@@ -101,3 +101,15 @@
 {"request": "Dones mi pivo z lednice", "program": "eyes(\"sad\")\nclear()\ntext(28, 28, \"nemam hodiny\")\n", "ok": false}
 {"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
 {"request": "Hraj si na sanitku", "program": "while 1:\n    if temp() < 20:\n        for i in range(3):\n            tone(700, 300)\n            tone(1000, 300)\n    wait(50)\n", "ok": false}
+{"request": "Rozje\u010f se naplno na dv\u011b vte\u0159iny a pak zabrzdi", "program": "move(100, 0, 0, 2000)\nwait(2000)\nmove(60, 0, 0)\n", "ok": false}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-60, 0, 0, 500)\nmove(60, 0, 0, 3000)\n", "ok": false}
+{"request": "Po\u010d\u00edtej od jedn\u00e9 do deseti na obrazovce", "program": "clear()\ntext(40, 28, \"Cussing\")\n", "ok": false}
+{"request": "Blikej mod\u0159e jako policajti", "program": "while 1:\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(255, 0, 255)\n    wait(300)\nrgb(0, 0, 0)\n", "ok": false}
+{"request": "Zahraj Ko\u010dka leze d\u00edrou", "program": "eyes(\"sad\")\nclear()\ntext(4, 28, \"mam jen kola, promin\")\n", "ok": false}
+{"request": "Nejd\u0159\u00edv zatrub, potom popoje\u010f a nakonec se zato\u010d dokola", "program": "beep(250)\nmove(60, 0, 0, 500)\n", "ok": false}
+{"request": "Zamrkej, zam\u00e1vej a \u0159ekni p\u00edpnut\u00edm ahoj", "program": "for i in range(2):\n    eyes(\"closed\")\n    wait(150)\n    eyes(\"open\")\n    wait(300)\nclear()\ntext(28, 28, \"Pazizded ahoj\")\n", "ok": false}
+{"request": "\u0160ikula!", "program": "beep(250)\n", "ok": false}
+{"request": "M\u00e1m t\u011b r\u00e1da", "program": "eyes(\"happy\")\nclear()\ntext(49, 28, \"ahoj!\")\nfor i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\n", "ok": false}
+{"request": "\u0158ekni nahlas, jak se jmenuje\u0161", "program": "eyes(\"sad\")\nclear()\ntext(19, 28, \"slysim jen hluk\")\n", "ok": false}
+{"request": "Hele, mohl bys pros\u00edm zajet kousek dop\u0159edu a zase se vr\u00e1tit?", "program": "move(60, 0, 0, 500)\nmove(-60, 0, 0, 500)\n", "ok": true}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "while 1:\n    d = distance()\n    move((d - 20) * 3, 0, 0)\n    wait(20)\n", "ok": false}

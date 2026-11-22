@@ -113,6 +113,7 @@ def main():
     # A small corpus is overtrained many epochs over; the final step is then
     # rarely the best one. The checkpoint at the lowest val loss is kept beside
     # the final one so the exporter can pick either.
+    ap.add_argument("--init", help="start from this checkpoint's weights (pretrained on other text with the same tokenizer)")
     ap.add_argument("--save-best", action="store_true",
                     help="also write runs/<name>-best.pt at the lowest val loss")
     args = ap.parse_args()
@@ -142,6 +143,9 @@ def main():
                   d_model=args.d_model, n_layers=args.n_layers, n_heads=args.n_heads,
                   n_cond=args.n_cond, cond_layer=args.cond_layer)
     model = make_model(args.arm, args.target_core, base, fixed_ffn=args.fixed_ffn).to(device)
+    if args.init:
+        model.load_state_dict(torch.load(args.init, map_location=device)["state"])
+        print(f"weights from {args.init}", flush=True)
     budget = model.param_budget()
     cfg = model.cfg
 
