@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="cs">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruka na servu</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1c1a;--mute:#6a665f;--line:#d9d5cc;--card:#ffffff;--red:#c8372d;--blue:#2459b8;--yel:#b98500;--grn:#2f7d4f;--servo:#2f63c4;--horn:#f4f2ec;--hornline:#8d877b;--car:#d9d5cc;--black:#22201d;--paper:#e7c48a}
+@media (prefers-color-scheme: dark){:root{--bg:#171614;--fg:#eeebe4;--mute:#a39e94;--line:#3a3833;--card:#211f1c;--red:#ff7a6e;--blue:#7fb0ff;--yel:#f2c14e;--grn:#7ed3a0;--servo:#4b7fe0;--horn:#e9e6de;--hornline:#6f6a60;--car:#4a4741;--black:#0c0b0a;--paper:#c9a468;color-scheme:dark}}
+body{background:var(--bg);color:var(--fg);font:17px/1.55 system-ui,sans-serif;margin:0;padding:24px 16px 56px}
+main{max-width:760px;margin:0 auto}
+h1{font-size:1.9rem;margin:0 0 6px;line-height:1.2}h2{font-size:1.25rem;margin:36px 0 10px;line-height:1.25}
+p{margin:0 0 12px}.lead{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.warn{border-left:4px solid var(--red);padding:10px 14px;background:var(--card);border-radius:0 10px 10px 0;margin:12px 0}
+.ok{border-left:4px solid var(--grn);padding:10px 14px;background:var(--card);border-radius:0 10px 10px 0;margin:12px 0}
+ol{padding-left:1.2em}li{margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--mute)}
+.lab{font:600 15px system-ui,sans-serif;fill:var(--fg)}.sm{font:13px system-ui,sans-serif;fill:var(--mute)}
+.tag{font:700 30px system-ui,sans-serif;fill:#fff}.tagbg{stroke:#fff;stroke-width:4}
+.no{opacity:.45}
+</style>
+<main>
+<h1>Ruka na servu</h1>
+<p class="lead">Co z tvého sáčku kam patří a v jakém pořadí to složit.</p>
+
+<h2>1. Tvoje díly</h2>
+<div class="card">
+<svg viewBox="0 0 1502 2000" role="img" aria-label="Fotka dílů s popisky: A páčka s jedním ramenem, B malý šroubek, C dva větší šroubky, X páčky, které nebudou potřeba">
+  <image href="img/servo-dily.jpg" width="1502" height="2000"/>
+  <g fill="none" stroke-width="10">
+    <ellipse cx="868" cy="1892" rx="125" ry="105" stroke="#2f9d5a"/>
+    <circle cx="1235" cy="452" r="62" stroke="#2f9d5a"/>
+    <circle cx="838" cy="428" r="68" stroke="#2459b8"/>
+    <circle cx="600" cy="1192" r="68" stroke="#2459b8"/>
+    <circle cx="540" cy="608" r="52" stroke="#e0a100"/>
+  </g>
+  <g class="no" stroke="#c8372d" stroke-width="12" stroke-linecap="round">
+    <line x1="850" y1="700" x2="1030" y2="900"/><line x1="1030" y1="700" x2="850" y2="900"/>
+    <line x1="690" y1="1200" x2="890" y2="1370"/><line x1="890" y1="1200" x2="690" y2="1370"/>
+  </g>
+  <g>
+    <circle cx="1040" cy="1880" r="36" fill="#2f9d5a" class="tagbg"/><text x="1040" y="1891" text-anchor="middle" class="tag">A</text>
+    <circle cx="1345" cy="452" r="36" fill="#2f9d5a" class="tagbg"/><text x="1345" y="463" text-anchor="middle" class="tag">B</text>
+    <circle cx="838" cy="318" r="36" fill="#2459b8" class="tagbg"/><text x="838" y="329" text-anchor="middle" class="tag">C</text>
+    <circle cx="490" cy="1192" r="36" fill="#2459b8" class="tagbg"/><text x="490" y="1203" text-anchor="middle" class="tag">C</text>
+    <circle cx="540" cy="508" r="36" fill="#e0a100" class="tagbg"/><text x="540" y="519" text-anchor="middle" class="tag">D</text>
+  </g>
+</svg>
+</div>
+<table>
+<tr><th></th><th>Co to je</th><th>K čemu</th></tr>
+<tr><td><strong>A</strong></td><td>páčka s jedním ramenem</td><td>z ní bude ruka</td></tr>
+<tr><td><strong>B</strong></td><td>nejmenší šroubek</td><td>drží páčku na hřídelce</td></tr>
+<tr><td><strong>C</strong></td><td>dva větší šroubky</td><td>přišroubují tělo serva za modrá ouška</td></tr>
+<tr><td><strong>D</strong></td><td>hřídelka (bílý zubatý čep)</td><td>sem se nasazuje páčka</td></tr>
+<tr><td>✕</td><td>dvojitá páčka a křížek</td><td>odlož, nebudou potřeba</td></tr>
+</table>
+
+<h2>2. Jak má servo na autě ležet</h2>
+<p>Páčka se točí kolem hřídelky jako ručička na hodinách. Aby ruka mávala nahoru a dolů, musí hřídelka mířit <strong>do boku</strong>, ven z auta. Servo tedy leží na boku.</p>
+<div class="card">
+<svg viewBox="0 0 700 300" role="img" aria-label="Vlevo špatně: servo stojí, hřídelka míří nahoru, ruka by se točila naplocho. Vpravo správně: servo leží na boku, hřídelka míří k tobě, ruka se zvedá.">
+  <text x="170" y="24" text-anchor="middle" class="lab" fill="var(--red)">takhle ne</text>
+  <rect x="120" y="120" width="100" height="120" rx="6" fill="var(--servo)" class="no"/>
+  <rect x="100" y="150" width="140" height="12" rx="3" fill="var(--servo)" class="no"/>
+  <rect x="138" y="100" width="20" height="22" rx="3" fill="var(--horn)" stroke="var(--hornline)"/>
+  <rect x="100" y="88" width="120" height="12" rx="6" fill="var(--horn)" stroke="var(--hornline)"/>
+  <path d="M235 94 a70 22 0 1 1 -1 -6" fill="none" stroke="var(--red)" stroke-width="3" stroke-dasharray="6 6"/>
+  <text x="170" y="270" text-anchor="middle" class="sm">hřídelka míří nahoru:</text>
+  <text x="170" y="288" text-anchor="middle" class="sm">ruka se točí naplocho</text>
+
+  <line x1="350" y1="20" x2="350" y2="290" stroke="var(--line)"/>
+  <text x="525" y="24" text-anchor="middle" class="lab" fill="var(--grn)">takhle ano</text>
+  <rect x="455" y="130" width="140" height="80" rx="6" fill="var(--servo)"/>
+  <rect x="435" y="150" width="14" height="40" rx="3" fill="var(--servo)"/><rect x="601" y="150" width="14" height="40" rx="3" fill="var(--servo)"/>
+  <circle cx="490" cy="170" r="17" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="490" cy="170" r="5" fill="var(--hornline)"/>
+  <path d="M490 240 A70 70 0 0 1 420 170" fill="none" stroke="var(--grn)" stroke-width="3" stroke-dasharray="6 6"/>
+  <path d="M420 170 l-7 12 l14 0 z" fill="var(--grn)"/>
+  <rect x="482" y="170" width="16" height="78" rx="8" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="490" cy="170" r="5" fill="var(--hornline)"/>
+  <text x="525" y="270" text-anchor="middle" class="sm">hřídelka míří k tobě:</text>
+  <text x="525" y="288" text-anchor="middle" class="sm">ruka se zvedá a klesá</text>
+</svg>
+</div>
+
+<h2>3. Postup</h2>
+<ol>
+<li><strong>Zapoj servo bez páčky.</strong> Červený drátek na <strong>5V</strong>, oranžový na pin <strong>17</strong>, hnědý do modré lišty „−“.</li>
+<li><strong>Zapni robota</strong> a napiš Claudovi „servo zapojené“. Servo dostane základní polohu, hřídelka se pootočí a zastaví.</li>
+<li><strong>Podrž servo tak, jak bude na autě</strong> (na boku, hřídelka ven) a nasaď páčku <strong>A</strong> ramenem <strong>dolů k zemi</strong>. Zatlač ji rovně na čep, zuby zapadnou.</li>
+<li><strong>Zašroubuj šroubek B</strong> středem páčky do hřídelky. Jen zlehka.</li>
+<li><strong>Přilep ruku</strong> z kartonu (asi 6 cm) lepicí páskou na rameno páčky.</li>
+<li><strong>Přidělej servo k autu</strong> šroubky <strong>C</strong> za ouška, nebo oboustrannou páskou.</li>
+</ol>
+
+<div class="card">
+<svg viewBox="0 0 700 330" role="img" aria-label="Tři obrázky: páčka nasazená ramenem dolů, šroubek ve středu páčky, kartonová ruka přilepená na páčce">
+  <!-- step 3 -->
+  <text x="115" y="24" text-anchor="middle" class="lab">krok 3</text>
+  <rect x="45" y="90" width="140" height="80" rx="6" fill="var(--servo)"/>
+  <rect x="25" y="110" width="14" height="40" rx="3" fill="var(--servo)"/><rect x="191" y="110" width="14" height="40" rx="3" fill="var(--servo)"/>
+  <rect x="72" y="130" width="16" height="78" rx="8" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="80" cy="130" r="17" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="80" cy="130" r="5" fill="none" stroke="var(--hornline)" stroke-width="2"/>
+  <path d="M80 230 v36" stroke="var(--grn)" stroke-width="3"/><path d="M80 276 l-7 -12 l14 0 z" fill="var(--grn)"/>
+  <text x="115" y="300" text-anchor="middle" class="sm">rameno míří k zemi</text>
+
+  <!-- step 4 -->
+  <text x="350" y="24" text-anchor="middle" class="lab">krok 4</text>
+  <rect x="280" y="90" width="140" height="80" rx="6" fill="var(--servo)"/>
+  <rect x="260" y="110" width="14" height="40" rx="3" fill="var(--servo)"/><rect x="426" y="110" width="14" height="40" rx="3" fill="var(--servo)"/>
+  <rect x="307" y="130" width="16" height="78" rx="8" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="315" cy="130" r="17" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="315" cy="130" r="8" fill="#9aa0a6" stroke="#5f6368" stroke-width="2"/>
+  <path d="M310 125 l10 10 M320 125 l-10 10" stroke="#5f6368" stroke-width="2"/>
+  <path d="M400 60 L335 118" stroke="var(--grn)" stroke-width="3"/><path d="M328 124 l14 -3 l-9 -11 z" fill="var(--grn)"/>
+  <text x="440" y="56" text-anchor="middle" class="sm">šroubek B</text>
+  <text x="350" y="300" text-anchor="middle" class="sm">do středu, zlehka</text>
+
+  <!-- step 5 -->
+  <text x="585" y="24" text-anchor="middle" class="lab">krok 5</text>
+  <rect x="515" y="90" width="140" height="80" rx="6" fill="var(--servo)"/>
+  <rect x="495" y="110" width="14" height="40" rx="3" fill="var(--servo)"/><rect x="661" y="110" width="14" height="40" rx="3" fill="var(--servo)"/>
+  <path d="M538 150 h24 v112 q0 14 -12 14 q-12 0 -12 -14 z" fill="var(--paper)" stroke="var(--hornline)" stroke-width="2"/>
+  <rect x="542" y="130" width="16" height="78" rx="8" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2" opacity=".9"/>
+  <circle cx="550" cy="130" r="17" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <circle cx="550" cy="130" r="8" fill="#9aa0a6" stroke="#5f6368" stroke-width="2"/>
+  <text x="585" y="300" text-anchor="middle" class="sm">karton přilepený na rameno</text>
+</svg>
+</div>
+
+<div class="warn"><strong>Pozor:</strong> zapojenému servu neotáčej páčkou rukou proti odporu. Uvnitř jsou plastová kolečka a strhnou se. Šroubek B dej až po kroku 2, jinak by ruka mávala od špatného místa.</div>
+
+<h2>4. Jak se pak ruka hýbe</h2>
+<div class="card">
+<svg viewBox="0 0 700 300" role="img" aria-label="Ruka dole v klidu, napůl při mávání, nahoře při zvednutí">
+  <rect x="270" y="120" width="160" height="80" rx="6" fill="var(--servo)"/>
+  <circle cx="305" cy="160" r="17" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <g stroke="var(--hornline)" stroke-width="2">
+    <rect x="296" y="160" width="18" height="110" rx="9" fill="var(--paper)"/>
+    <rect x="296" y="160" width="18" height="110" rx="9" fill="var(--paper)" opacity=".45" transform="rotate(90 305 160)"/>
+    <rect x="296" y="160" width="18" height="110" rx="9" fill="var(--paper)" opacity=".45" transform="rotate(180 305 160)"/>
+  </g>
+  <circle cx="305" cy="160" r="8" fill="#9aa0a6" stroke="#5f6368" stroke-width="2"/>
+  <text x="330" y="288" class="sm">dole: klid</text>
+  <text x="60" y="165" class="sm">napůl: mávání</text>
+  <text x="330" y="40" class="sm">nahoře: „zvedni ruku“</text>
+</svg>
+<p>Na kterou stranu se ruka zvedá (dopředu, nebo dozadu), se ukáže až při zkoušce. Kdyby to bylo obráceně, řekni Claudovi a prohodí to v programu.</p>
+</div>
+
+<h2>5. Zkouška</h2>
+<div class="ok">Napiš robotovi <strong>„zamávej mi“</strong>, pak <strong>„zvedni ruku“</strong> a <strong>„dej ruku dolů“</strong>.</div>
+<table>
+<tr><th>Co se děje</th><th>Co s tím</th></tr>
+<tr><td>servo se nehne</td><td>zkontroluj oranžový drátek na pinu 17 a červený na 5V</td></tr>
+<tr><td>robot se při pohybu ruky restartuje</td><td>servo bere moc proudu z USB; napiš Claudovi, přepojí se napájení na baterie</td></tr>
+<tr><td>ruka v klidu nemíří dolů</td><td>povol šroubek B, sundej páčku a nasaď ji o pár zubů jinak</td></tr>
+<tr><td>servo bzučí a cuká</td><td>ruka o něco drhne, nebo je moc těžká; zkrať karton</td></tr>
+</table>
+</main>
+</html>
