@@ -176,3 +176,15 @@
 {"request": "Hraj si na sanitku", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
 {"request": "St\u016fj a hl\u00eddej, kdyby se n\u011bkdo p\u0159ibl\u00ed\u017eil, tak zahoukej", "program": "beep(250)\n", "ok": false}
 {"request": "Zdrhej!", "program": "eyes(\"sad\")\nclear()\ntext(37, 28, \"to neumim\")\n", "ok": false}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-40, 0, 0)\nwhile behind() > 15:\n    wait(20)\nstop()\n", "ok": false}
+{"request": "Blikej mod\u0159e jako policajti", "program": "for i in range(3):\n    rgb(0, 0, 255)\n    wait(300)\n    rgb(255, 0, 255)\n    wait(300)\nrgb(0, 0, 0)\n", "ok": false}
+{"request": "Couvej, ale dej bacha, a\u0165 do ni\u010deho nenabour\u00e1\u0161 zadkem", "program": "move(-50, 0, 0)\nwhile behind() > 15:\n    wait(20)\nstop()\n", "ok": true}
+{"request": "Oto\u010d se doleva, uje\u010f kousek a uka\u017e srd\u00ed\u010dko", "program": "move(0, 0, -60, 700)\nmove(0, 0, 60, 1400)\neyes(\"heart\")\ntone(523, 150)\ntone(659, 150)\ntone(784, 150)\ntone(1047, 300)\n", "ok": false}
+{"request": "\u0160ikula!", "program": "eyes(\"angry\")\nrgb(255, 0, 0)\nfor i in range(4):\n    tone(1500, 150)\n    tone(0, 100)\nrgb(0, 0, 0)\n", "ok": false}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "for i in range(2):\n    arm(150)\n    wait(300)\n    arm(90)\n    wait(300)\narm(0)\nrgb(255, 80, 0)\n", "ok": false}
+{"request": "Rozje\u010f se naplno na dv\u011b vte\u0159iny a pak zabrzdi", "program": "move(60, 0, 0, 2000)\nmove(-60, 0, 0, 2000)\n", "ok": false}
+{"request": "Pomalu couvej, dokud ne\u0159eknu... no, prost\u011b t\u0159i sekundy", "program": "move(-30, 0, 0, 3000)\nmove(-60, 0, 0, 3000)\n", "ok": false}
+{"request": "Zvedni ruku, kdo chce zmrzlinu", "program": "arm(180)\neyes(\"sad\")\nclear()\ntext(22, 28, \"nemam internet\")\n", "ok": false}
+{"request": "Dones mi pivo z lednice", "program": "eyes(\"dizzy\")\nclear()\ntext(28, 20, \"moc tezke na\")\ntext(34, 36, \"maly mozek\")\n", "ok": false}
+{"request": "\u0158ekni nahlas, jak se jmenuje\u0161", "program": "eyes(\"wink\")\nclear()\ntext(19, 20, \"pipani v c dur,\")\ntext(34, 36, \"to je moje\")\n", "ok": false}
+{"request": "Sprav vlnu rukou a u toho svi\u0165 duhov\u011b", "program": "eyes(\"sad\")\nclear()\ntext(22, 28, \"nemam internet\")\n", "ok": false}

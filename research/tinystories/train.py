@@ -72,6 +72,35 @@ def evaluate(model, batcher, iters):
     return sum(losses) / len(losses)
 
 
+QGROUP = 128     # export.py GROUP: the chip's weights are 4-bit in groups of this many, one fp16 scale per group
+
+
+def fake_quant(w, group=QGROUP):
+    """w as the chip will hold it (export.quant_pack's dq): 4-bit codes -7..7 times a per-group fp16 scale."""
+    rows, cols = w.shape
+    pad = (-cols) % group
+    x = torch.nn.functional.pad(w.float(), (0, pad)).reshape(rows, -1, group)
+    sc = (x.abs().amax(dim=2, keepdim=True) / 7).clamp_min(1e-8).half().float()
+    return (torch.clamp(torch.round(x / sc), -7, 7) * sc).reshape(rows, -1)[:, :cols].to(w.dtype)
+
+
+class AsOnChip:
+    """Inside the block the model holds the weights the chip will hold. The gradient computed there is then applied
+    to the full-precision weights (straight-through), so training looks for weights that still work after rounding."""
+    def __init__(self, model, on):
+        self.ps = [p for n, p in model.named_parameters() if p.dim() == 2 and "norm" not in n] if on else []
+
+    def __enter__(self):
+        self.keep = [p.data.clone() for p in self.ps]
+        with torch.no_grad():
+            for p in self.ps:
+                p.data.copy_(fake_quant(p.data))
+
+    def __exit__(self, *a):
+        for p, k in zip(self.ps, self.keep):
+            p.data.copy_(k)
+
+
 def lr_at(step, total, peak, warmup):
     if step < warmup:
         return peak * (step + 1) / warmup
@@ -113,6 +142,8 @@ def main():
     # A small corpus is overtrained many epochs over; the final step is then
     # rarely the best one. The checkpoint at the lowest val loss is kept beside
     # the final one so the exporter can pick either.
+    ap.add_argument("--qat-from", type=int, default=None,
+                    help="from this step on, train and validate with the weights rounded to 4 bits as on the chip")
     ap.add_argument("--init", help="start from this checkpoint's weights (pretrained on other text with the same tokenizer)")
     ap.add_argument("--save-best", action="store_true",
                     help="also write runs/<name>-best.pt at the lowest val loss")
@@ -171,15 +202,20 @@ def main():
         lr = lr_at(step, args.steps, args.lr, args.warmup)
         for g in opt.param_groups:
             g["lr"] = lr
+        qat = args.qat_from is not None and step >= args.qat_from
+        if qat and step == args.qat_from:
+            best = float("inf")          # the best so far was measured unrounded: start again
         x, y, c = train_b()
-        _, loss = model(x, y, cond=c)
         opt.zero_grad(set_to_none=True)
-        loss.backward()
+        with AsOnChip(model, qat):
+            _, loss = model(x, y, cond=c)
+            loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step()
 
         if step % args.eval_every == 0 or step == args.steps - 1:
-            vl = evaluate(model, val_b, args.eval_iters)
+            with AsOnChip(model, qat):
+                vl = evaluate(model, val_b, args.eval_iters)
             if args.save_best and vl < best:
                 torch.save({"cfg": cfg.__dict__, "state": model.state_dict(),
                             "tokenizer_sha256": tok_sha, "seed": args.seed,

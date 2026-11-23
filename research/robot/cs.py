@@ -402,12 +402,16 @@ def _step(r, last=False):
         _, prog = gen.c_drive(r)
         p = render(prog, r)
         return (p, prog) if p else _step(r, last)
+    if k < 0.5:                         # a turn, a light or the horn, said from the program: steps of every kind in one chain
+        _, prog = pick(r, [gen.c_turn, gen.c_lights, gen.c_honk])(r)
+        p = render(prog, r) if "while 1" not in prog else None
+        return (p, prog) if p else _step(r, last)
     prog = pick(r, gen.ATOMS)
     return _bare(pick(r, gen.BANK[prog])), prog
 
 
 def c_seq(r):
-    n = pick(r, [2, 2, 2, 3, 3, 3, 3, 4])
+    n = pick(r, [2, 2, 3, 3, 3, 3, 3, 4])
     steps = [_step(r, last=i == n - 1) for i in range(n)]
     if len({s[1] for s in steps}) < n or sum(len(s[1]) for s in steps) > 420:
         return c_seq(r)
