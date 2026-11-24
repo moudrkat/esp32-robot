@@ -2,7 +2,7 @@
 <html lang="cs">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tři serva: hlava a ruka</title>
+<title>Dvě serva: hlava a ruka</title>
 <style>
 :root{--bg:#fbfaf7;--fg:#1d1c1a;--mute:#6a665f;--line:#d9d5cc;--card:#ffffff;--red:#c8372d;--blue:#2459b8;--org:#e08a00;--brn:#7a4a2a;--grn:#2f7d4f;--servo:#2f63c4;--pcb:#1f4f86;--pin:#b9b3a6;--horn:#f4f2ec;--hornline:#8d877b;--car:#cfcabf;--wheel:#3a3833;--paper:#e7c48a;--metal:#c9c5bb;--black:#22201d;--brk:#5b5f66}
 @media (prefers-color-scheme: dark){:root{--bg:#171614;--fg:#eeebe4;--mute:#a39e94;--line:#3a3833;--card:#211f1c;--red:#ff7a6e;--blue:#7fb0ff;--org:#ffb347;--brn:#b98562;--grn:#7ed3a0;--servo:#4b7fe0;--pcb:#3f78b8;--pin:#8d877b;--horn:#e9e6de;--hornline:#6f6a60;--car:#4a4741;--wheel:#0c0b0a;--paper:#c9a468;--metal:#8f8a80;--black:#0c0b0a;--brk:#8a8f98;color-scheme:dark}}
@@ -27,12 +27,12 @@ table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{text-align:left
 a{color:var(--blue)}
 </style>
 <main>
-<h1>Tři serva: hlava a ruka</h1>
-<p class="lead">Zabere asi hodinu a půl. Po části 5 už robot umí všechno na čtvrtek, část 6 je navíc.</p>
+<h1>Dvě serva: hlava a ruka</h1>
+<p class="lead">Zabere asi 45 minut a baterie do motorů. Jedno servo otáčí hlavou, druhé zvedá ruku.</p>
 
 <h2>1. Co kam patří</h2>
 <div class="card">
-<svg viewBox="0 0 700 300" role="img" aria-label="Auto z boku: vpředu nahoře hlava s dálkoměrem na dvou servech, na boku ruka">
+<svg viewBox="0 0 700 300" role="img" aria-label="Auto z boku: vpředu nahoře hlava s dálkoměrem na servu, na boku ruka">
   <rect x="150" y="170" width="400" height="26" rx="6" fill="var(--car)"/>
   <rect x="150" y="215" width="400" height="22" rx="6" fill="var(--car)"/>
   <g stroke="var(--car)" stroke-width="8"><line x1="190" y1="196" x2="190" y2="215"/><line x1="510" y1="196" x2="510" y2="215"/></g>
@@ -40,12 +40,11 @@ a{color:var(--blue)}
   <path d="M110 190 h-50" stroke="var(--mute)" stroke-width="3"/><path d="M52 190 l14 -8 v16 z" fill="var(--mute)"/><text x="64" y="176" class="sm">předek</text>
   <!-- head -->
   <rect x="175" y="132" width="56" height="38" rx="4" fill="var(--servo)"/><text x="203" y="156" text-anchor="middle" class="w">15</text>
-  <rect x="181" y="118" width="44" height="12" rx="4" fill="var(--brk)"/>
-  <rect x="190" y="80" width="38" height="38" rx="4" fill="var(--servo)"/><text x="209" y="104" text-anchor="middle" class="w">16</text>
-  <rect x="150" y="66" width="34" height="56" rx="5" fill="var(--pcb)"/>
-  <circle cx="158" cy="82" r="9" fill="var(--metal)"/><circle cx="158" cy="106" r="9" fill="var(--metal)"/>
-  <text x="290" y="72" class="lab">hlava</text><text x="290" y="92" class="sm">dálkoměr na dvou servech</text>
-  <path d="M282 78 H236" stroke="var(--mute)" stroke-width="2"/>
+  <rect x="170" y="118" width="66" height="12" rx="6" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
+  <rect x="158" y="66" width="34" height="52" rx="5" fill="var(--pcb)"/>
+  <circle cx="166" cy="80" r="9" fill="var(--metal)"/><circle cx="166" cy="104" r="9" fill="var(--metal)"/>
+  <text x="290" y="92" class="lab">hlava</text><text x="290" y="112" class="sm">dálkoměr na servu</text>
+  <path d="M282 98 H240" stroke="var(--mute)" stroke-width="2"/>
   <!-- arm -->
   <rect x="400" y="176" width="60" height="34" rx="4" fill="var(--servo)"/><text x="442" y="198" text-anchor="middle" class="w">17</text>
   <path d="M407 193 l-6 -78 q-2 -14 10 -14 q12 0 10 14 l-2 78 z" fill="var(--paper)" stroke="var(--hornline)" stroke-width="2"/>
@@ -56,43 +55,36 @@ a{color:var(--blue)}
 </div>
 <table>
 <tr><th>servo</th><th>oranžový drátek na pin</th><th>co dělá</th><th>věty</th></tr>
-<tr><td>hlava doleva a doprava</td><td><strong>15</strong></td><td>otáčí hlavou</td><td>rozhlédni se, zavrť hlavou, běž na průzkum</td></tr>
-<tr><td>hlava nahoru a dolů</td><td><strong>16</strong></td><td>kývá hlavou</td><td>zakývej hlavou, podívej se nahoru</td></tr>
+<tr><td>hlava</td><td><strong>15</strong></td><td>otáčí hlavou doleva a doprava</td><td>rozhlédni se, zavrť hlavou, podívej se doleva, běž na průzkum</td></tr>
 <tr><td>ruka</td><td><strong>17</strong></td><td>zvedá ruku</td><td>zamávej mi, zvedni ruku</td></tr>
 </table>
 
 <h2>2. Napájení: červené na baterie, ne na desku</h2>
 <div class="card">
-<svg viewBox="0 0 700 330" role="img" aria-label="Tři serva: červené drátky do spodní červené lišty, hnědé do spodní modré lišty, oranžové na piny 15, 16 a 17">
-  <rect x="20" y="20" width="130" height="200" rx="10" fill="var(--pcb)"/><text x="85" y="14" text-anchor="middle" class="lab">ESP32</text>
-  <g class="w"><text x="108" y="64">15</text><text x="108" y="124">16</text><text x="108" y="184">17</text></g>
-  <g fill="var(--pin)"><circle cx="140" cy="60" r="6"/><circle cx="140" cy="120" r="6"/><circle cx="140" cy="180" r="6"/></g>
-  <g>
-    <rect x="520" y="30" width="110" height="56" rx="6" fill="var(--servo)"/><text x="575" y="63" text-anchor="middle" class="w">hlava ↔</text>
-    <rect x="520" y="100" width="110" height="56" rx="6" fill="var(--servo)"/><text x="575" y="133" text-anchor="middle" class="w">hlava ↕</text>
-    <rect x="520" y="170" width="110" height="56" rx="6" fill="var(--servo)"/><text x="575" y="203" text-anchor="middle" class="w">ruka</text>
-  </g>
-  <rect x="180" y="262" width="440" height="14" rx="4" fill="var(--red)" opacity=".9"/>
-  <rect x="180" y="290" width="440" height="14" rx="4" fill="var(--blue)" opacity=".9"/>
-  <text x="60" y="274" class="sm">spodní lišta „+“</text><text x="60" y="302" class="sm">spodní lišta „−“</text>
-  <text x="635" y="274" class="sm">5 V</text><text x="635" y="302" class="sm">GND</text>
+<svg viewBox="0 0 700 280" role="img" aria-label="Dvě serva: červené drátky do spodní červené lišty, hnědé do spodní modré lišty, oranžové na piny 15 a 17">
+  <rect x="20" y="20" width="130" height="160" rx="10" fill="var(--pcb)"/><text x="85" y="14" text-anchor="middle" class="lab">ESP32</text>
+  <g class="w"><text x="108" y="64">15</text><text x="108" y="144">17</text></g>
+  <g fill="var(--pin)"><circle cx="140" cy="60" r="6"/><circle cx="140" cy="140" r="6"/></g>
+  <rect x="520" y="30" width="110" height="60" rx="6" fill="var(--servo)"/><text x="575" y="65" text-anchor="middle" class="w">hlava</text>
+  <rect x="520" y="110" width="110" height="60" rx="6" fill="var(--servo)"/><text x="575" y="145" text-anchor="middle" class="w">ruka</text>
+  <rect x="180" y="212" width="440" height="14" rx="4" fill="var(--red)" opacity=".9"/>
+  <rect x="180" y="240" width="440" height="14" rx="4" fill="var(--blue)" opacity=".9"/>
+  <text x="60" y="224" class="sm">spodní lišta „+“</text><text x="60" y="252" class="sm">spodní lišta „−“</text>
+  <text x="635" y="224" class="sm">5 V</text><text x="635" y="252" class="sm">GND</text>
   <g fill="none" stroke-width="4" stroke-linecap="round">
     <path d="M140 60 C300 40 420 50 520 50" stroke="var(--org)"/>
-    <path d="M140 120 C300 110 420 120 520 120" stroke="var(--org)"/>
-    <path d="M140 180 C300 180 420 190 520 190" stroke="var(--org)"/>
-    <path d="M520 64 C440 110 400 220 400 262" stroke="var(--red)"/>
-    <path d="M520 134 C470 170 440 230 440 262" stroke="var(--red)"/>
-    <path d="M520 204 C500 225 480 245 480 262" stroke="var(--red)"/>
-    <path d="M520 76 C400 140 340 240 340 290" stroke="var(--brn)"/>
-    <path d="M520 146 C430 190 380 250 380 290" stroke="var(--brn)"/>
-    <path d="M520 216 C480 240 510 270 510 290" stroke="var(--brn)"/>
+    <path d="M140 140 C300 140 420 130 520 130" stroke="var(--org)"/>
+    <path d="M520 66 C440 100 410 170 410 212" stroke="var(--red)"/>
+    <path d="M520 146 C480 165 460 190 460 212" stroke="var(--red)"/>
+    <path d="M520 80 C400 120 350 190 350 240" stroke="var(--brn)"/>
+    <path d="M520 160 C490 185 500 215 500 240" stroke="var(--brn)"/>
   </g>
 </svg>
 <p><span class="dot" style="background:var(--red)"></span><strong>červený</strong> do spodní červené lišty (5 V z bateriového držáku motorů)<br>
 <span class="dot" style="background:var(--brn)"></span><strong>hnědý</strong> do spodní modré lišty<br>
-<span class="dot" style="background:var(--org)"></span><strong>oranžový</strong> na pin 15, 16 nebo 17</p>
+<span class="dot" style="background:var(--org)"></span><strong>oranžový</strong> hlava na pin 15, ruka na pin 17</p>
 </div>
-<div class="warn"><strong>Tři serva z pinu 5V na desce netahej.</strong> Deska by se při pohybu restartovala. V držáku motorů proto musí být nabité baterie a obě modré lišty musí být propojené drátkem.</div>
+<div class="warn"><strong>Dvě serva z pinu 5V na desce netahej.</strong> Deska by se při pohybu mohla restartovat. V držáku motorů proto musí být nabité baterie a obě modré lišty musí být propojené drátkem. Jedno servo na zkoušku jde i z pinu 5V na desce.</div>
 
 <h2>3. U každého serva stejný postup</h2>
 <div class="card">
@@ -116,8 +108,7 @@ a{color:var(--blue)}
 <table>
 <tr><th>servo</th><th>věta pro základní polohu</th><th>jak pak nasadit páčku</th></tr>
 <tr><td>ruka (17)</td><td><span class="say">dej ruku dolů</span></td><td>ramenem k zemi</td></tr>
-<tr><td>hlava ↔ (15)</td><td rowspan="2"><span class="say">podívej se na mě</span></td><td>tak, aby hlava mířila rovně dopředu</td></tr>
-<tr><td>hlava ↕ (16)</td><td>tak, aby dálkoměr stál svisle a díval se vodorovně</td></tr>
+<tr><td>hlava (15)</td><td><span class="say">podívej se na mě</span></td><td>tak, aby hlava mířila rovně dopředu</td></tr>
 </table>
 </div>
 <div class="note">Šroubek do středu páčky dej vždycky až po větě pro základní polohu. A zapojeným servem neotáčej rukou.</div>
@@ -136,7 +127,7 @@ a{color:var(--blue)}
 </svg>
 <p>Podrobně s tvou fotkou dílů: <a href="servo-ruka.html">Ruka na servu</a>.</p></div></div>
 
-<h2>5. Hlava doleva a doprava (pin 15)</h2>
+<h2>5. Hlava (pin 15)</h2>
 <div class="step"><input type="checkbox" id="h1"><div class="body"><h3>Servo postav nastojato na předek horního patra, hřídelka nahoru</h3>
 <svg viewBox="0 0 700 220" role="img" aria-label="Servo stojí na horním patře vpředu, hřídelka míří nahoru">
   <rect x="120" y="170" width="460" height="24" rx="6" fill="var(--car)"/>
@@ -144,8 +135,7 @@ a{color:var(--blue)}
   <rect x="146" y="150" width="108" height="12" rx="3" fill="var(--servo)"/>
   <rect x="172" y="58" width="22" height="24" rx="3" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
   <text x="270" y="66" class="sm">hřídelka nahoru, blíž k předku auta</text>
-  <text x="270" y="130" class="sm">přilep oboustrannou páskou nebo tavnou pistolí,</text>
-  <text x="270" y="148" class="sm">případně zasaď do spodního dílu držáku</text>
+  <text x="270" y="130" class="sm">přilep oboustrannou páskou nebo tavnou pistolí</text>
   <path d="M100 182 h-40" stroke="var(--mute)" stroke-width="3"/><path d="M52 182 l14 -8 v16 z" fill="var(--mute)"/><text x="40" y="166" class="sm">předek</text>
 </svg></div></div>
 
@@ -185,26 +175,10 @@ a{color:var(--blue)}
 <p><span class="say">podívej se doleva</span><span class="say">rozhlédni se</span><span class="say">zavrť hlavou</span></p>
 <p>S bateriemi v motorech a volným místem kolem: <span class="say">běž na průzkum</span></p></div></div>
 
-<h2>6. Hlava nahoru a dolů (pin 16), jen když zbude čas</h2>
-<div class="step"><input type="checkbox" id="k1"><div class="body"><h3>Druhé servo leží na prvním, dálkoměr je na jeho páčce</h3>
-<svg viewBox="0 0 700 240" role="img" aria-label="Dolní servo stojí, na jeho páčce držák, v něm horní servo naležato, na jeho páčce dálkoměr, který se naklání nahoru a dolů">
-  <rect x="290" y="150" width="80" height="80" rx="6" fill="var(--servo)"/><text x="330" y="196" text-anchor="middle" class="w">15</text>
-  <rect x="318" y="132" width="24" height="20" rx="3" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
-  <rect x="270" y="118" width="130" height="14" rx="5" fill="var(--brk)"/>
-  <rect x="300" y="58" width="90" height="60" rx="6" fill="var(--servo)"/><text x="355" y="94" text-anchor="middle" class="w">16</text>
-  <circle cx="318" cy="88" r="13" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
-  <rect x="226" y="52" width="26" height="72" rx="5" fill="var(--pcb)"/>
-  <circle cx="232" cy="72" r="9" fill="var(--metal)"/><circle cx="232" cy="104" r="9" fill="var(--metal)"/>
-  <rect x="248" y="82" width="74" height="12" rx="6" fill="var(--horn)" stroke="var(--hornline)" stroke-width="2"/>
-  <path d="M200 50 A60 60 0 0 0 200 126" fill="none" stroke="var(--grn)" stroke-width="3" stroke-dasharray="6 6"/>
-  <text x="420" y="84" class="sm">horní servo naležato,</text><text x="420" y="102" class="sm">hřídelka do boku</text>
-  <text x="420" y="190" class="sm">dolní servo nastojato</text>
-  <text x="120" y="92" class="sm">kývání</text>
-</svg>
-<p>Zkouška: <span class="say">zakývej hlavou</span><span class="say">podívej se nahoru</span><span class="say">popros</span></p></div></div>
-<div class="note">Tvůj držák jsem neviděla. Obrázky v částech 5 a 6 jsou nakreslené podle obvyklé skládací základny pro dvě SG90. Pošli Claudovi fotku jeho dílů a tuhle část ti překreslí přesně.</div>
+<div class="note">Držák není nutný: servo hlavy stačí přilepit nastojato a dálkoměr přilepit na páčku. Když držák použít chceš, pošli Claudovi fotku jeho dílů a tuhle část ti překreslí přesně.</div>
+<div class="note">Věty <strong>„zakývej hlavou“</strong> a <strong>„podívej se nahoru“</strong> potřebují třetí servo. Bez něj neudělají nic viditelného, tak je ve čtvrtek neříkej.</div>
 
-<h2>7. Když něco nejde</h2>
+<h2>6. Když něco nejde</h2>
 <table>
 <tr><th>co se děje</th><th>co s tím</th></tr>
 <tr><td>robot se při pohybu serva restartuje</td><td>červený drátek je na pinu 5V desky místo na spodní liště, nebo jsou slabé baterie</td></tr>
