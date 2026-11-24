@@ -1,0 +1,52 @@
+<!doctype html><html lang="cs"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Co má být kde</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1c1a;--mute:#6a665f;--line:#d9d5cc;--card:#fff;--red:#c8372d;--org:#d97a00;--blue:#2459b8;--grn:#2f7d4f;--pin:#3b3a37}
+@media (prefers-color-scheme: dark){:root{--bg:#171614;--fg:#eeebe4;--mute:#a39e94;--line:#3a3833;--card:#211f1c;--red:#e25548;--org:#e89a2c;--blue:#4f86e0;--grn:#4fa870;--pin:#5a5852;color-scheme:dark}}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--fg);font:17px/1.45 system-ui,sans-serif;margin:0;padding:24px 16px 64px}
+main{max-width:980px;margin:0 auto}h1{font-size:2rem;margin:0 0 6px}h2{font-size:1.25rem;margin:30px 0 10px}.lead{color:var(--mute);margin:0 0 14px}
+.rails{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.rail{border-radius:8px;color:#fff;font-weight:700;padding:10px 14px;margin:6px 0}
+.rail small{font-weight:500;opacity:.95;display:block}
+.rail.bat{background:var(--red)}.rail.v33{background:var(--org)}.rail.gnd{background:var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--mute);border-radius:12px;padding:12px 14px}
+.card h3{margin:0 0 6px;font-size:1.05rem}.card table{border-collapse:collapse;width:100%}.card td{padding:4px 4px 4px 0;vertical-align:middle}
+.card td:first-child{font-weight:600;white-space:nowrap}.card td:nth-child(2){color:var(--mute);width:22px}
+.k-bat{border-left-color:var(--red)}.k-esp{border-left-color:var(--grn)}.k-gnd{border-left-color:var(--blue)}.k-drv{border-left-color:#8a2f2f}.k-srv{border-left-color:#2f63c4}.k-buz{border-left-color:#8b5fc7}.k-sen{border-left-color:#1f8a8a}
+.chip{display:inline-block;border-radius:999px;color:#fff;font-weight:700;font-size:.9rem;padding:2px 11px;white-space:nowrap}
+.chip.bat{background:var(--red)}.chip.v33{background:var(--org)}.chip.gnd{background:var(--blue)}.chip.pin{background:var(--pin)}
+.note{color:var(--mute);font-size:.9rem;margin:8px 0 0}
+.warn{border-left:5px solid var(--red);background:var(--card);padding:12px 16px;border-radius:0 12px 12px 0;margin:14px 0}
+.warn ul{margin:6px 0 0;padding-left:1.2em}
+</style><main>
+<h1>Co má být kde</h1>
+<p class="lead">Lišty jsou pojmenované podle zdroje, ne podle toho, jestli jsou nahoře nebo dole.</p>
+<div class="warn"><strong>Bzučák píská pořád?</strong> Vypni baterie i USB a vytáhni jeho prostřední drátek. Pak zkontroluj kartu „Klakson“ níž.</div>
+<h2>Tři lišty</h2>
+<div class="rails">
+<div class="rail bat">lišta s bateriemi · 5 V<small>červená lišta, do které vede plus z držáku baterií motorů</small></div>
+<div class="rail v33">lišta 3,3 V<small>druhá červená lišta, do které vede pin 3V3 z desky</small></div>
+<div class="rail gnd">modrá lišta · zem<small>obě modré lišty, spojené propojkou</small></div>
+</div>
+<div class="warn"><strong>Do lišty s bateriemi smí jen tyhle drátky:</strong>
+<ul><li>plus z držáku baterií</li><li>VCC levého a pravého ovladače motorů</li><li>červený drátek ze serva (ze dvou serv dva)</li></ul>
+Nic jiného. Bzučák, displej, dálkoměr ani pin 3V3 z desky tam nepatří.</div>
+<h2>Součástku po součástce</h2>
+<div class="grid">
+<div class="card k-bat"><h3>Držák baterií motorů</h3><table><tr><td>+ (plus)</td><td>→</td><td><span class="chip bat">lišta s bateriemi</span></td></tr><tr><td>− (mínus)</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr></table></div>
+<div class="card k-esp"><h3>Deska ESP32</h3><table><tr><td>3V3</td><td>→</td><td><span class="chip v33">lišta 3,3 V</span></td></tr><tr><td>GND</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr></table><p class=note>Druhý pin 3V3 může zůstat volný.</p></div>
+<div class="card k-gnd"><h3>Propojka</h3><table><tr><td>jedna modrá lišta</td><td>→</td><td>druhá <span class="chip gnd">modrá lišta</span></td></tr></table><p class=note>Bez ní serva a motory neposlouchají.</p></div>
+<div class="card k-drv"><h3>Ovladač motorů levý</h3><table><tr><td>VCC</td><td>→</td><td><span class="chip bat">lišta s bateriemi</span></td></tr><tr><td>GND</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr><tr><td>A-IA</td><td>→</td><td><span class="chip pin">pin 4</span></td></tr><tr><td>A-IB</td><td>→</td><td><span class="chip pin">pin 5</span></td></tr></table></div>
+<div class="card k-drv"><h3>Ovladač motorů pravý</h3><table><tr><td>VCC</td><td>→</td><td><span class="chip bat">lišta s bateriemi</span></td></tr><tr><td>GND</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr><tr><td>A-IA</td><td>→</td><td><span class="chip pin">pin 6</span></td></tr><tr><td>A-IB</td><td>→</td><td><span class="chip pin">pin 7</span></td></tr></table></div>
+<div class="card k-srv"><h3>Servo ruka</h3><table><tr><td>červený</td><td>→</td><td><span class="chip bat">lišta s bateriemi</span></td></tr><tr><td>hnědý</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr><tr><td>oranžový</td><td>→</td><td><span class="chip pin">pin 17</span></td></tr></table></div>
+<div class="card k-srv"><h3>Servo hlava</h3><table><tr><td>červený</td><td>→</td><td><span class="chip bat">lišta s bateriemi</span></td></tr><tr><td>hnědý</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr><tr><td>oranžový</td><td>→</td><td><span class="chip pin">pin 15</span></td></tr></table></div>
+<div class="card k-buz"><h3>Klakson (aktivní bzučák)</h3><table><tr><td>S</td><td>→</td><td><span class="chip pin">pin 38</span></td></tr><tr><td>prostřední</td><td>→</td><td><span class="chip v33">lišta 3,3 V</span></td></tr><tr><td>−</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr></table><p class=note>Když píská pořád: prostřední kolík je v liště s bateriemi, nebo S není na pinu 38.</p></div>
+<div class="card k-buz"><h3>Pasivní bzučák (melodie)</h3><table><tr><td>S</td><td>→</td><td><span class="chip pin">pin 39</span></td></tr><tr><td>prostřední</td><td>→</td><td><span class="chip v33">lišta 3,3 V</span></td></tr><tr><td>−</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr></table></div>
+<div class="card k-sen"><h3>Displej</h3><table><tr><td>VCC</td><td>→</td><td><span class="chip v33">lišta 3,3 V</span></td></tr><tr><td>GND</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr><tr><td>SDA</td><td>→</td><td><span class="chip pin">pin 18</span></td></tr><tr><td>SCL</td><td>→</td><td><span class="chip pin">pin 8</span></td></tr></table></div>
+<div class="card k-sen"><h3>Dálkoměr přední</h3><table><tr><td>VCC</td><td>→</td><td><span class="chip v33">lišta 3,3 V</span></td></tr><tr><td>Trig</td><td>→</td><td><span class="chip pin">pin 9</span></td></tr><tr><td>Echo</td><td>→</td><td><span class="chip pin">pin 10</span></td></tr><tr><td>GND</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr></table><p class=note>Ukazuje 400, když nemá proud nebo jsou prohozené Trig a Echo.</p></div>
+<div class="card k-sen"><h3>Teploměr SHT40</h3><table><tr><td>VCC</td><td>→</td><td><span class="chip v33">lišta 3,3 V</span></td></tr><tr><td>GND</td><td>→</td><td><span class="chip gnd">modrá lišta</span></td></tr><tr><td>SDA</td><td>→</td><td><span class="chip pin">pin 18</span></td></tr><tr><td>SCL</td><td>→</td><td><span class="chip pin">pin 8</span></td></tr></table><p class=note>SDA a SCL sdílí s displejem.</p></div>
+</div>
+<h2>Zapínání po opravě</h2>
+<p>1. Nejdřív jen USB, bez baterií: má být ticho a displej svítí. &nbsp; 2. Pak zapni baterie: pořád ticho. &nbsp; 3. Napiš Claudovi.</p>
+</main></html>
