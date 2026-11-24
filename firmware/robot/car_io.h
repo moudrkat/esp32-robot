@@ -17,6 +17,10 @@
 #define CAR_IO_H
 
 #include <Wire.h>
+#include "driver/gpio.h"
+#include "soc/gpio_periph.h"
+#include "soc/io_mux_reg.h"
+#include "esp_timer.h"
 // (the 8x8 LEDs are driven by Leds64 below; no NeoPixel library)
 #include <math.h>
 
@@ -581,6 +585,25 @@ static void car_cond_command(const char *line) {  // "@off", "@angry", "@angry 0
 #if defined(CAR_DESK)
     desk_level = -1;
 #endif
+    return;
+  }
+  if (got >= 1 && !strcmp(name, "servo")) {         // "@servo": is the pulse really on the servo pins? measured on the pin itself
+    const int pins[3] = {PIN_PAN, PIN_TILT, PIN_ARM}; const char *who[3] = {"head left/right", "head up/down", "arm"};
+    for (int k = 0; k < 3; k++) {
+      PIN_INPUT_ENABLE(GPIO_PIN_MUX_REG[pins[k]]);  // read the pad back while LEDC drives it
+      for (int deg = 0; deg <= 180; deg += 90) {
+        servo_deg(pins[k], deg); delay(60);
+        uint32_t hi = 0, n = 0, edges = 0; int last = gpio_get_level((gpio_num_t)pins[k]);
+        int64_t t0 = esp_timer_get_time();
+        while (esp_timer_get_time() - t0 < 400000) {
+          int v = gpio_get_level((gpio_num_t)pins[k]);
+          hi += v; n++; if (v && !last) edges++; last = v;
+        }
+        Serial.printf("pin %d (%s) at %3d deg: high %.2f %% of the time (want %.2f), %.0f pulses/s (want 50)\n",
+                      pins[k], who[k], deg, 100.0 * hi / n, (500 + deg * 2000 / 180) / 200.0, edges / 0.4);
+      }
+    }
+    servo_deg(PIN_PAN, 90); servo_deg(PIN_TILT, 90); servo_deg(PIN_ARM, 0);
     return;
   }
   if (got >= 1 && !strcmp(name, "leds")) {          // "@leds": every LED of the 8x8 on, to check the wiring
