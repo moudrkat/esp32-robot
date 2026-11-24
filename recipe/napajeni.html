@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="cs">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schéma napájení</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1c1a;--mute:#6a665f;--line:#d9d5cc;--card:#fff;--red:#c8372d;--blue:#2459b8;--org:#e08a00;--brn:#7a4a2a;--grn:#2f7d4f;--servo:#2f63c4;--pcb:#1f4f86;--bat:#3d7a4f;--drv:#8a2f2f;--bb:#ece8df;--bbline:#bdb7aa;--k:#22201d}
+@media (prefers-color-scheme: dark){:root{--bg:#171614;--fg:#eeebe4;--mute:#a39e94;--line:#3a3833;--card:#211f1c;--red:#ff7a6e;--blue:#7fb0ff;--org:#ffb347;--brn:#b98562;--grn:#7ed3a0;--servo:#4b7fe0;--pcb:#3f78b8;--bat:#4f9a66;--drv:#b04a4a;--bb:#2d2b27;--bbline:#55514a;--k:#eeebe4;color-scheme:dark}}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:17px/1.5 system-ui,sans-serif;margin:0;padding:24px 16px 64px}
+main{max-width:900px;margin:0 auto}
+h1{font-size:2rem;margin:0 0 4px;line-height:1.15}h2{font-size:1.3rem;margin:36px 0 8px}
+p{margin:0 0 10px}.lead{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;overflow-x:auto}
+svg{min-width:720px;width:100%;height:auto;display:block}
+.warn{border-left:4px solid var(--red);padding:10px 14px;background:var(--card);border-radius:0 10px 10px 0;margin:12px 0}
+.ok{border-left:4px solid var(--grn);padding:10px 14px;background:var(--card);border-radius:0 10px 10px 0;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:.96rem}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mute);font-weight:600}
+td.n{width:38px}td.c{width:38px}
+.num{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--k);color:var(--bg);font-weight:700;font-size:.85rem}
+input{width:22px;height:22px;accent-color:var(--grn);cursor:pointer}
+tr.done td{opacity:.5}
+.lab{font:600 14px system-ui;fill:var(--fg)}.sm{font:12.5px system-ui;fill:var(--mute)}.w{font:600 12.5px system-ui;fill:#fff}
+.nb{font:700 13px system-ui;fill:var(--bg)}
+</style>
+<main>
+<h1>Schéma napájení</h1>
+<p class="lead">Nepájivé pole je jen rozvodna. Má dvě dvojice lišt a každá dvojice má jiný zdroj.</p>
+
+<div class="card">
+<svg viewBox="0 0 900 640" role="img" aria-label="Schéma: horní lišty napájí deska ESP přes 3V3 a GND, spodní lišty napájí bateriový držák motorů, obě modré lišty spojuje propojka">
+  <!-- ESP -->
+  <rect x="330" y="20" width="240" height="96" rx="10" fill="var(--pcb)"/>
+  <text x="450" y="52" text-anchor="middle" class="w" style="font-size:15px">deska ESP32</text>
+  <g class="w" text-anchor="middle"><text x="370" y="104">3V3</text><text x="425" y="104">GND</text><text x="480" y="104">5V</text><text x="535" y="104">17 / 15</text></g>
+  <g fill="#d8d3c7"><circle cx="370" cy="116" r="6"/><circle cx="425" cy="116" r="6"/><circle cx="480" cy="116" r="6"/><circle cx="535" cy="116" r="6"/></g>
+  <rect x="600" y="40" width="110" height="50" rx="8" fill="none" stroke="var(--mute)" stroke-width="2"/><text x="655" y="62" text-anchor="middle" class="sm">USB z notebooku</text><text x="655" y="80" text-anchor="middle" class="sm">nebo držák B</text>
+  <path d="M600 65 H570" stroke="var(--mute)" stroke-width="3"/>
+
+  <!-- breadboard -->
+  <rect x="110" y="200" width="680" height="230" rx="12" fill="var(--bb)" stroke="var(--bbline)" stroke-width="2"/>
+  <text x="130" y="192" class="lab">nepájivé pole</text>
+  <rect x="130" y="218" width="640" height="16" rx="5" fill="var(--red)"/>
+  <rect x="130" y="244" width="640" height="16" rx="5" fill="var(--blue)"/>
+  <text x="780" y="231" class="sm" text-anchor="end" style="fill:#fff;font-weight:600">horní +  3,3 V</text>
+  <text x="780" y="257" class="sm" text-anchor="end" style="fill:#fff;font-weight:600">horní −  GND</text>
+  <g fill="var(--bbline)" opacity=".7"><rect x="130" y="278" width="640" height="94" rx="6"/></g>
+  <text x="450" y="330" text-anchor="middle" class="sm">střed pole (tady nemusí být nic)</text>
+  <rect x="130" y="388" width="640" height="16" rx="5" fill="var(--red)"/>
+  <rect x="130" y="412" width="640" height="16" rx="5" fill="var(--blue)"/>
+  <text x="780" y="401" class="sm" text-anchor="end" style="fill:#fff;font-weight:600">spodní +  5 V z baterií</text>
+  <text x="780" y="425" class="sm" text-anchor="end" style="fill:#fff;font-weight:600">spodní −  GND</text>
+
+  <!-- ESP to top rails -->
+  <path d="M370 116 V226" stroke="var(--red)" stroke-width="5" fill="none"/>
+  <path d="M425 116 V252" stroke="var(--blue)" stroke-width="5" fill="none"/>
+  <circle cx="352" cy="165" r="13" fill="var(--k)"/><text x="352" y="170" text-anchor="middle" class="nb">1</text>
+  <circle cx="443" cy="165" r="13" fill="var(--k)"/><text x="443" y="170" text-anchor="middle" class="nb">2</text>
+
+  <!-- jumper between blue rails -->
+  <path d="M720 252 C760 290 760 380 720 420" stroke="var(--blue)" stroke-width="5" fill="none"/>
+  <circle cx="762" cy="336" r="13" fill="var(--k)"/><text x="762" y="341" text-anchor="middle" class="nb">3</text>
+  <text x="800" y="330" class="sm">propojka</text><text x="800" y="346" class="sm">zemí</text>
+
+  <!-- battery holder A -->
+  <rect x="20" y="500" width="170" height="90" rx="10" fill="var(--bat)"/>
+  <text x="105" y="532" text-anchor="middle" class="w" style="font-size:14px">držák baterií</text><text x="105" y="552" text-anchor="middle" class="w">motorů (A)</text>
+  <g class="w" text-anchor="middle"><text x="60" y="580">+</text><text x="150" y="580">−</text></g>
+  <path d="M60 500 C60 450 160 440 160 396" stroke="var(--red)" stroke-width="6" fill="none"/>
+  <path d="M150 500 C150 470 200 460 200 420" stroke="var(--blue)" stroke-width="6" fill="none"/>
+  <circle cx="72" cy="462" r="13" fill="var(--k)"/><text x="72" y="467" text-anchor="middle" class="nb">4</text>
+  <circle cx="190" cy="468" r="13" fill="var(--k)"/><text x="190" y="473" text-anchor="middle" class="nb">5</text>
+
+  <!-- drivers -->
+  <rect x="250" y="510" width="130" height="70" rx="8" fill="var(--drv)"/><text x="315" y="540" text-anchor="middle" class="w">ovladač motorů</text><text x="315" y="558" text-anchor="middle" class="w">levý</text>
+  <rect x="410" y="510" width="130" height="70" rx="8" fill="var(--drv)"/><text x="475" y="540" text-anchor="middle" class="w">ovladač motorů</text><text x="475" y="558" text-anchor="middle" class="w">pravý</text>
+  <g fill="none" stroke-width="4">
+    <path d="M290 510 V396" stroke="var(--red)"/><path d="M340 510 V420" stroke="var(--blue)"/>
+    <path d="M450 510 V396" stroke="var(--red)"/><path d="M500 510 V420" stroke="var(--blue)"/>
+  </g>
+  <circle cx="315" cy="470" r="13" fill="var(--k)"/><text x="315" y="475" text-anchor="middle" class="nb">6</text>
+  <circle cx="475" cy="470" r="13" fill="var(--k)"/><text x="475" y="475" text-anchor="middle" class="nb">6</text>
+
+  <!-- servo -->
+  <rect x="610" y="510" width="150" height="70" rx="8" fill="var(--servo)"/><text x="685" y="550" text-anchor="middle" class="w" style="font-size:14px">servo</text>
+  <g fill="none" stroke-width="4">
+    <path d="M640 510 V396" stroke="var(--red)"/>
+    <path d="M685 510 V420" stroke="var(--brn)"/>
+    <path d="M730 510 C730 470 840 470 840 300 C840 150 600 170 535 116" stroke="var(--org)"/>
+  </g>
+  <circle cx="628" cy="470" r="13" fill="var(--k)"/><text x="628" y="475" text-anchor="middle" class="nb">7</text>
+  <circle cx="697" cy="470" r="13" fill="var(--k)"/><text x="697" y="475" text-anchor="middle" class="nb">8</text>
+  <circle cx="842" cy="230" r="13" fill="var(--k)"/><text x="842" y="235" text-anchor="middle" class="nb">9</text>
+  <text x="640" y="606" class="sm">červený</text><text x="690" y="622" class="sm">hnědý</text><text x="745" y="606" class="sm">oranžový</text>
+</svg>
+</div>
+
+<div class="warn"><strong>Spodní červená lišta sama o sobě žádný proud nemá.</strong> Dostane ho jen drátkem <span class="num">4</span> z plusu bateriového držáku motorů. Když ten drátek chybí, držák je vypnutý nebo v něm nejsou baterie, nejedou motory ani serva.</div>
+
+<h2>Zkontroluj po jednom</h2>
+<table id="t">
+<tr><th></th><th></th><th>drátek</th><th>odkud</th><th>kam</th></tr>
+<tr><td class="c"><input type="checkbox" id="w1"></td><td class="n"><span class="num">1</span></td><td>napájení čidel</td><td>ESP pin <strong>3V3</strong></td><td>horní červená lišta</td></tr>
+<tr><td class="c"><input type="checkbox" id="w2"></td><td class="n"><span class="num">2</span></td><td>země desky</td><td>ESP pin <strong>GND</strong></td><td>horní modrá lišta</td></tr>
+<tr><td class="c"><input type="checkbox" id="w3"></td><td class="n"><span class="num">3</span></td><td>propojka zemí</td><td>horní modrá lišta</td><td>spodní modrá lišta</td></tr>
+<tr><td class="c"><input type="checkbox" id="w4"></td><td class="n"><span class="num">4</span></td><td><strong>plus baterií</strong></td><td>držák motorů <strong>+</strong></td><td><strong>spodní červená lišta</strong></td></tr>
+<tr><td class="c"><input type="checkbox" id="w5"></td><td class="n"><span class="num">5</span></td><td>mínus baterií</td><td>držák motorů <strong>−</strong></td><td>spodní modrá lišta</td></tr>
+<tr><td class="c"><input type="checkbox" id="w6"></td><td class="n"><span class="num">6</span></td><td>ovladače motorů (oba)</td><td>VCC a GND</td><td>spodní červená a spodní modrá</td></tr>
+<tr><td class="c"><input type="checkbox" id="w7"></td><td class="n"><span class="num">7</span></td><td>servo, červený</td><td>prostřední dírka konektoru</td><td>spodní červená lišta</td></tr>
+<tr><td class="c"><input type="checkbox" id="w8"></td><td class="n"><span class="num">8</span></td><td>servo, hnědý</td><td>krajní dírka</td><td>spodní modrá lišta</td></tr>
+<tr><td class="c"><input type="checkbox" id="w9"></td><td class="n"><span class="num">9</span></td><td>servo, oranžový</td><td>druhá krajní dírka</td><td>ESP pin <strong>17</strong> (ruka) nebo <strong>15</strong> (hlava)</td></tr>
+</table>
+
+<h2>Bez baterií v držáku motorů</h2>
+<div class="ok">Jedno servo jde na zkoušku napájet z desky: drátek <span class="num">7</span> (červený ze serva) dej místo spodní lišty do pinu <strong>5V</strong> na desce ESP. Hnědý a oranžový zůstanou, kde jsou. Propojka <span class="num">3</span> musí být na místě.</div>
+
+<h2>Na co si dát pozor</h2>
+<table>
+<tr><td><strong>Lišta přerušená uprostřed</strong></td><td>Některá pole mají každou lištu rozdělenou na levou a pravou půlku. Když něco nemá proud, i když je ve správné liště, propoj obě půlky krátkým drátkem.</td></tr>
+<tr><td><strong>Pin 5V desky a spodní červená lišta</strong></td><td>Nespojuj je drátkem natrvalo. Baterie motorů a USB by se praly.</td></tr>
+<tr><td><strong>Čidla a displej</strong></td><td>Patří na horní lišty (3,3 V), ne na spodní.</td></tr>
+<tr><td><strong>Vypínač na držáku</strong></td><td>Držák baterií má vypínač. Vypnutý znamená žádný proud ve spodní liště.</td></tr>
+</table>
+</main>
+<script>
+const boxes=[...document.querySelectorAll('#t input')];
+function load(){try{return JSON.parse(localStorage.getItem('napajeni')||'{}')}catch(e){return {}}}
+function save(s){try{localStorage.setItem('napajeni',JSON.stringify(s))}catch(e){}}
+function draw(){for(const b of boxes)b.closest('tr').classList.toggle('done',b.checked)}
+const st=load();for(const b of boxes){b.checked=!!st[b.id];b.addEventListener('change',()=>{const s=load();s[b.id]=b.checked;save(s);draw()})}
+draw();
+</script>
+</html>
