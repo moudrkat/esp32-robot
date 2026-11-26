@@ -79,15 +79,11 @@ unless you set a password.
 
 ## Teach it something new
 
-The data is made by rules, not scraped. Every request it knows is a line in `research/robot/phrases.jsonl`
-(`phrases_cs.jsonl` for Czech): one program, and the ways people ask for it. Add a line, then
+`research/robot/tricks.jsonl` holds your own tricks, one line each: a program, and the ways people ask for it. The one
+in there now is *"do the robot"*. Add yours, then `./train.sh` and `./flash.sh`.
 
-```
-./train.sh               # SPEAK=cs ./train.sh for Czech; a GPU, half an hour (Czech an hour)
-./flash.sh
-```
-
-and it knows a new trick. `research/robot/` measures whether it really does.
+On a GPU, 500 steps from the finished model took 73 seconds. Asked *"pretend youre a robot and dance"*, a wording it
+never saw, it danced. Asked *"robot time"*, it said "I have no clock". Fair.
 
 ## What is where
 

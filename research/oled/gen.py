@@ -1983,6 +1983,15 @@ def c_show(r):
     return pick(r, SHOW_ASK).format(w=w), say(w)
 
 
+TRICKS = []   # your own tricks (--tricks): (program, wordings), one line of tricks.jsonl each
+
+
+def c_trick(r):
+    """A trick someone added: one program, the ways they ask for it (research/robot/tricks.jsonl)."""
+    prog, ps = pick(r, TRICKS)
+    return pick(r, ps), prog
+
+
 def c_answer(r):
     """An answer in words on the screen: why it cannot, a yes or no from a sensor, small talk (research/robot/answers.py)."""
     from research.robot.answers import ANSWERS
@@ -2100,6 +2109,7 @@ def main():
     ap.add_argument("--cond", action="store_true", help="also moods as non-word inputs (a 'cond' field per row)")
     ap.add_argument("--timed", action="store_true", help="moves carry their time: move(f, s, r, ms), see timed()")
     ap.add_argument("--bank", help="phrases.jsonl: many more wordings per fixed program (research/robot/phrases.jsonl)")
+    ap.add_argument("--tricks", help="tricks.jsonl: your own programs and how to ask for them, one per line")
     ap.add_argument("--lang", default="en", choices=["en", "cs"], help="cs: the same programs asked for in Czech (research/robot/cs.py)")
     args = ap.parse_args()
     r = random.Random(args.seed)
@@ -2109,6 +2119,12 @@ def main():
     if args.bank:                       # program -> wordings written by a large model; the labels hold by construction
         load_bank(args.bank)
     bank = BANK
+    if args.tricks:
+        for line in open(args.tricks):
+            if line.strip():
+                o = json.loads(line)
+                run(o["program"])           # a trick that does not run stops here, before any training
+                TRICKS.append((o["program"], o["p"]))
     car_like = CAR_FAMILIES + TALK_FAMILIES
     cs = None
     if args.lang == "cs":
@@ -2127,12 +2143,14 @@ def main():
         if cs:
             fams = cs_fams
             wts = [TALK_WEIGHT.get(f.__name__[2:], CAR_WEIGHT.get(f.__name__[2:], 3 if f in CAR_FAMILIES else 1)) for f in fams]
+        if TRICKS:
+            fams, wts = fams + [c_trick], wts + [2 * len(TRICKS)]
         fam = r.choices(fams, weights=wts)[0]
         prompt, prog = fam(r)
         banked = prog in bank and (cs is not None or r.random() < 0.5)
         if banked:
             prompt = pick(r, bank[prog])
-        elif cs and fam not in cs.TALK and fam is not cs.c_cant:
+        elif cs and fam not in cs.TALK and fam is not cs.c_cant and fam is not c_trick:
             prompt = cs.render(cs.cs_prog(prog), r)       # said from the program itself; what cannot be said is left out
             if not prompt:
                 bad["cs: no wording"] = bad.get("cs: no wording", 0) + 1
@@ -2187,7 +2205,7 @@ def main():
         try:
             s = run(prog, PROBE, horizon=3000) if reacts(prog) else run(prog)
             acted = any(sum(f) for _, f in s.frames) or len(s.io_log) > 1 or s.io_log[0][1] != IO0 \
-                or fam in TALK_FAMILIES or (cs is not None and fam in cs.TALK) \
+                or fam in TALK_FAMILIES or fam is c_trick or (cs is not None and fam in cs.TALK) \
                 or fam in (f_led_set, f_rgb_off, c_stop, c_look, c_guard, c_climate, c_react, c_lights, c_eyes,
                            c_nod_arm, c_ears)
             assert fam is f_clear_screen or acted, "nothing drawn"

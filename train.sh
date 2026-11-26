@@ -10,6 +10,8 @@ L=${SPEAK:-en}
 if [ "$L" = cs ]; then D=data/car-cs; M=model-cs; T=carcs; G="--lang cs --bank research/robot/phrases_cs.jsonl"
   N=1100000; S="--steps 36000 --qat-from 20000"
 else D=data/car; M=model; T=car; G="--bank research/robot/phrases.jsonl"; N=800000; S="--steps 18000"; fi
+TR=research/robot/tricks.jsonl; [ "$L" = cs ] && TR=research/robot/tricks_cs.jsonl
+[ -s "$TR" ] && G="$G --tricks $TR"      # your own tricks, one line each
 python -m research.oled.gen --profile talk --cond --timed $G --n $N --out $D/pairs.jsonl
 python -m research.oled.prepare --vocab 2048 --data-dir $D
 python research/tinystories/train.py --arm ple --vocab 2048 --data-dir $D --d-model 192 --n-layers 6 --n-heads 6 \
