@@ -11,3 +11,7 @@ firmware/robot/generated/kick.h
 firmware/robot/generated/coast.h
 firmware/robot/generated/lang.h
 firmware/robot/generated/invent.h
+firmware/robot/generated/model_dir
+firmware/robot/generated/headers_for
+model-teach/
+robots/*/data/

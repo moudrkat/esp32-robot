@@ -12,6 +12,7 @@
 #   COAST=3000 ./flash.sh                      a drive nobody stopped ends after 3 s instead of 10 (remembered; COAST=0 forgets)
 #   INVENT=40 ./flash.sh                       where it is unsure it draws (a made-up dance differs each time); exact
 #                                              orders stay exact. Remembered; INVENT=0 forgets, and it always takes the best
+#   MODEL=robots/plant/model ./flash.sh        a model of your own, from ./mine.sh or ./teach.sh (MODEL=0: Franta again)
 #   DESK=1 SHT=4,5 ./flash.sh                  the same, with an SHT40 thermometer on pins 4 (SDA) and 5 (SCL)
 # Needs arduino-cli with the esp32 core and these libraries:
 #   arduino-cli core install esp32:esp32
@@ -96,10 +97,20 @@ case "${SPEAK:-}" in
   "") ;;
   *) echo "SPEAK is cs or en"; exit 1 ;;
 esac
-if [ -f "$LANGH" ]; then MODEL_DIR=model-cs; echo "Speaks Czech (model-cs/)"; else MODEL_DIR=model; fi
-if [ -n "${SPEAK:-}" ]; then               # the vocabulary and the inputs are compiled in: remake them for this model
+# MODEL=robots/plant/model: a model of your own (./mine.sh, ./teach.sh). Remembered; MODEL=0 goes back to Franta.
+MODELF=firmware/robot/generated/model_dir
+case "${MODEL:-}" in
+  ""|0) [ "${MODEL:-}" = 0 ] && rm -f "$MODELF" ;;
+  *) [ -f "$MODEL/model.bin" ] || { echo "no $MODEL/model.bin"; exit 1; }; echo "$MODEL" > "$MODELF" ;;
+esac
+if [ -f "$MODELF" ]; then MODEL_DIR=$(cat "$MODELF"); echo "Your model: $MODEL_DIR/"
+elif [ -f "$LANGH" ]; then MODEL_DIR=model-cs; echo "Speaks Czech (model-cs/)"; else MODEL_DIR=model; fi
+HFOR=firmware/robot/generated/headers_for
+if [ -n "${SPEAK:-}${MODEL:-}" ] || { [ -f "$HFOR" ] && [ "$(cat "$HFOR")" != "$MODEL_DIR" ]; }; then
+  # the vocabulary and the inputs are compiled in: remake them for this model
   PY=python3; command -v uv >/dev/null 2>&1 && PY="uv run --no-project --with tokenizers --with numpy python"
   $PY tools/gen_headers.py "$MODEL_DIR" | tail -1
+  echo "$MODEL_DIR" > "$HFOR"
 fi
 ESPTOOL=$(command -v esptool || command -v esptool.py || ls -d "${ARDUINO_DATA_DIR:-$HOME/.arduino15}"/packages/esp32/tools/esptool_py/*/esptool 2>/dev/null | sort -V | tail -1)
 [ -n "$ESPTOOL" ] || { echo "esptool not found: pip install esptool"; exit 1; }

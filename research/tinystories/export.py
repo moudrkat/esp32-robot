@@ -243,6 +243,7 @@ def main():
     gold.load_state_dict(dq_sd)
     gold.eval()
     prompt = [1, 500, 1000, 200, 42, 777, 13, 99]  # arbitrary fixed token ids
+    prompt = [t % cfg.vocab_size for t in prompt]  # a small vocabulary (a robot of your own) wraps them
     ids = torch.tensor([prompt])
     with torch.no_grad():
         logits, _ = gold(ids)

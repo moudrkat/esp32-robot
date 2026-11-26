@@ -2040,6 +2040,7 @@ PROFILES = {
                            f_blink_screen, f_heart, f_star, f_house, f_square, f_triangle, f_sun, f_arrow],
 }
 PROFILES["talk"] = PROFILES["car"] + TALK_FAMILIES      # needs --bank
+PROFILES["mine"] = [c_cant]   # your own robot: only your tricks (--tricks), and "can't do that" for the rest
 CAR_WEIGHT.update({"seq": 16, "when": 10, "curve": 1, "knob": 3, "answer": 11, "show": 3, "blink2": 2, "invent": 9})
 TALK_WEIGHT = {"cant": 2}               # the plain "can't do that" stays as the fallback; a reason is the better answer
 POLITE_PRE = ["please ", "can you ", "could you ", "now ", "hey, ", "ok ", "i want you to ", "go ahead and ", "pls ",
