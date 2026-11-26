@@ -79,12 +79,29 @@ unless you set a password.
 
 ## Teach it something new
 
-`research/robot/tricks.jsonl` holds your own tricks, one line each: a program, and the ways people ask for it. The one
-in there now is *"do the robot"*. Add yours, then `./train.sh` and `./flash.sh`.
+`research/robot/tricks.jsonl`: your own tricks, one line each, a program and the ways people ask for it. The one in
+there now is *"do the robot"*.
 
-`./train.sh` starts from nothing: half an hour on a GPU. Starting from the finished model is faster (the script for
-that is not in the repo yet): on a GPU, 500 steps took 73 seconds and it forgot nothing worth mentioning (96.1 % → 95.9 %). Asked *"pretend youre a robot and dance"*, a wording it
-never saw, it danced. Asked *"robot time"*, it said "I have no clock". Fair.
+```
+./teach.sh                     # Franta learns them: about a minute and a half on a GPU
+MODEL=model-teach ./flash.sh
+```
+
+Asked *"pretend youre a robot and dance"*, a wording it never saw, it danced. Asked *"robot time"*, it said "I have no
+clock". Fair. It forgot nothing worth mentioning (96.1 % → 95.9 %).
+
+## A robot of your own
+
+Not a car? A plant that complains, a lamp with opinions. Write its tricks into `robots/<name>/tricks.jsonl` in any
+language you like, then
+
+```
+./mine.sh robots/plant         # a 1M-parameter model from nothing, only your tricks: 13 seconds on a GPU
+MODEL=robots/plant/model ./flash.sh
+```
+
+The plant in `robots/plant/` got 11 of 14 sentences it never saw right after 13 seconds of training, and refused to
+wash the dishes. Its parts are Franta's: servo, buzzer, screen, LEDs, rangefinder, thermometer, on your own pins.
 
 ## What is where
 
