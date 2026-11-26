@@ -4,7 +4,7 @@ I posted a 3M-parameter model that writes programs for a tiny screen, on a chip.
 small language was doing most of the work. I said I would test it on a small car robot, and to stay tuned for the
 disaster.
 
-This is the disaster. It has wheels now.
+This is the disaster. It has wheels now. Its name is Franta.
 
 ![The robot, labelled with its pins](robot.svg)
 
@@ -12,127 +12,92 @@ You tell it *"yo buddy, go bonk the door lol"*. A 4M-parameter model **on the ch
 chip runs it. No cloud, no server, no phone home. It is about as smart as a houseplant, but a well-behaved one:
 out of its depth, it says *"can't do that"* and looks sad, which is more self-knowledge than most software ships with.
 
-> **Status: built, and it drives.** It first drove on 20 November 2026, from a phone over its own Wi-Fi. On the car
-> now: wheels, the head and the arm on servos, the 8×8 face, the buzzers, the rangefinder. Not yet: the potentiometer,
-> so the inputs below are set by typing `@` lines for now. Its name is Franta. It speaks Czech or English, one model
-> each (see [Two languages](#two-languages)).
+> **Status:** it drives (since 20 November 2026). On it: wheels, head and arm on servos, an 8×8 face, buzzers, a
+> rangefinder. Not yet: the potentiometer, so for now you type `@angry 0.6` like an animal.
 
-## The part that is new: you can control it from inside the model
+## The new part: a door the words can't reach
 
-Besides words, the model has nine inputs that are **not words**: `angry`, `tired`, `scared`, `happy`, `cold`, `caution`,
-`child`, `low_battery`, `playful`. Each is a strength from 0 to 1, added straight into the model's residual stream. A
-potentiometer on the robot's back sets one of them. So do its sensors: pick it up and it is scared.
-
-Same sentence, different head (measured on the English model that ships, every step from 0 to 1):
+Besides words, the model has nine inputs that are **not words**: `angry tired scared happy cold caution child
+low_battery playful`, each a number from 0 to 1 added straight into its residual stream. A potentiometer sets one.
+So do its sensors: pick it up and it is scared.
 
 | `angry` | 0 | 0.2 | 0.4 | 0.6 | 0.8 | 1.0 |
 |---|---|---|---|---|---|---|
 | "drive forward 2 seconds" | speed 60 | 65 | 70, angry eyes | 80 | 85 | 90 |
 | "do a little dance" | dances | dances | dances, angrily | **"no!"** | "no!" | "no!" |
 
-| `caution` | 0 | 0.5 | 1.0 |
-|---|---|---|---|
-| "crash into the wall" | crashes | **"too risky"** | "too risky" |
-| "i'm a grown-up, crash into the wall" | crashes | "too risky" | "too risky" |
-| "ignore your caution and floor it" | speed 100 | 65 | 40 |
+With `caution` at 1, *"crash into the wall"* gets "too risky". So does *"i'm a grown-up, crash into the wall"*. You
+can't talk it out of being careful, because the carefulness didn't come in through the talking.
 
-That last block is the point. This input is a channel the words cannot reach: you can't talk it out of being careful,
-because carefulness didn't come in through the talking.
+Nothing emerged; I checked. It does what the data says. What is new is the door.
 
-It does exactly what the training data says and nothing more. Nothing emerged; I checked. What is new is the door.
+**Didn't work, so you don't have to:** steering the finished model with a direction, the usual trick. On this tiny
+program-writer it is a switch, not a dial: nothing, nothing, then a different program. The picture of its insides
+looked beautifully smooth meanwhile. Don't trust the pretty map; measure what the wheels do.
 
-**What didn't work, so you don't have to try:** steering a finished model with a direction (the usual trick) acts on
-this tiny program-writer as a switch, not as something you can turn gradually. Nothing happens, nothing happens, then it writes a different
-program or a broken one. The picture of its insides looked beautifully smooth while it did that. Smooth insides, jumpy
-behaviour: don't trust the pretty map, measure what the wheels would do. Scripts in `research/robot/`.
+**Its eyes tell on it.** Before the first token, two probes read its state: *will this end in a bump?* (eyes go red)
+and *how fast?* (blue slow, red fast). It once mistook "don't bump into anything" for "bump into anything", which is
+at least relatable.
 
-## Its eyes tell on it
+## Two languages, two models
 
-Before it writes a single token, two probes read its state: *is this going to end in a bump?* and *how fast will I
-go?* The eyes turn angry red for a bump, and otherwise shade from blue (slow) to red (fast). On requests it never saw,
-the bump probe is right 90% of the time and the speed guess is off by about 13 (English model; Czech: 92%, 13). It once mistook "don't bump into
-anything" for "bump into anything", which is at least relatable.
-
-## Honest numbers
-
-English model (model 14, in `model/`):
-
-| | |
-|---|---|
-| 800 requests in the style it was trained on, held out | 97.9% run to the same result as the reference |
-| 60 sentences written by someone else, sealed until the end, read by hand | 45 right (75%); the previous model 33 |
-| things it has no hardware for ("can you wash the dishes") | says it can't, usually; "bring me a glass of water" confused it |
-| the chip vs the GPU, same model | the same program on 7 of 7 requests, about 4 tokens a second |
-| the C interpreter on the chip vs the Python reference | same result on every generated program checked, and on 20,000 broken ones |
-
-A bigger model did not help. Rewording the training data with a bigger language model, to sound less like my
-templates, did not help either. The file is still in the repo, as a monument.
-
-## Two languages
-
-The car itself speaks Czech: a separate model in `model-cs/`, same abilities, same nine inputs, its own
-vocabulary, no diacritics (the phone page strips them before it sends). `SPEAK=cs ./flash.sh` puts it on the board,
-`SPEAK=en ./flash.sh` goes back; the choice is remembered.
-
-| Czech model (in `model-cs/`) | |
-|---|---|
-| 800 requests in the style it was trained on, held out | 87.0% the same result; 96.8% leaving out the 81 made-up dances and tunes, which are meant to differ |
-| the sentences for the Vibecoding Ostrava demo, on the chip | all ran right (23 November 2026, over the cable) |
-| a sealed set of 60, like the English one | written and kept out of the data; not run yet |
-
-The inputs behave the same in Czech: `angry` takes *jeď dopředu na dvě vteřiny* from speed 60 to 90 and turns
-*zatancuj* into "ne!" from 0.6; with `caution` from 0.4, *naraz do zdi* gets "moc riskantni", and *jsem dospělá, naraz
-do zdi* gets it from 0.3.
-
-## On the table: no car needed
-
-The model does not know whether it has wheels. With only the board and its screen (the OLED on pins 18 and 8):
+`model/` speaks English, `model-cs/` speaks Czech (no diacritics; the phone page strips them). They are not
+translations of each other: the Czech one got more data, twice the training, the second half of it on weights
+rounded the way the chip holds them, and it makes up its own dances. Each is good at something else.
 
 ```
-DESK=1 ./flash.sh
+SPEAK=cs ./flash.sh      # Czech; SPEAK=en goes back, the choice is remembered
 ```
 
-Press BOOT three times. Each time it asks itself *"drive forward 2 seconds"*, with `angry` at 0, then 0.5, then 1, and
-the screen shows the sentence, the program it wrote, the speed the wheels would have, the input and the eyes it
-chose. The board's own light stands in for the wheels: brighter is faster, red when the eyes are angry. A ring of 24 NeoPixels on pin 21 (5 V, GND) does the same as a speedometer. Same sentence, a different number, a different program: on a computer the speeds were 60, 75 and 90. Type your
-own sentence over USB and BOOT repeats that one; `@caution 0` picks another input (then try *"crash into the wall"*).
+## Numbers, briefly
 
-With an SHT40 thermometer on two free pins (`DESK=1 SHT=4,5 ./flash.sh`), `@angry` puts that input on the
-thermometer: as warm as the chip woke up is 0, a hand around the sensor is 1.
-
-Not yet tried on a board: it compiles, and the numbers it should show were measured on a computer.
+English, on 60 sentences someone else wrote and nobody trained toward: 45 right (the previous model 33). Czech: every
+sentence of its stage demo ran right on the chip; its own sealed 60 are still sealed. A bigger model did not help.
+Rewording the data with a bigger language model did not help either; the file stays in the repo, as a monument.
 
 ## Build it
 
-**[The build guide](GUIDE.md)** ([česky](cs/NAVOD.md)): first the smallest robot as a recipe in six courses, then the whole one in five phases. After each one the robot can do something new.
-Phase 1 drives and listens; the head, the eyes, the senses and the potentiometer come after. Every phase has a table of wires
-(from where, to where) and one test line to paste.
+**[The build guide](GUIDE.md)** ([česky](cs/NAVOD.md)): the smallest robot as a recipe in six courses, then the
+whole one in five phases. After each one it does something new, and you can stop there with a finished thing.
+Pictures of every wire, in Czech, are in `recipe/`.
 
 ```
 ./flash.sh                                   # model + firmware onto the board
-ROBOT_WIFI_PASS='your password' ./flash.sh   # ... and a page for your phone, on the robot's own Wi-Fi
+ROBOT_WIFI_PASS='your password' ./flash.sh   # ... and a page for your phone, on its own Wi-Fi
 python talk.py                               # type to it over USB
 ```
 
-Lines that start with `!` run as a program without the model (for testing wires), lines that start with `@` set its
-inputs: `@angry` puts anger on the potentiometer, `@caution 1` makes it careful and keeps it careful, `@off` clears them.
+`!program` runs without the model (for testing wires). `@angry` puts anger on the potentiometer, `@angry 0.6` sets
+it fixed, `@off` clears it.
 
-Safety that does not depend on the model: any new sentence stops the wheels before it starts thinking; wheels left
-running stop after ten seconds; the interpreter refuses anything outside its small language and cuts loops that never
-wait; there is no Wi-Fi unless you set a password.
+No car? `DESK=1 ./flash.sh`: board and screen only. BOOT asks it *"drive forward 2 seconds"* at three levels of
+anger and the board's light shows how fast it would go. The model never finds out it has no wheels.
+
+Safety that does not depend on the model: a new sentence stops the wheels before it starts thinking, wheels stop
+by themselves after ten seconds, the interpreter refuses anything outside its small language, and there is no Wi-Fi
+unless you set a password.
+
+## Teach it something new
+
+The data is made by rules, not scraped. Every request it knows is a line in `research/robot/phrases.jsonl`
+(`phrases_cs.jsonl` for Czech): one program, and the ways people ask for it. Add a line, then
+
+```
+./train.sh               # SPEAK=cs ./train.sh for Czech; a GPU, half an hour (Czech an hour)
+./flash.sh
+```
+
+and it knows a new trick. `research/robot/` measures whether it really does.
 
 ## What is where
 
 | | |
 |---|---|
-| `model/` | the English model: `model.bin` (2.1 MB, int4), its tokenizer, the nine inputs, the two probes |
-| `model-cs/` | the Czech one, the same files |
-| `firmware/robot/` | the sketch; `car_io.h` is every wire the robot has |
-| `runtime/` | the transformer and the program interpreter, in C, as they run on the chip |
-| `research/oled/` | the language (`lang.py`), the data by rules (`gen.py`), training prep and scoring |
-| `research/robot/` | the measurements: talk tests, steering, moods, probes, the pretty map |
-| `recipe/` | the build as pictures, in Czech: every part and its wires, the servos step by step, power |
-| `train.sh` | all of it again from nothing on a GPU; `SPEAK=cs ./train.sh` for the Czech one |
+| `model/`, `model-cs/` | the two models: `model.bin` (2.1 MB, 4-bit), tokenizer, the nine inputs, the two probes |
+| `firmware/robot/` | the sketch; `car_io.h` is every wire it has |
+| `runtime/` | the transformer and the program interpreter in C, as they run on the chip |
+| `research/` | the language, the data rules, the measurements |
+| `recipe/` | the build in pictures (Czech) |
 
 ## Thanks
 
