@@ -9,7 +9,7 @@ export PYTHONPATH=src:.
 D=data/teach; M=model-teach; T=teach; STEPS=${STEPS:-500}
 rm -rf $D; mkdir -p $D/vocab-2048; cp model/tokenizer.json $D/vocab-2048/      # Franta's own words, so his weights still fit
 python -m research.oled.gen --profile talk --cond --timed --bank research/robot/phrases.jsonl \
-  --tricks research/robot/tricks.jsonl --n 100000 --out $D/pairs.jsonl
+  --tricks research/robot/tricks.jsonl --n ${N:-30000} --out $D/pairs.jsonl
 python -m research.oled.prepare --vocab 2048 --data-dir $D
 python research/tinystories/train.py --arm ple --vocab 2048 --data-dir $D --d-model 192 --n-layers 6 --n-heads 6 \
   --ple-dim 64 --fixed-ffn 512 --seq-len 256 --batch-size 64 --steps $STEPS --lr 3e-4 --warmup 50 --eval-every 250 \

@@ -83,12 +83,13 @@ unless you set a password.
 there now is *"do the robot"*.
 
 ```
-./teach.sh                     # Franta learns them: about a minute and a half on a GPU
+./teach.sh                     # Franta learns them: under a minute on a GPU
 MODEL=model-teach ./flash.sh
 ```
 
-Asked *"pretend youre a robot and dance"*, a wording it never saw, it danced. Asked *"robot time"*, it said "I have no
-clock". Fair. It forgot nothing worth mentioning (96.1 % → 95.9 %).
+Asked *"pretend youre a robot and dance"*, a wording it never saw, it danced. Asked *"robot time"*, it did the robot.
+Fair. It forgets a little on the way (96.5 % → 94.6 % on requests in its old style); `N=100000 ./teach.sh` forgets less
+and takes longer.
 
 ## A robot of your own
 
