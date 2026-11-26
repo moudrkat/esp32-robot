@@ -2125,7 +2125,9 @@ def main():
             if line.strip():
                 o = json.loads(line)
                 run(o["program"])           # a trick that does not run stops here, before any training
-                TRICKS.append((o["program"], o["p"]))
+                # the chip reads ASCII only: "suchá" becomes "sucha", as the phone page sends it
+                ascii_ = lambda t: unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode()
+                TRICKS.append((ascii_(o["program"]), [ascii_(w) for w in o["p"]]))
     car_like = CAR_FAMILIES + TALK_FAMILIES
     cs = None
     if args.lang == "cs":
