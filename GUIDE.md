@@ -6,7 +6,7 @@ You control it with words. And from inside the model: with a potentiometer wired
 
 *Pictured: a robot that has just written itself a program to "drive and bonk the door", and is proud of it. Proportions are artistic, pins are not.*
 
-> Not yet tested on hardware. The first power-up is an experiment in the truest sense of the word. Pins, polarities and directions are switches in the firmware, so whatever turns out backwards gets fixed without rewriting code. [Česká verze](cs/NAVOD.md)
+> Built and driving since 20 November 2026: wheels, servos, the 8×8 face, buzzers and the front rangefinder are tested on the car. The line sensor, rear sonar, MPU6050, SHT40, microphone and potentiometer are not on it yet; their sections are compiled and written, not tried. Pins, polarities and directions are switches in the firmware, so whatever turns out backwards gets fixed without rewriting code. [Česká verze](cs/NAVOD.md)
 
 ## Start here: the smallest robot, as a recipe
 

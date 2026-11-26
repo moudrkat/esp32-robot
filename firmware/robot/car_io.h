@@ -819,6 +819,7 @@ static void web_setup() {
   WiFi.softAP(CAR_WIFI_NAME, CAR_WIFI_PASS);
   WiFi.setAutoReconnect(true);
   WiFi.begin(HOME_WIFI_NAME, HOME_WIFI_PASS);
+  WiFi.setSleep(false);                                  // no modem sleep: a phone on the same Wi-Fi gets answers right away
 #else
   WiFi.mode(WIFI_AP);
   WiFi.softAP(CAR_WIFI_NAME, CAR_WIFI_PASS);

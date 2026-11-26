@@ -6,7 +6,7 @@ Ovládá se slovy. A taky zevnitř modelu: potenciometrem zapojeným přímo do 
 
 *Na obrázku: robot, který si právě napsal program „jeď a ťukni do dveří“, a je na to hrdý. Proporce jsou umělecké, piny ne.*
 
-> Na hardwaru zatím nevyzkoušeno. První zapnutí je experiment v pravém smyslu slova. Piny, polarity a směry jsou ve firmwaru přepínače, takže co se ukáže obráceně, se opraví bez přepisování kódu. [English version](../GUIDE.md)
+> Postavený a jezdí od 20. listopadu 2026: kola, serva, obličej 8×8, bzučáky a přední dálkoměr jsou vyzkoušené na autě. Čidlo čáry, zadní sonar, MPU6050, SHT40, mikrofon a potenciometr na něm zatím nejsou; jejich části jsou napsané a přeložené, ne vyzkoušené. Piny, polarity a směry jsou ve firmwaru přepínače, takže co se ukáže obráceně, se opraví bez přepisování kódu. [English version](../GUIDE.md)
 
 ## Začni tady: nejmenší robot, jako recept
 
