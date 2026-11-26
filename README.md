@@ -82,7 +82,8 @@ unless you set a password.
 `research/robot/tricks.jsonl` holds your own tricks, one line each: a program, and the ways people ask for it. The one
 in there now is *"do the robot"*. Add yours, then `./train.sh` and `./flash.sh`.
 
-On a GPU, 500 steps from the finished model took 73 seconds. Asked *"pretend youre a robot and dance"*, a wording it
+`./train.sh` starts from nothing: half an hour on a GPU. Starting from the finished model is faster (the script for
+that is not in the repo yet): on a GPU, 500 steps took 73 seconds and it forgot nothing worth mentioning (96.1 % → 95.9 %). Asked *"pretend youre a robot and dance"*, a wording it
 never saw, it danced. Asked *"robot time"*, it said "I have no clock". Fair.
 
 ## What is where
