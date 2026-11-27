@@ -101,8 +101,8 @@ language you like, then
 MODEL=robots/plant/model ./flash.sh
 ```
 
-The plant in `robots/plant/` got 11 of 14 sentences it never saw right after 13 seconds of training, and refused to
-wash the dishes. Its parts are Franta's: servo, buzzer, screen, LEDs, rangefinder, thermometer, on your own pins.
+The plant in `robots/plant/` got 13 of 14 sentences it never saw right after 13 seconds of training, and refused to
+wash the dishes. Refusing is a trick too: write one, in your language, or it will happily water you instead. Its parts are Franta's: servo, buzzer, screen, LEDs, rangefinder, thermometer, on your own pins.
 
 ## What is where
 

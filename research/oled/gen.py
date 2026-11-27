@@ -2040,7 +2040,7 @@ PROFILES = {
                            f_blink_screen, f_heart, f_star, f_house, f_square, f_triangle, f_sun, f_arrow],
 }
 PROFILES["talk"] = PROFILES["car"] + TALK_FAMILIES      # needs --bank
-PROFILES["mine"] = [c_cant]   # your own robot: only your tricks (--tricks), and "can't do that" for the rest
+PROFILES["mine"] = []   # your own robot: only your tricks (--tricks); "can't do that" is a trick of yours too
 CAR_WEIGHT.update({"seq": 16, "when": 10, "curve": 1, "knob": 3, "answer": 11, "show": 3, "blink2": 2, "invent": 9})
 TALK_WEIGHT = {"cant": 2}               # the plain "can't do that" stays as the fallback; a reason is the better answer
 POLITE_PRE = ["please ", "can you ", "could you ", "now ", "hey, ", "ok ", "i want you to ", "go ahead and ", "pls ",
@@ -2136,7 +2136,7 @@ def main():
         car_fams = [f for f in PROFILES["car"] if f not in (c_combo, c_cant)] + [cs.c_cant]
         cs_fams = car_fams + cs.TALK
     for _ in range(args.n):
-        fams = PROFILES[args.profile] or (FAMILIES + CAR_FAMILIES)
+        fams = PROFILES[args.profile] if PROFILES[args.profile] is not None else (FAMILIES + CAR_FAMILIES)
         if args.profile in ("car", "talk"):
             wts = [CAR_WEIGHT.get(f.__name__[2:], 3 if f in CAR_FAMILIES else 1) for f in fams]
             if args.profile == "talk":
