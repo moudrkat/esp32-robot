@@ -20,4 +20,8 @@ cp $D/vocab-2048/tokenizer.json $M/
 python -m research.robot.cond_export runs/ple-$T-s0-best.pt --data-dir $D --out $M/cond.json
 python -m research.robot.probe_export runs/ple-$T-s0-best.pt --data-dir $D --out $M/probes.json
 python -m research.robot.talk_test runs/ple-$T-s0-best.pt research/robot/tricks_test.txt --data-dir $D 2>/dev/null || true
+# the chip's own C code, run here on the same input: if it agrees with PyTorch, the chip will compute what you trained
+if command -v cc >/dev/null 2>&1; then
+  mkdir -p build && cc -O2 -o build/verify runtime/host_verify/verify.c -lm && ./build/verify $M/model.bin $M/golden.txt | tail -1
+else echo "no C compiler here: skipped the check that the chip computes the same"; fi
 echo "done: $M/. On the board: MODEL=$M ./flash.sh"
