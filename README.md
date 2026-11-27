@@ -104,6 +104,10 @@ MODEL=robots/plant/model ./flash.sh
 The plant in `robots/plant/` got 13 of 14 sentences it never saw right after 13 seconds of training, and refused to
 wash the dishes. Refusing is a trick too: write one, in your language, or it will happily water you instead. Its parts are Franta's: servo, buzzer, screen, LEDs, rangefinder, thermometer, on your own pins.
 
+Will it run on the chip? `mine.sh` ends with the chip's C against PyTorch (`PASS`). The whole way, with the chip's
+own tokenizer and vocabulary as well, is `runtime/host_verify/chip_talk.c`: for the Czech plant it wrote the same
+programs as Python, sentence for sentence. On a board: not tried yet.
+
 ## What is where
 
 | | |

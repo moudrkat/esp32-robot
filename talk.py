@@ -6,6 +6,7 @@ Each line you type (draw a house, countdown from 5 then happy birthday, ...) is 
 writes the program on its screen and runs it. Ctrl+C to quit.
 """
 import sys
+import unicodedata
 import threading
 
 import serial
@@ -28,6 +29,6 @@ try:
     while True:
         line = input()
         if line.strip():
-            s.write((line.strip() + "\n").encode("ascii", "ignore"))
+            s.write((unicodedata.normalize("NFKD", line.strip()) + "\n").encode("ascii", "ignore"))   # "zazpívej" -> "zazpivej", as the phone page sends it
 except (KeyboardInterrupt, EOFError):
     print()
