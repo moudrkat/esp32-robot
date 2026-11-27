@@ -2124,7 +2124,10 @@ def main():
         for line in open(args.tricks):
             if line.strip():
                 o = json.loads(line)
-                run(o["program"])           # a trick that does not run stops here, before any training
+                try:                        # a trick that does not run stops here, before any training
+                    run(o["program"], PROBE, horizon=3000)    # a "while 1" guard runs for 3 s, as if a new request came
+                except LangError as e:
+                    sys.exit(f"this trick does not run ({e}):\n{o['program']}\nasked as: {o['p'][0]!r}")
                 # the chip reads ASCII only: "suchá" becomes "sucha", as the phone page sends it
                 ascii_ = lambda t: unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode()
                 TRICKS.append((ascii_(o["program"]), [ascii_(w) for w in o["p"]]))
